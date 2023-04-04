@@ -1,0 +1,48 @@
+{
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/assets/js/DragDropTouch.js",
+          "/assets/js/html2pdf.bundle.js",
+          "/fontawesome-webfont.eot",
+          "/fontawesome-webfont.svg",
+          "/fontawesome-webfont.ttf",
+          "/fontawesome-webfont.woff",
+          "/fontawesome-webfont.woff2",
+          "/*.css",
+          "/*.js"
+        ]
+      }
+    }, {
+      "name": "assets",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "kanulki-api",
+      "urls": [
+        "/api",
+        "/api/**"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxAge" : "1d",
+        "maxSize" : 500
+      }
+    }
+  ]
+}

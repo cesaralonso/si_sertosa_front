@@ -1,0 +1,41 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+$primary: #FD5526 !default;
+$info: #74D6E1 !default;
+$success: #73B341 !default;
+$warning: #FFD34C !default;
+$danger: #F42B79 !default;
+
+table {
+    width: 100%;
+}
+.full-width {
+    width: 100%;
+}
+.mat-dialog-actions {
+    margin-bottom: -18px;
+    justify-content: flex-end;
+}
+.panel-default {
+    width: fit-content;
+    min-width: -webkit-fill-available;
+}
+.blue-snackbar {
+    background-color: $info;
+    color: white;
+}
+.red-snackbar {
+    background-color: $danger;
+    color: white;
+}
+.orange-snackbar {
+    background-color: $warning;
+    color: white;
+}
+.green-snackbar {
+    background-color: $success;
+    color: white;
+}

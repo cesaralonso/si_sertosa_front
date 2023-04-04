@@ -1,0 +1,29 @@
+<div class="text-center" *ngIf="!(latitude && longitude)">
+  Obteniendo coproyectoadas...
+</div>
+<agm-map 
+  *ngIf="latitude && longitude"
+  [latitude]="latitude" 
+  [longitude]="longitude" 
+  [zoom]="zoom" 
+  [disableDefaultUI]="false"
+  [zoomControl]="true"
+  [mapTypeControl]="false"
+  [fullscreenControl]="false"
+  [scrollwheel]="false"
+  [disableDoubleClickZoom]="false"
+  [maxZoom]="20"
+  [minZoom]="1"
+  >
+    <agm-marker *ngFor="let marker of markers; let i = index"
+    [latitude]="marker.lat" 
+    [longitude]="marker.lng"
+    [label]="marker.nombre"
+    (markerClick)="clickedMarker(marker, infoWindow)"
+    >
+      <agm-info-window #infoWindow [disableAutoPan]="false">
+        <pre [innerHTML]="infoText"></pre>
+        <button class="btn btn-info" (click)="verItem(marker)"> Ver Detalle </button>
+      </agm-info-window>
+    </agm-marker>
+</agm-map>

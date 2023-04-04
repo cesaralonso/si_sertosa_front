@@ -1,0 +1,36 @@
+<h1 mat-dialog-title>{{accion}} Empresa</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Grupo</mat-label>
+      <mat-select formControlName="companygroup_idcompanygroupAC" [(ngModel)]="item.companygroup_idcompanygroup">
+        <mat-option *ngFor="let item of _companygroup" [value]="item.idcompanygroup">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='companygroupRewriteable' (click)="companygroupAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+
+    <!-- IMÁGENES -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Logotipo | Procura una relación de 4 x 1 (ej. 200px ancho x 50px alto)</mat-label>
+      <input matInput [(ngModel)]="item.logo" type="text" [ngModelOptions]="{standalone: true}" id="inputlogoAC" placeholder="Logotipo" readonly>
+      
+      <input type="file" (change)="uploadFile($event)" id="inputdocumentoAC">
+    </mat-form-field>
+    <div class='form-group row mt-3'>
+      <div class='preview' *ngIf='preview && preview !== null'>
+        <img [src]='preview' alt='preview' class='img-fluid'>
+      </div>
+    </div>
+
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

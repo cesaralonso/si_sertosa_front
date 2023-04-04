@@ -1,0 +1,109 @@
+<div class='widgets' *ngIf="item">
+  <div class="row mt-5 mb-5">
+    <div class="col-md-12">
+      <ba-card title='Información' class='data-table-container'>
+        <div class='panel panel-default'>
+          <div class="panel-heading mb-5">
+            <h2> Información </h2>
+            <hr>
+            <div class="row mb-5">
+              <div class="col-lg-3 col-md-4 mb-5">
+                <h3 class="mb-5 lead"><i>{{ item.persona_persona_idpersona }}</i></h3>
+                <ul class='task-list'>
+                  <li class="blue" (click)='viewPersona(item, false)'>
+                    Información Personal
+                    <span><i class='fa fa-user'></i></span>
+                  </li>
+                  <li class="green" (click)='viewPagoliquidacion(item)'>
+                    Historial de Pagos
+                    <span><i class='fa fa-dollar'></i></span>
+                  </li>
+                  <li class="gray" (click)='viewFacturacion(item)'>
+                    Datos de Facturación
+                    <span><i class='fa fa-list'></i></span>
+                  </li>
+                  <li (click)='viewSugerencia(item)'>
+                    Sugerencias
+                    <span><i class='fa fa-exclamation'></i></span>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-9 col-md-8">
+                <h3 class="mb-5 lead">Lugares Asignados</h3>
+                {{ item.servicios ? '' : 'SIN LUGAR ASIGNADA' }}
+                <ng-container *ngIf="item.servicios">
+                  <div class="row mt-3">
+                    <div class="col-lg-6 col-md-12 col-sm-12" *ngFor="let servicio of item.servicios">
+                      <div class="card">
+                        <div class="card-body">
+                          <div class='panel panel-default mt-5'>
+                            <div class="panel-heading">
+                              <h3>Lugar número: {{servicio.numero}}</h3>
+                            </div>
+                            <h5 class="card-title">
+                              Curso:  <strong>{{servicio.nombre}}</strong>
+                            </h5>
+                            <div class="mt-3 text-center">
+                              <button title='Agregar Sugerencia'
+                              (click)='insertSugerencia(servicio.idcondominio, servicio.nombre)'
+                              class='btn btn-success'><i class='fa fa-plus'></i> Sugerencia</button>
+                            </div>
+                          </div>
+                          <hr>
+                          <div class='panel panel-default mt-5'>
+                            <div class="panel-heading">
+                              <h4>Estado de Cuenta - <i><strong>{{mesActual}}</strong></i></h4>
+                            </div>
+                            <table class='table table-striped'>
+                              <tr>
+                                <th>
+                                  <strong>Mensualidad:</strong>
+                                </th>
+                                <td><span
+                                    [ngClass]="{'text-danger': servicio.saldoactualMantenimiento > 0 }">{{ ((servicio.saldoactualMantenimiento) ? servicio.saldoactualMantenimiento : 0) | currency: 'MXN' }}</span>
+                                </td>
+                              </tr>
+                              <tr>
+                                <th>
+                                  <strong>Extraordinario:</strong>
+                                </th>
+                                <td><span
+                                    [ngClass]="{'text-danger': servicio.saldoactualExtraordinario > 0 }">{{ ((servicio.saldoactualExtraordinario) ? servicio.saldoactualExtraordinario : 0) | currency: 'MXN' }}</span>
+                                </td>
+                              </tr>
+                            </table>
+                          </div>
+                          <hr>
+                          <div class='panel panel-default mt-5'>
+                            <div class="panel-heading">
+                              <h4>Pagos Pendientes</h4>
+                            </div>
+                            <div class="row">
+                              <div class="col">
+                                <ul class='task-list'>
+                                  <li class="green" *ngFor='let liquidacion of servicio.liquidaciones | tipoDataFilter: filterQuery1;  let i = index'>
+                                    Concepto: <strong>{{ liquidacion.tipo }}</strong> <br>
+                                    Fecha: <strong>{{ liquidacion.fecha | date: 'dd/MM/y': 'UTC' }}</strong> <br>
+                                    Saldo: <strong>{{ liquidacion.saldoactual | currency:'MXN' }}</strong> <br>
+                                    <div class="text-right">
+                                      <button (click)="pagarFactura(liquidacion)" target="_blank" class='btn btn-success' *ngIf="servicio.pagoenlinea">
+                                        <i class="fa fa-dollar"></i> Pagar</button>
+                                    </div>
+                                  </li>
+                                </ul>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ba-card>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<h1 mat-dialog-title>{{accion}} Alerta</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Usuario del Sistema</mat-label>
+      <mat-select formControlName="si_user_idsi_userAC" [(ngModel)]="item.si_user_idsi_user">
+        <mat-option *ngFor="let item of _si_user" [value]="item.idsi_user">
+          {{item.email}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_userRewriteable' (click)="si_userAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo de Alerta</mat-label>
+      <mat-select formControlName="tipoAlertaAC" [(ngModel)]="item.tipoAlerta" required>
+        <mat-option value="ALERTA">
+          ALERTA
+        </mat-option>
+        <mat-option value="AVISO">
+          AVISO
+        </mat-option>
+        <mat-option value="CHAT">
+          CHAT
+        </mat-option>
+        <mat-option value="TRACKING">
+          TRACKING
+        </mat-option>
+        <mat-option value="OTRO">
+          OTRO
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email Remitente</mat-label>
+        <input matInput [(ngModel)]="item.emailRemitente" formControlName="emailRemitenteAC" placeholder="Email Remitente" type="text" maxlength='150' class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email Destinatario</mat-label>
+        <input matInput [(ngModel)]="item.emailDestinatario" formControlName="emailDestinatarioAC" placeholder="Email Destinatario" type="text" maxlength='150' class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mensaje</mat-label>
+        <input matInput [(ngModel)]="item.mensaje" formControlName="mensajeAC" placeholder="Mensaje" type="text" maxlength='345' class="" required>
+    </mat-form-field>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="vistaAC" [(ngModel)]="item.vista">Vista</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="leidaAC" [(ngModel)]="item.leida">Leida</mat-checkbox>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

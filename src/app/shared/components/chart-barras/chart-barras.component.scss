@@ -1,0 +1,55 @@
+@import '../../../theme/sass/conf/conf';
+
+.task-list li {
+    break-inside: avoid;
+}
+
+:host  ::ng-deep .channels-block {
+  width: 100%;
+  position: relative;
+
+  .traffic-chart {
+    width: 100%;
+    position: relative;
+    /* min-height: 300px; */
+    float: left;
+  }
+
+  .canvas-holder {
+    /* display: inline-block; */
+    width: 100%;
+    /* height: 300px; */
+    position: relative;
+    /* float: left; */
+  }
+
+  @media (max-width: $resM) {
+
+    .traffic-chart {
+      position: inherit;
+      float: none;
+      margin: 0 auto;
+    }
+    
+  }
+
+  @media (max-width: 1465px) and (min-width: 1199px) {
+
+    .traffic-chart {
+      position: inherit;
+      float: none;
+      margin: 0 auto;
+    }
+
+  }
+
+  @media (max-width: 380px) {
+
+    .canvas-holder {
+      width: 240px;
+      height: 240px;
+    }
+
+  }
+
+}

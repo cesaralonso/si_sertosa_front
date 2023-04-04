@@ -1,0 +1,38 @@
+<h1 mat-dialog-title>{{accion}} Vehículo</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Compañia</mat-label>
+      <mat-select formControlName="company_idcompanyAC" [(ngModel)]="item.company_idcompany">
+        <mat-option *ngFor="let item of _company" [value]="item.idcompany">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='companyRewriteable' (click)="companyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Modelo</mat-label>
+        <input matInput [(ngModel)]="item.model" formControlName="modelAC" placeholder="Modelo" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo</mat-label>
+        <input matInput [(ngModel)]="item.type" formControlName="typeAC" placeholder="Tipo" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Kilometraje</mat-label>
+        <input matInput [(ngModel)]="item.km" formControlName="kmAC" placeholder="Kilometraje" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Marca</mat-label>
+        <input matInput [(ngModel)]="item.trade" formControlName="tradeAC" placeholder="Marca" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Año</mat-label>
+        <input matInput [(ngModel)]="item.year" formControlName="yearAC" placeholder="Año" type="number" maxlength='4' class="" >
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

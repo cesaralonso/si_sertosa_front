@@ -1,0 +1,45 @@
+<div class='widgets'>
+  <div class='row'>
+    <div class='col'>
+        <h4>Tracking general</h4>
+    </div>
+  </div>
+  <div class='row'>
+    <div class='col'>
+                
+      <agm-map 
+        [latitude]="latitude" 
+        [longitude]="longitude" 
+        [zoom]="zoom" 
+        [disableDefaultUI]="false"
+        [zoomControl]="true"
+        [mapTypeControl]="false"
+        [fullscreenControl]="false"
+        [scrollwheel]="false"
+        [disableDoubleClickZoom]="false"
+        [maxZoom]="20"
+        [minZoom]="1"
+        >
+          <agm-marker *ngFor="let marker of markers; let i = index"
+          [latitude]="marker.lat" 
+          [longitude]="marker.lng"
+          [label]="marker.nombre"
+          [iconUrl]="marker.iconUrl"
+          (markerClick)="clickedMarker(marker, infoWindow)"
+          >
+            <agm-info-window #infoWindow [disableAutoPan]="false">
+              <pre>{{infoText}}</pre>
+            </agm-info-window>
+          </agm-marker>
+        </agm-map>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+        <button (click)='backPage()' class='btn btn-primary'><i class='fa fa-arrow-left'></i> Regresar</button>
+    </div>
+  </div>
+</div>
+
+

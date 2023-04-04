@@ -1,0 +1,222 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col mb-1">
+                    <button style="float:left" 
+                        mat-fab 
+                        class="full-width m-1" 
+                        color="primary" 
+                        *ngIf="!backpage && writeable" 
+                        (click)="addModalShow()" 
+                        matTooltip="Agrega un Nuevo Permiso">
+                        <mat-icon>add</mat-icon>
+                     </button>
+                        <button style="float:right" class="m-1"
+                        mat-mini-fab 
+                        class="full-width m-1" 
+                        color="link" 
+                        (click)="descargarCSV(data, 'Reporte Permiso', true)" 
+                        matTooltip="Descargar Reporte">
+                        <mat-icon>download</mat-icon>
+                    </button>
+                    <button 
+                        style="float:right" 
+                        class="m-1" 
+                        mat-mini-fab color="link" 
+                        aria-label="Muestra un botón para recargar datos de la tabla" 
+                        matTooltip="Recargar datos"
+                        (click)="refill()">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                    <button
+                        #filter
+                        style="float:right" 
+                        class="m-1" 
+                        mat-mini-fab [color]="filter.value ? 'warn' : 'accent'" 
+                        aria-label="Muestra un botón para filtrar por fechas de creación" 
+                        [matTooltip]="filter.value ? 'Ocultar filtro por fechas de creación' : 'Mostrar filtro por fechas de creación'"
+                        (click)="filter.value = !filter.value">
+                        <mat-icon>filter_list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <mat-card class="dashboard-card animated fadeIn" *ngIf="filter.value">
+                <mat-card-header>
+                    <mat-card-title>
+                        <h4>Filtrar por fechas de creación</h4>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field  color="accent" class="full-width" appearance="fill">
+                                <mat-label>Desde:</mat-label>
+                                <input matInput type="date" #fechaDesde/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field  color="primary" class="full-width" appearance="fill">
+                                <mat-label>Hasta:</mat-label>
+                                <input matInput type="date" #fechaHasta/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <button 
+                                mat-raised-button color="accent" class="full-width"
+                                [disabled]="!fechaDesde.value && !fechaHasta.value" 
+                                (click)="filtrarFechas(fechaDesde.value, fechaHasta.value)">
+                                Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="dashboard-card animated fadeIn with-scroll" >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h2>Información de Permiso</h2>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span  style="float:right" class=" m-1">
+                                <mat-form-field appearance="outline">
+                                    <mat-icon matPrefix> search</mat-icon>
+                                    <mat-label>Búsqueda</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Realiza una búsqueda" #input>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 card-table">
+                            <table mat-table matSort [dataSource]="data">
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                              <button mat-menu-item (click)="insertSi_rol_permiso(element)">
+                                                  <mat-icon>add</mat-icon>
+                                                  <span>Agregar Rol Permiso</span>
+                                              </button>
+                                              <button mat-menu-item (click)="viewSi_rol_permiso(element)">
+                                                  <mat-icon>view_list</mat-icon>
+                                                  <span>Ver Rol Permiso</span>
+                                              </button>
+                                            <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
+                                                <mat-icon>edit</mat-icon>
+                                                <span>Editar</span>
+                                            </button>
+                                            <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <!-- <ng-container matColumnDef="codigo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.codigo  }}
+                                    </td>
+                                </ng-container> -->
+                                <ng-container matColumnDef="nombre">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.nombre  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="si_rol_si_rol_idsi_rol">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Rol</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.si_rol_si_rol_idsi_rol}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="si_modulo_si_modulo_idsi_modulo">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Módulo</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.si_modulo_si_modulo_idsi_modulo}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="acceso">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Acceso</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.acceso ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="readable">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Lectura</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.readable ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="writeable">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Escritura</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.writeable ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="updateable">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Edición</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.updateable ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="deleteable">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Eliminación</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.deleteable ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="read_own">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Leer Propios</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.read_own ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="write_own">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Escribir Propios</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.write_own ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="update_own">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Editar Propios</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.update_own ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="delete_own">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Eliminar Propios</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.delete_own ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2" *ngIf="backpage">
+            <button mat-menu-item (click)="backPage()" color="link">
+              <mat-icon>arrow_back</mat-icon>
+              <span>Regresar</span>
+            </button>
+        </div>
+    </div>
+</div>

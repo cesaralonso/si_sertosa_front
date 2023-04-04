@@ -1,0 +1,59 @@
+<h1 mat-dialog-title>{{accion}} Usuarios de App</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="item.nombre" formControlName="nombreAC" placeholder="Nombre" type="text" maxlength='95' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Apellido paterno</mat-label>
+        <input matInput [(ngModel)]="item.apmat" formControlName="apmatAC" placeholder="Apellido paterno" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Apellido materno</mat-label>
+        <input matInput [(ngModel)]="item.appat" formControlName="appatAC" placeholder="Apellido materno" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Email para acceso</mat-label>
+        <input matInput [(ngModel)]="item.email" formControlName="emailAC" placeholder="Email para acceso" type="email" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Password</mat-label>
+        <input matInput [(ngModel)]="item.password" formControlName="passwordAC" placeholder="Si deseas modificarlo ingrésalo, si no, solo déjalo en blanco" type="text" maxlength='60' class="">
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="si_rol_idsi_rolAC" [(ngModel)]="item.si_rol_idsi_rol">
+        <mat-option *ngFor="let item of _si_rol" [value]="item.idsi_rol">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Unidad de negocio</mat-label>
+      <mat-select formControlName="companyunits_idcompanyunitsAC" [(ngModel)]="item.companyunits_idcompanyunits">
+        <mat-option *ngFor="let item of _companyunits" [value]="item.idcompanyunits">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="statusAC" [(ngModel)]="item.status" required>
+        <mat-option value="ACTIVO">
+          ACTIVO
+        </mat-option>
+        <mat-option value="PENDIENTE">
+          PENDIENTE
+        </mat-option>
+        <mat-option value="SUSPENDIDO">
+          SUSPENDIDO
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

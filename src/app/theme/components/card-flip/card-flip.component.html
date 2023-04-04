@@ -1,0 +1,23 @@
+<div class='flip-cards'>
+    <div class='card' #that (click)="clickCard(that)" >
+      <div class='card-title'>
+        <h2>
+          {{title}}
+          <ng-content select=".face"></ng-content>
+        </h2>
+        <div class='task-count'>
+          <img *ngIf="logo" [src]="logo" [alt]="title">
+        </div>
+      </div>
+      <div class='card-flap flap1'>
+        <div class='card-description'>
+            <ng-content select=".task-list"></ng-content>
+        </div>
+        <div class='card-flap flap2'>
+          <div class='card-actions'>
+            <div class='btn'>Cerrar</div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

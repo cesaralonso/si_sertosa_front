@@ -1,0 +1,55 @@
+<h1 mat-dialog-title>{{accion}} Servicio</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='145' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mensaje inicial</mat-label>
+        <input matInput [(ngModel)]="item.initialMessage" formControlName="initialMessageAC" placeholder="Mensaje inicial" type="text"  class="" >
+    </mat-form-field>
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mensaje final</mat-label>
+        <input matInput [(ngModel)]="item.finalMessage" formControlName="finalMessageAC" placeholder="Mensaje final" type="text"  class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mensaje email</mat-label>
+        <input matInput [(ngModel)]="item.emailMessage" formControlName="emailMessageAC" placeholder="Mensaje email" type="text"  class="" >
+    </mat-form-field>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="downloableAC" [(ngModel)]="item.downloable">Descargable</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="showEmployeeAC" [(ngModel)]="item.showEmployee">Muestra empleado</mat-checkbox>
+    </div> -->
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Target</mat-label>
+      <mat-select formControlName="targetAC" [(ngModel)]="item.target" >
+        <mat-option value="companygroup">
+          companygroup
+        </mat-option>
+        <mat-option value="company">
+          company
+        </mat-option>
+        <mat-option value="companyunits">
+          companyunits
+        </mat-option>
+        <mat-option value="usergroup">
+          usergroup
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tiempo para contestar</mat-label>
+        <input matInput [(ngModel)]="item.time" formControlName="timeAC" placeholder="Tiempo para contestar" type="number" maxlength='11' class="" >
+    </mat-form-field> -->
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="saveAsTemplateAC" [(ngModel)]="item.saveAsTemplate">Elegible como plantilla</mat-checkbox>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

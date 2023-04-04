@@ -1,0 +1,83 @@
+  {
+    "register": {
+      "title": "Regístrate",
+      "signin_link": "¿Ya tienes una cuenta? ¡Solo accesa!",
+      "email": "Email",
+      "password": "Password",
+      "sign_up": "Registrate",
+      "repeat": "Repite tu password",
+      "name": "Nombre",
+      "no_match": "Passwords no coinciden"
+    },
+    "login": {
+      "title": "Accesa",
+      "signup_link": "Registrate si eres nuevo!",
+      "usuario": "Usuario",
+      "clave": "Clave",
+      "sign_in": "Accesar",
+      "forgot_password": "¿Olvidaste tu password?",
+      "remember_session": "Recordar sesión"
+    },
+    "forgot": {
+      "title": "Recordar contraseña",
+      "email": "Email",
+      "forgot": "Enviar email",
+      "signin_link": "Accesa"
+    },
+    "change-password": {
+      "title": "Cambia tu contraseña",
+      "change-password": "Cambiar",
+      "old": "Contraseña anterior",
+      "new": "Nueva contraseña",
+      "repeat": "Repite tu password",
+      "no_match": "Passwords no coinciden"
+    },
+    "general": {
+      "home": "Home",
+      "menu": {
+        "companys": "Empresa",
+        "companygroups": "Empresa grupo",
+        "companyunitss": "Unidad de negocio",
+        "employees": "Empleado",
+        "familys": "Familia de producto",
+        "orderins": "Orden de entrada",
+        "orderouts": "Orden de salida",
+        "products": "Refacción",
+        "projects": "Reparaciones",
+        "project_services": "Orden servicio",
+        "providers": "Proveedor",
+        "services": "Servicio",
+        "service_employees": "Trabajando",
+        "si_alertas": "Alerta",
+        "si_devices": "Device",
+        "si_logs": "Logs",
+        "si_modulos": "Módulo",
+        "si_permisos": "Permiso",
+        "si_rols": "Roles",
+        "si_rol_permisos": "Rol Permiso",
+        "si_sesions": "Registro de accesos a la app",
+        "si_sesionestados": "Sesión Usuario Estado",
+        "si_users": "Usuarios de App",
+        "si_user_rols": "Usuario Rol",
+        "solicitudeproviders": "Solicitud a proveedor",
+        "solicitudeprovider_products": "Solicitud proveedor producto",
+        "solicitudewarehouses": "Solicitud de almacen",
+        "solicitudewarehouse_products": "Solicitud almacen producto",
+        "validations": "Servicio validado",
+        "vehicles": "Vehículo",
+        "warehouses": "Almacen",
+        "dashboard": "Dashboard",
+        "pages": "Pages",
+        "login": "Login",
+        "register": "Register",
+        "external_link": "External Link"
+        },
+        "created_with": "Software Insights"
+      },
+      "dashboard": {
+      },
+      "tree_view": {
+      },
+      "chart": {
+      }
+    }

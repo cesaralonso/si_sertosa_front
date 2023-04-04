@@ -1,0 +1,60 @@
+<h1 mat-dialog-title>{{accion}} Trabajando</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Estatus</mat-label>
+      <mat-select formControlName="statusAC" [(ngModel)]="item.status" required>
+        <mat-option value="SIN INICIAR">
+          SIN INICIAR
+        </mat-option>
+        <mat-option value="INICIADA">
+          INICIADA
+        </mat-option>
+        <mat-option value="COMPLETADA">
+          COMPLETADA
+        </mat-option>
+        <mat-option value="TIEMPO AGOTADO">
+          TIEMPO AGOTADO
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Empleado</mat-label>
+      <mat-select formControlName="employee_idemployeeAC" [(ngModel)]="item.employee_idemployee">
+        <mat-option *ngFor="let item of _employee" [value]="item.idemployee">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='employeeRewriteable' (click)="employeeAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Orden de reparación</mat-label>
+      <mat-select formControlName="project_service_idproject_serviceAC" [(ngModel)]="item.project_service_idproject_service">
+        <mat-option *ngFor="let item of _project_service" [value]="item.idproject_service">
+          {{item.idproject_service}} - {{item.project_project_idproject}} {{item.service_service_idservice}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='project_serviceRewriteable' (click)="project_serviceAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Resultado final</mat-label>
+        <input matInput [(ngModel)]="item.ponderationFinal" formControlName="ponderationFinalAC" placeholder="Resultado final" type="number"  class="" required>
+    </mat-form-field> -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Observaciones</mat-label>
+        <input matInput [(ngModel)]="item.observations" formControlName="observationsAC" placeholder="Observaciones" type="text" maxlength='145' class="" >
+    </mat-form-field>
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Url Pdf</mat-label>
+        <input matInput [(ngModel)]="item.url" formControlName="urlAC" placeholder="Url Pdf" type="text" maxlength='300' class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tiempo en contestar encuesta</mat-label>
+        <input matInput [(ngModel)]="item.time" formControlName="timeAC" placeholder="Tiempo en comtestar encuesta" type="text"  class="" >
+    </mat-form-field> -->
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

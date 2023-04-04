@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{accion}} Reparaciones</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Unidad de negocio</mat-label>
+      <mat-select formControlName="companyunits_idcompanyunitsAC" [(ngModel)]="item.companyunits_idcompanyunits">
+        <mat-option *ngFor="let item of _companyunits" [value]="item.idcompanyunits">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='companyunitsRewriteable' (click)="companyunitsAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Vehículo</mat-label>
+      <mat-select formControlName="vehicle_idvehicleAC" [(ngModel)]="item.vehicle_idvehicle">
+        <mat-option *ngFor="let item of _vehicle" [value]="item.idvehicle">
+          {{item.idvehicle}} {{item.company_company_idcompany}} - {{item.type}} {{item.model}} {{item.year}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='vehicleRewriteable' (click)="vehicleAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

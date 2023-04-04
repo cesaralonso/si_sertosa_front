@@ -1,0 +1,154 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col">
+            <div class="row">
+                <div class="col mb-1">
+                    <button style="float:left" 
+                        mat-fab 
+                        class="full-width m-1" 
+                        color="primary" 
+                        *ngIf="!backpage && writeable" 
+                        (click)="addModalShow()" 
+                        matTooltip="Agrega un Nuevo Orden de salida">
+                        <mat-icon>add</mat-icon>
+                     </button>
+                        <button style="float:right" class="m-1"
+                        mat-mini-fab 
+                        class="full-width m-1" 
+                        color="link" 
+                        (click)="descargarCSV(data, 'Reporte Orden de salida', true)" 
+                        matTooltip="Descargar Reporte">
+                        <mat-icon>download</mat-icon>
+                    </button>
+                    <button 
+                        style="float:right" 
+                        class="m-1" 
+                        mat-mini-fab color="link" 
+                        aria-label="Muestra un botón para recargar datos de la tabla" 
+                        matTooltip="Recargar datos"
+                        (click)="refill()">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
+                    <button
+                        #filter
+                        style="float:right" 
+                        class="m-1" 
+                        mat-mini-fab [color]="filter.value ? 'warn' : 'accent'" 
+                        aria-label="Muestra un botón para filtrar por fechas de creación" 
+                        [matTooltip]="filter.value ? 'Ocultar filtro por fechas de creación' : 'Mostrar filtro por fechas de creación'"
+                        (click)="filter.value = !filter.value">
+                        <mat-icon>filter_list</mat-icon>
+                    </button>
+                </div>
+            </div>
+            <mat-card class="dashboard-card animated fadeIn" *ngIf="filter.value">
+                <mat-card-header>
+                    <mat-card-title>
+                        <h4>Filtrar por fechas de creación</h4>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <mat-form-field  color="accent" class="full-width" appearance="fill">
+                                <mat-label>Desde:</mat-label>
+                                <input matInput type="date" #fechaDesde/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <mat-form-field  color="primary" class="full-width" appearance="fill">
+                                <mat-label>Hasta:</mat-label>
+                                <input matInput type="date" #fechaHasta/>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-md-4">
+                            <button 
+                                mat-raised-button color="accent" class="full-width"
+                                [disabled]="!fechaDesde.value && !fechaHasta.value" 
+                                (click)="filtrarFechas(fechaDesde.value, fechaHasta.value)">
+                                Filtrar
+                            </button>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="dashboard-card animated fadeIn with-scroll" >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h2>Información de Orden de salida</h2>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span  style="float:right" class=" m-1">
+                                <mat-form-field appearance="outline">
+                                    <mat-icon matPrefix> search</mat-icon>
+                                    <mat-label>Búsqueda</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Realiza una búsqueda" #input>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 card-table">
+                            <table mat-table matSort [dataSource]="data">
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
+                                                <mat-icon>edit</mat-icon>
+                                                <span>Editar</span>
+                                            </button>
+                                            <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="warehouse_warehouse_idwarehouse">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Almacen</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.warehouse_warehouse_idwarehouse}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="product_product_idproduct">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.product_product_idproduct}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="quantity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.quantity  }}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-2" *ngIf="backpage">
+            <button mat-menu-item (click)="backPage()" color="link">
+              <mat-icon>arrow_back</mat-icon>
+              <span>Regresar</span>
+            </button>
+        </div>
+    </div>
+</div>

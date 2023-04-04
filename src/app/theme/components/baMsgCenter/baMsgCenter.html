@@ -1,0 +1,27 @@
+<ul class="al-msg-center clearfix" *ngIf="user.super">
+  <li class="dropdown">
+     <a href class="dropdown-toggle" id="msg-dd1" data-toggle="dropdown" aria-expanded="false">
+       <i class="fa fa-bell-o"></i><span id="totalNoLeidas">{{ totalNoLeidas }}</span>
+       <div class="notification-ring"></div>
+     </a>
+     <div class="top-dropdown-menu dropdown-menu" aria-labelledby="msg-dd1" *ngIf="messages.length">
+       <i class="dropdown-arr"></i>
+       <div class="header clearfix">
+         <strong>Notificaciones</strong>
+         <a ng-href="" (click)="marcarComoLeidas()">Marcar todas como leidas</a>
+       </div>
+       <div class="msg-list" id="alertas">
+         <a *ngFor="let message of messages" class="clearfix"><!-- [routerLink]="['/pages/modulo/', message.insertId]"   -->
+           <div class="img-area">
+             {{ message.remitente }}
+           </div>
+           <div class="msg-area">
+             <div class="text-success">{{ message.mensaje }}</div>
+             <span>{{ message.date }} {{ message.hour }}</span>
+           </div>
+         </a>
+       </div>
+     </div>
+   </li>
+ </ul>
+ 

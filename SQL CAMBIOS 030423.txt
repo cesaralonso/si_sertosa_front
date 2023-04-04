@@ -1,0 +1,11 @@
+020423
+
+ALTER TABLE `project_service` CHANGE `idproject_service` `idproject_service` INT(10) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '0|';
+
+modifiqué tabla si_modulo
+
+ALTER TABLE `si_modulo` CHANGE `nombre` `nombre` VARCHAR(55) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL COMMENT '1|Nombre';
+
+
+UPDATE `si_modulo` SET `nombre` = 'solicitudeprovider_product' WHERE `si_modulo`.`idsi_modulo` = 26
+UPDATE `si_modulo` SET `nombre` = 'solicitudewarehouse_product' WHERE `si_modulo`.`idsi_modulo` = 28

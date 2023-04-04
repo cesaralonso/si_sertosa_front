@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{accion}} Rol Permiso</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Código</mat-label>
+        <input matInput [(ngModel)]="item.codigo" formControlName="codigoAC" placeholder="Código" type="text" maxlength='15' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="si_rol_idsi_rolAC" [(ngModel)]="item.si_rol_idsi_rol">
+        <mat-option *ngFor="let item of _si_rol" [value]="item.idsi_rol">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_rolRewriteable' (click)="si_rolAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Permiso</mat-label>
+      <mat-select formControlName="si_permiso_idsi_permisoAC" [(ngModel)]="item.si_permiso_idsi_permiso">
+        <mat-option *ngFor="let item of _si_permiso" [value]="item.idsi_permiso">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_permisoRewriteable' (click)="si_permisoAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

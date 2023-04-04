@@ -1,0 +1,31 @@
+<h1 mat-dialog-title>{{accion}} Solicitud proveedor producto</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Solicitud</mat-label>
+      <mat-select formControlName="solicitudeprovider_idsolicitudeproviderAC" [(ngModel)]="item.solicitudeprovider_idsolicitudeprovider">
+        <mat-option *ngFor="let item of _solicitudeprovider" [value]="item.idsolicitudeprovider">
+          {{item.idsolicitudeprovider}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='solicitudeproviderRewriteable' (click)="solicitudeproviderAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Producto</mat-label>
+      <mat-select formControlName="product_idproductAC" [(ngModel)]="item.product_idproduct">
+        <mat-option *ngFor="let item of _product" [value]="item.idproduct">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='productRewriteable' (click)="productAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Cantidad</mat-label>
+        <input matInput [(ngModel)]="item.quantity" formControlName="quantityAC" placeholder="Cantidad" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

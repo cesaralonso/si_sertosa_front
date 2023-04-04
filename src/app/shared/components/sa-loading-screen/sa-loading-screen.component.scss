@@ -1,0 +1,223 @@
+@import '../../../theme/sass/conf/conf.scss';   
+@-webkit-keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
+  }
+  100% {
+    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
+  }
+}
+
+@-moz-keyframes spin {
+  0% {
+    -moz-transform: rotate(0deg); /* Firefox 16+*/
+  }
+  100% {
+    -moz-transform: rotate(360deg); /* Firefox 16+*/
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg); /* Firefox 16+, IE 10+, Opera */
+  }
+  100% {
+    transform: rotate(360deg); /* Firefox 16+, IE 10+, Opera */
+  }
+}
+
+#preloaderSpin {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: transparent;
+  & > div {
+    display: block;
+    position: relative;
+    left: 50%;
+    top: 50%;
+    width: 150px;
+    height: 150px;
+    margin: -75px 0 0 -75px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: $danger;
+    transform: translate3d(0, 0, 0);
+    animation: spin 2s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    &:before {
+      content: "";
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      right: 5px;
+      bottom: 5px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: $primary;
+      -webkit-animation: spin 3s linear infinite; /* Chrome, Opera 15+, Safari 5+ */
+      animation: spin 3s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      right: 15px;
+      bottom: 15px;
+      border-radius: 50%;
+      border: 3px solid transparent;
+      border-top-color: $warning;
+      animation: spin 1.5s linear infinite; /* Chrome, Firefox 16+, IE 10+, Opera */
+    }
+  }
+}
+
+
+/*.container {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 9999;
+  }
+
+.loader {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    border-radius: 50%;
+    background: linear-gradient(#f07e6e, #84cdfa, #5ad1cd);
+    animation: animate 1.2s linear infinite;
+}
+
+@keyframes animate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loader span {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: linear-gradient(#f07e6e, #84cdfa, #5ad1cd);
+}
+
+.loader span:nth-child(1) {
+    filter: blur(5px);
+}
+
+.loader span:nth-child(2) {
+    filter: blur(10px);
+}
+
+.loader span:nth-child(3) {
+    filter: blur(25px);
+}
+
+.loader span:nth-child(4) {
+    filter: blur(50px);
+}
+
+.loader:after {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    background: #f1f1f1;
+    border: solid white 10px;
+    border-radius: 50%;
+}*/
+
+
+/*@import '../../../theme/sass/conf/_variables.scss';   
+.container {
+    position: fixed;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 9999;
+  }
+  
+  .item {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+  }
+
+  .item-1 {
+    background-color: $twitter-color;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    animation: item-1_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+  }
+  
+  .item-2 {
+    background-color: $google-color;
+    top: 0;
+    right: 0;
+    animation: item-2_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+  }
+  
+  .item-3 {
+    background-color: $github-color;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    animation: item-3_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+  }
+  
+  .item-4 {
+    background-color: $facebook-color;
+    bottom: 0;
+    left: 0;
+    animation: item-4_move 1.8s cubic-bezier(.6,.01,.4,1) infinite;
+  }
+  
+  @keyframes item-1_move {
+    0%, 100% {transform: translate(0, 0)} 
+    25% {transform: translate(0, 100px)} 
+    50% {transform: translate(100px, 100px)} 
+    75% {transform: translate(100px, 0)} 
+  }
+  
+  @keyframes item-2_move {
+    0%, 100% {transform: translate(0, 0)} 
+    25% {transform: translate(-100px, 0)} 
+    50% {transform: translate(-100px, 100px)} 
+    75% {transform: translate(0, 100px)} 
+  }
+  
+  @keyframes item-3_move {
+    0%, 100% {transform: translate(0, 0)} 
+    25% {transform: translate(0, -100px)} 
+    50% {transform: translate(-100px, -100px)} 
+    75% {transform: translate(-100px, 0)} 
+  }
+  
+  @keyframes item-4_move {
+    0%, 100% {transform: translate(0, 0)} 
+    25% {transform: translate(100px, 0)} 
+    50% {transform: translate(100px, -100px)} 
+    75% {transform: translate(0, -100px)} 
+  }
+
+ */

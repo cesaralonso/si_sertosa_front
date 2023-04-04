@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>{{accion}} Logs</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Módulo</mat-label>
+      <mat-select formControlName="si_modulo_idsi_moduloAC" [(ngModel)]="item.si_modulo_idsi_modulo">
+        <mat-option *ngFor="let item of _si_modulo" [value]="item.idsi_modulo">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_moduloRewriteable' (click)="si_moduloAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Acción</mat-label>
+        <input matInput [(ngModel)]="item.accion" formControlName="accionAC" placeholder="Acción" type="text" maxlength='150' class="" required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

@@ -1,0 +1,62 @@
+<h1 mat-dialog-title>{{accion}} Permiso</h1>
+<div mat-dialog-content>
+  <form [formGroup]="form">
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Código</mat-label>
+        <input matInput [(ngModel)]="item.codigo" formControlName="codigoAC" placeholder="Código" type="text" maxlength='15' class="" >
+    </mat-form-field> -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Nombre</mat-label>
+        <input matInput [(ngModel)]="item.nombre" formControlName="nombreAC" placeholder="Nombre" type="text" maxlength='45' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Rol</mat-label>
+      <mat-select formControlName="si_rol_idsi_rolAC" [(ngModel)]="item.si_rol_idsi_rol">
+        <mat-option *ngFor="let item of _si_rol" [value]="item.idsi_rol">
+          {{item.nombre}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_rolRewriteable' (click)="si_rolAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Módulo</mat-label>
+      <mat-select formControlName="si_modulo_idsi_moduloAC" [(ngModel)]="item.si_modulo_idsi_modulo">
+        <mat-option *ngFor="let item of _si_modulo" [value]="item.idsi_modulo">
+          {{(item.codigo) ? item.codigo : item.nombre}}
+        </mat-option>
+      </mat-select>
+      <button mat-flat-button *ngIf='si_moduloRewriteable' (click)="si_moduloAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+    </mat-form-field>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="accesoAC" [(ngModel)]="item.acceso">Acceso</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="readableAC" [(ngModel)]="item.readable">Lectura</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="writeableAC" [(ngModel)]="item.writeable">Escritura</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="updateableAC" [(ngModel)]="item.updateable">Edición</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="deleteableAC" [(ngModel)]="item.deleteable">Eliminación</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="read_ownAC" [(ngModel)]="item.read_own">Leer Propios</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="write_ownAC" [(ngModel)]="item.write_own">Escribir Propios</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="update_ownAC" [(ngModel)]="item.update_own">Editar Propios</mat-checkbox>
+    </div>
+    <div class="mat-form-field mb-4 mt-2 full-width">
+        <mat-checkbox formControlName="delete_ownAC" [(ngModel)]="item.delete_own">Eliminar Propios</mat-checkbox>
+    </div>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">Aceptar</button>
+</div>

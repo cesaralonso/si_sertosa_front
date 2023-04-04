@@ -1,0 +1,33 @@
+<div class="auth-main">
+  <div class="auth-block">
+    <div class="text-center mt-5 mb-2">
+      <picture>
+        <source media="min-width: 320px" srcset="./assets/img/logo.png"><img src="./assets/img/logo.png" alt="SERTOSA" width="320">
+
+      </picture>
+    </div>
+    <!-- <h4 class="text-center mb-3">S.A. de C.V.</h4> -->
+
+    <h1 translate>{{'login.title'}}</h1>
+    <form [formGroup]="form" (ngSubmit)="onSubmit(form.value)" class="form-horizontal">
+      <div class="form-group row" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
+        <label for="email" class="col-sm-3 control-label" translate>{{'login.usuario'}}</label>
+        <div class="col-sm-9">
+          <input [formControl]="email" type="email" class="form-control" id="email" autofocus value="">
+        </div>
+      </div>
+      <div class="form-group row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+        <label for="password" class="col-sm-3 control-label" translate>{{'login.clave'}}</label>
+        <div class="col-sm-9">
+          <input [formControl]="password" type="password" class="form-control" id="password">
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="offset-sm-3 col-sm-9">
+          <button [disabled]="!form.valid" type="submit" class="btn btn-default btn-auth" translate>{{'login.sign_in'}}</button>
+          <!-- <a routerLink="/forgot" class="forgot-pass" translate>{{'login.forgot_password'}}</a> -->
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

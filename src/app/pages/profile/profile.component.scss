@@ -1,0 +1,46 @@
+
+// Task List
+.task-list {
+	padding: 0 !important;
+}
+.task-list li {
+  padding: 15px 0;
+  padding-left: 10px;
+  margin: 3px 0;
+	list-style-type: none;
+  border-bottom: 1px solid #e9ebed;
+  border-left: 3px solid #f36525;
+  transition: all .2s ease;
+}
+.task-list li.blue {
+  border-left: 3px solid #5216f8;
+}
+.task-list li.gray {
+  border-left: 3px solid #e9ebed;
+}
+.task-list li.white {
+  border-left: 3px solid transparent;
+}
+.task-list li.edit {
+  border-left: 3px solid #0c7dff;
+}
+.task-list li.danger {
+  border-left: 3px solid #dd0a14;
+}
+.task-list li.green {
+  border-left: 3px solid #14a56d;
+}
+.task-list li:hover {
+  background: #ecf0f1;
+  transition: all .2s ease;
+  cursor: pointer;
+}
+.task-list li.white:hover {
+  background: none;
+  transition: none;
+}
+.task-list li span {
+  float: right;
+  color: #f36525;
+  margin-right: 5px;
+}

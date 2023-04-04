@@ -1,0 +1,31 @@
+<div class="page-top clearfix" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
+     [ngClass]="{scrolled: isScrolled}">
+  <!-- <a routerLink="/pages/dashboard" class="al-logo clearfix"><span>SERTOSA</span></a> -->
+  <a routerLink="/pages/dashboard" class="al-logo clearfix">
+    <picture>
+      <source media="min-height: 54px" srcset="./assets/img/logo.png">
+      <img src="./assets/img/logo.png" alt="Sertosa Logo" style="max-width: 110px; max-height: 54px;">
+    </picture>
+  </a>
+  <a href (click)="toggleMenu()" class="collapse-menu-link ion-navicon"></a>
+
+
+  <div class="user-profile clearfix">
+    <div class="dropdown al-user-profile">
+      <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="./assets/img/theme/no-photo.png">
+      </a>
+      <ul class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+        <li class="text-info text-center">
+          <small>
+            {{user.email}}
+          </small>
+        </li>
+        <li *ngIf="!isAuth" class="dropdown-item"><a routerLink="/login"><i class="fa fa-user"></i>Accesa</a></li>
+        <li *ngIf="isAuth && changepasswordAcceso" class="dropdown-item"><a routerLink="/change-password"><i class="fa fa-cog"></i>Contraseña</a></li>
+        <li *ngIf="isAuth" class="dropdown-item"><a href="#" (click)="logout()" class="signout"><i class="fa fa-power-off"></i>Cerrar sesión</a></li>
+      </ul>
+    </div>
+    <ba-msg-center></ba-msg-center>
+  </div>
+</div>
