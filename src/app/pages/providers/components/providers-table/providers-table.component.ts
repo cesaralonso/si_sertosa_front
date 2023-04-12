@@ -39,16 +39,7 @@ export class ProvidersTableComponent implements OnInit {
     updateable: boolean = false;
     deleteable: boolean = false;
     writeable: boolean = false;
-    displayedColumnsInventario: string[] = [
-      'actions',
-      'logo',
-      'name',
-      'skus',
-     // 'Cantidad',
-     // 'Unidad de compra'
 
-
-    ];
     displayedColumns: string[] = [
       'actions',
       'logo',
