@@ -34,12 +34,14 @@ export class SolicitudeprovidersTableComponent implements OnInit {
       'actions',
       'provider_provider_idprovider',
       'project_service_project_service_idproject_service',
+      'warehouse_warehouse_idwarehouse',
       'status',
     ];
     displayedLabels: string[] = [
       '',
       'Proveedor',
       'Reparación',
+      'Almacen',
       'Status',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;

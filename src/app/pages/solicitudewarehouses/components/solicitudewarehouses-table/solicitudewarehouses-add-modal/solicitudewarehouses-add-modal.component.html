@@ -5,7 +5,7 @@
       <mat-label>Reparación</mat-label>
       <mat-select formControlName="project_service_idproject_serviceAC" [(ngModel)]="item.project_service_idproject_service">
         <mat-option *ngFor="let item of _project_service" [value]="item.idproject_service">
-          {{item.idproject_service}}
+          {{item.idproject_service}} - {{item.project_project_idproject}} - {{item.service_service_idservice}}
         </mat-option>
       </mat-select>
       <button mat-flat-button *ngIf='project_serviceRewriteable' (click)="project_serviceAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
@@ -30,6 +30,12 @@
         </mat-option>
         <mat-option value="CANCELADA">
           CANCELADA
+        </mat-option>
+        <mat-option value="NUEVA">
+          NUEVA
+        </mat-option>
+        <mat-option value="EN REVISIÓN">
+          EN REVISIÓN
         </mat-option>
       </mat-select>
     </mat-form-field>

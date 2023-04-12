@@ -63,6 +63,7 @@ export class EmployeesTableComponent implements OnInit {
 
       // Buscar permisos del usuario en el módulo
       this.user = this.authService.useJwtHelper();
+      console.log('user', this.user);
       
       if (this.user.super) {
         this.updateable = true;

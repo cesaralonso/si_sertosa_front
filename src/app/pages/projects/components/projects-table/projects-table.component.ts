@@ -16,6 +16,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { ServicesInterface } from 'app/pages/services/components/services-table/services.interface';
+import { ServicesAddModalComponent } from 'app/pages/services/components/services-table/services-add-modal/services-add-modal.component';
 
 @Component({
 selector: 'projects-table',
@@ -32,15 +34,19 @@ export class ProjectsTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'created_at',
       'name',
       'companyunits_companyunits_idcompanyunits',
       'vehicle_vehicle_idvehicle',
+      'status',
     ];
     displayedLabels: string[] = [
       '',
+      'Fecha',
       'Nombre',
       'Unidad de negocio',
       'Vehículo',
+      'Status',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -100,6 +106,30 @@ export class ProjectsTableComponent implements OnInit {
         }
       });
     }
+
+    viewProject(projects: ProjectsInterface) {
+      this.router.navigate([`/pages/projects/${projects.idproject}`]);
+    }
+
+    insertService(project: ProjectsInterface) {
+      const service: ServicesInterface = {
+        project_idproject: project.idproject
+      }
+      const dialogRef = this.dialog.open(ServicesAddModalComponent, {
+              width: '1000px',
+              data: service,
+          });
+          dialogRef.afterClosed()
+              .pipe(take(1))
+              .subscribe(data => {
+                  if (data) {
+                      this.showToast(data);
+                  }
+              }),
+              error => console.log(error),
+              () => console.log('Action completed');
+    }
+
     private findByIdCompanyunits(id: number): void {
       this.service
         .findByIdCompanyunits(id)

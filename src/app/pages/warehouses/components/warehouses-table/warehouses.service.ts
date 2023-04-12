@@ -26,6 +26,12 @@ export class WarehousesService {
             })};
         this.endPoint = `${this._configuration.apiUrl}warehouse`;
        }
+       /* findInventaryByIdWarehouse = ( id ) : Observable<WarehousesResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/${id}/inventary`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       } */
        findByIdCompany = ( id ) : Observable<WarehousesResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/company/${id}`, this.options)
                .pipe(

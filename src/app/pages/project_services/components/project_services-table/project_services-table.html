@@ -108,22 +108,26 @@
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Trabajando</span>
                                               </button>
-                                              <button mat-menu-item (click)="insertSolicitudeprovider(element)">
+                                              <!-- 
+                                                Se quitó la relación con orden servicio a solicitud de proveedor
+                                                <button mat-menu-item (click)="insertSolicitudeprovider(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Solicitud a proveedor</span>
                                               </button>
                                               <button mat-menu-item (click)="viewSolicitudeprovider(element)">
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Solicitud a proveedor</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertSolicitudewarehouse(element)">
+                                              </button> -->
+                                              <!-- 
+                                                Se dejó solo agregar dentro de la vista de reparación para no causar confusión¿
+                                                <button mat-menu-item (click)="insertSolicitudewarehouse(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Solicitud de almacen</span>
                                               </button>
                                               <button mat-menu-item (click)="viewSolicitudewarehouse(element)">
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Solicitud de almacen</span>
-                                              </button>
+                                              </button> -->
                                             <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
                                                 <mat-icon>edit</mat-icon>
                                                 <span>Editar</span>

@@ -33,12 +33,14 @@ export class OrderoutsTableComponent implements OnInit {
       'warehouse_warehouse_idwarehouse',
       'product_product_idproduct',
       'quantity',
+      'motive'
     ];
     displayedLabels: string[] = [
       '',
       'Almacen',
       'Producto',
       'Cantidad',
+      'Motivo'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

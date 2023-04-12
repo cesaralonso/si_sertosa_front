@@ -26,6 +26,12 @@ export class VehiclesService {
             })};
         this.endPoint = `${this._configuration.apiUrl}vehicle`;
        }
+       findByIdProject = ( id ) : Observable<VehiclesResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/project/${id}`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       }
        findByIdCompany = ( id ) : Observable<VehiclesResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/company/${id}`, this.options)
                .pipe(

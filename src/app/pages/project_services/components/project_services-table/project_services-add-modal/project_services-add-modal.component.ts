@@ -12,7 +12,7 @@ import { ProjectsService } from './../../../../projects/components/projects-tabl
 import { ProjectsAddModalComponent } from './../../../../projects/components/projects-table/projects-add-modal/projects-add-modal.component';
 import { ProjectsInterface } from './../../../../projects/components/projects-table/projects.interface';
 import { ServicesService } from './../../../../services/components/services-table/services.service';
-import { ServicesAddModalComponent } from './../../../../services/components/services-table/services-add-modal/services-add-modal.component';
+import { ServicesAddModalComponent } from '../../../../services/components/services-table/services-add-modal/services-add-modal.component';
 import { ServicesInterface } from './../../../../services/components/services-table/services.interface';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 

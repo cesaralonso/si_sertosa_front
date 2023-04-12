@@ -32,21 +32,25 @@ export class VehiclesTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'number',
       'company_company_idcompany',
       'model',
       'type',
       'km',
       'trade',
       'year',
+      'countReparaciones'
     ];
     displayedLabels: string[] = [
       '',
+      'Número',
       'Compañia',
       'Modelo',
       'Tipo',
       'Kilometraje',
       'Marca',
       'Año',
+      'Reparaciones'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

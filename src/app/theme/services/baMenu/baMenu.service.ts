@@ -1,3 +1,4 @@
+import { StateService } from './../../../shared/services/state.service';
 import { AuthService } from './../../../shared/services/auth.service';
 import { Injectable } from '@angular/core';
 import { Router, Routes } from '@angular/router';
@@ -10,15 +11,16 @@ export class BaMenuService {
   menuItems = new BehaviorSubject<any[]>([]);
   // Obtiene módulos de usuario
   _menuItems: any[];
+  userModules: any[];
+  user: any;
 
   protected _currentMenuItem = {};
 
   constructor(
     private _router: Router,
     private authService: AuthService,
+    private stateService: StateService
     ) { 
-      // Obtiene módulos de usuario
-      this._menuItems = this.authService.getUserModules();
     }
 
   /**
@@ -26,7 +28,9 @@ export class BaMenuService {
    *
    * @param {Routes} routes Type compatible with app.menu.ts
    */
-  updateMenuByRoutes(routes: Routes) {
+  updateMenuByRoutes(routes: Routes, user: any, userModules: any[]) {
+    this.userModules = userModules;
+    this.user = user;
     let convertedRoutes = this.convertRoutesToMenus(_.cloneDeep(routes));
     this.menuItems.next(convertedRoutes);
   }
@@ -45,10 +49,10 @@ export class BaMenuService {
     
     // Obtiene módulos con acceso
     let auth_items = [];
-    this._menuItems.forEach((item) => {
+    this.userModules.forEach((item) => {
       const nombre = `${item.nombre}s`;
       
-      // IMPLEMENTADO 29/03/2018
+      // IMPLEMENTADO
       if (item.acceso) {
         auth_items.push(nombre);
       }
@@ -64,8 +68,13 @@ export class BaMenuService {
       }
 
       // Si item path está dentro de módulos permitidos
-      if (auth_items.indexOf(item.route.path) > -1 || item.route.path === 'dashboard') {
+      // if (auth_items.indexOf(item.route.path) > -1 || item.route.path === 'dashboard') {
+      if (auth_items.indexOf(item.route.path) > -1) {
         items.push(item);
+      } else {
+        if (item.route.path === 'dashboard'|| item.route.path === '') {
+          items.push(item);
+        }
       }
 
     });

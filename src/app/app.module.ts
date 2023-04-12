@@ -62,6 +62,7 @@ import { StateService } from './shared/services/state.service';
 import { environment } from '../environments/environment';
 import { MaterialModule } from './shared/material.module';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
+import { Service_productsAddModalComponent } from './pages/service_products/components/service_products-table/service_products-add-modal/service_products-add-modal.component';
 
 
 // Application wide providers
@@ -115,6 +116,7 @@ declarations: [
     ValidationsAddModalComponent,
     VehiclesAddModalComponent,
     WarehousesAddModalComponent,
+    Service_productsAddModalComponent,
     SaLoadingScreenComponent
 ],
 imports: [ // import Angular's modules

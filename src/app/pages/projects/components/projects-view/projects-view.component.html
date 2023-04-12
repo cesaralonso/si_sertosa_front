@@ -1,0 +1,362 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col">
+            
+            <h1 class="mat-h1">Orden de Reparación: {{idproject}}</h1>
+            <div class="row">
+                <div class="col mb-1">
+                    <!-- <button style="float:left" 
+                        mat-fab 
+                        class="full-width m-1" 
+                        color="primary" 
+                        *ngIf="!backpage && writeable" 
+                        (click)="addModalShow()" 
+                        matTooltip="Agrega un Nueva Reparación">
+                        <mat-icon>add</mat-icon>
+                     </button> -->
+                    
+                </div>
+            </div>
+            <!-- VEHÍCULO -->
+            <mat-card class="dashboard-card animated fadeIn with-scroll" >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h2 class="mat-h2">Información de Vehículo</h2>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+
+                    <form [formGroup]="formVehicle" *ngIf="_vehicle">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>ID</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.idvehicle" formControlName="idvehicleAC" placeholder="Número de camión" type="text" maxlength='45' class="" readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Tipo</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.type" formControlName="typeAC" placeholder="Tipo" type="text" maxlength='45' class="" readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Marca</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.trade" formControlName="tradeAC" placeholder="Marca" type="text" maxlength='45' class="" readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Modelo</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.model" formControlName="modelAC" placeholder="Modelo" type="text" maxlength='45' class="" readonly>
+                                </mat-form-field>
+                                
+                                </div>
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Año</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.year" formControlName="yearAC" placeholder="Año" type="number" maxlength='4' class=""  readonly>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Kilometraje</mat-label>
+                                    <input matInput [(ngModel)]="_vehicle.km" formControlName="kmAC" placeholder="Kilometraje" type="number" maxlength='11' class="" readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        
+                    </form>
+
+                </mat-card-content>
+            </mat-card>
+
+
+            <!-- REPARACIÓN -->
+            <mat-card class="dashboard-card animated fadeIn with-scroll" >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h2 class="mat-h2">Información de Reparación</h2>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+
+                    <form *ngIf="_project">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Reparación</mat-label>
+                                    <input matInput [(ngModel)]="_project.name" [ngModelOptions]="{standalone: true}" placeholder="Reparación" type="text" maxlength='45' class="" readonly>
+                                </mat-form-field>
+                            </div>
+                        </div>
+
+                        <!-- Nueva orden servicio -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Servicio</mat-label>
+                                    <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="_service.idservice">
+                                        <mat-option *ngFor="let item of _services" [value]="item.idservice">
+                                          {{item.idservice}} - {{item.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+
+                                <button [disabled]="!_service.idservice" (click)="onInsertProjectservice()" mat-button color="accent">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Asignar nuevo servicio</span>
+                                </button>
+
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- /Nueva orden servicio -->
+
+                        <div class="row">
+                            <div class="col-md-8">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Servicio asignado</mat-label>
+                                    <mat-select (selectionChange)="getSolicitudewarehouse(_project_service.idproject_service)" [ngModelOptions]="{standalone: true}" [(ngModel)]="_project_service.idproject_service">
+                                        <mat-option *ngFor="let item of _project_services" [value]="item.idproject_service">
+                                          {{item.idproject_service}} - {{item.project_project_idproject}} - {{item.service_service_idservice}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                            </div>
+                        </div>
+                    </form>
+
+                    <form [formGroup]="formSolicitudewarehouse_product" *ngIf="_solicitudewarehouse">
+
+                        <!-- Nueva solicituda -->
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-8">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Almacen</mat-label>
+                                    <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="_solicitudewarehouse.warehouse_idwarehouse">
+                                        <mat-option *ngFor="let item of _warehouses" [value]="item.idwarehouse">
+                                          {{item.idwarehouse}} - {{item.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+
+                                <button [disabled]="!_solicitudewarehouse.warehouse_idwarehouse" (click)="onInsertSolicitudewarehouse()" mat-button color="accent">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Asignar nueva solicitud a almacen</span>
+                                </button>
+
+                            </div>
+                        </div>
+                        <hr>
+                        <!-- /Nueva solicituda -->
+
+
+                        <div class="row">
+                            <div class="col-md-5">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Solicitud</mat-label>
+                                <mat-select (selectionChange)="getSolicitudewarehouse_product(solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse)" formControlName="solicitudewarehouse_idsolicitudewarehouseAC" [(ngModel)]="solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse">
+                                    <mat-option *ngFor="let item of _solicitudewarehouses" [value]="item.idsolicitudewarehouse">
+                                      {{item.idsolicitudewarehouse}} - {{item.project_service_project_service_idproject_service}} - {{item.warehouse_warehouse_idwarehouse}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-3">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Refacción</mat-label>
+
+                                <mat-select formControlName="product_idproductAC" [(ngModel)]="solicitudewarehouse_product.product_idproduct">
+                                    <mat-option *ngFor="let item of _product" [value]="item.idproduct">
+                                      {{item.idproduct}} - {{item.name}}
+                                    </mat-option>
+                                  </mat-select>
+                                </mat-form-field>
+                                
+                            </div>
+                            <div class="col-md-2">
+                                <mat-form-field appearance="fill" class="full-width">
+                                <mat-label>Cantidad</mat-label>
+                                    <input matInput [(ngModel)]="solicitudewarehouse_product.quantity" formControlName="quantityAC" placeholder="Año" type="number" maxlength='4' class="">
+                                </mat-form-field>
+                            </div>
+                            <div class="col-md-2">
+                                <button mat-button (click)="onInsertSolicitudewarehouse_product()" color="link">
+                                    <mat-icon>add</mat-icon>
+                                    <span>Agregar</span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </form>
+
+                    <hr>
+                    <!-- SOLICITUDES A ALMACEN REFACCIONES -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span  style="float:right" class=" m-1">
+                                <mat-form-field appearance="outline">
+                                    <mat-icon matPrefix> search</mat-icon>
+                                    <mat-label>Búsqueda</mat-label>
+                                    <input matInput (keyup)="applyFilter($event)" placeholder="Realiza una búsqueda" #input>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 card-table">
+                            <table mat-table matSort [dataSource]="data">
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <button mat-menu-item (click)="editModalShowSolicitudewarehouse_product(element)">
+                                                <mat-icon>edit</mat-icon>
+                                                <span>Editar</span>
+                                            </button>
+                                            <button mat-menu-item (click)="onDeleteConfirmSolicitudewarehouse_product($event, element)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                                <span>Eliminar</span>
+                                            </button>
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="solicitudewarehouse_solicitudewarehouse_idsolicitudewarehouse">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Solicitud</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.solicitudewarehouse_solicitudewarehouse_idsolicitudewarehouse}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="product_product_idproduct">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.product_product_idproduct}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="quantity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.quantity  }}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+
+            <!-- HISTORIAL -->
+            <mat-card class="dashboard-card animated fadeIn with-scroll" >
+                <mat-card-header>
+                    <mat-card-title>
+                        <h2 class="mat-h2">Información de Historial</h2>
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="dashboard-card-content">
+
+
+
+                    <!-- SOLICITUDES A ALMACEN REFACCIONES -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span  style="float:right" class=" m-1">
+                                <mat-form-field appearance="outline">
+                                    <mat-icon matPrefix> search</mat-icon>
+                                    <mat-label>Búsqueda</mat-label>
+                                    <input matInput (keyup)="applyFilterProjectHistorial($event)" placeholder="Realiza una búsqueda" #input>
+                                </mat-form-field>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 card-table">
+                            <table mat-table matSort [dataSource]="dataProjectHistorial">
+                                <ng-container matColumnDef="actions">
+                                    <th mat-header-cell *matHeaderCellDef></th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                                            <mat-icon>more_vert</mat-icon>
+                                        </button>
+                                        <mat-menu #menu="matMenu">
+                                            <!-- <button mat-menu-item (click)="editModalShowSolicitudewarehouse_product(element)">
+                                                <mat-icon>edit</mat-icon>
+                                                <span>Editar</span>
+                                            </button>
+                                            <button mat-menu-item (click)="onDeleteConfirmSolicitudewarehouse_product($event, element)">
+                                                <mat-icon>delete_forever</mat-icon>
+                                                <span>Eliminar</span>
+                                            </button> -->
+                                        </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="created_at">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.created_at | date: 'Y-m-d' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="name">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.name  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="companyunits_companyunits_idcompanyunits">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad de negocio</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.companyunits_companyunits_idcompanyunits}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="vehicle_vehicle_idvehicle">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehículo</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.vehicle_vehicle_idvehicle}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.status}}
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumnsProjectHistorial; sticky: true" sticky></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumnsProjectHistorial;"></tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+
+
+
+
+
+        </div>
+    </div>
+</div>

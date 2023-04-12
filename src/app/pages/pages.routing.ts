@@ -50,6 +50,11 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard] },
     { path: 'orderins/warehouse/:idwarehouse', loadChildren: () => import('./orderins/orderins.module').then(m => m.OrderinsModule),
         canActivateChild: [AuthGuard] },
+
+        { path: 'orderins/warehouse/:idwarehouseForInventary/inventary', loadChildren: () => import('./orderins/orderins.module').then(m => m.OrderinsModule),
+        canActivateChild: [AuthGuard] },
+
+
     { path: 'orderouts', loadChildren: () => import('./orderouts/orderouts.module').then(m => m.OrderoutsModule),
         canActivateChild: [AuthGuard] },
     { path: 'orderouts/product/:idproduct', loadChildren: () => import('./orderouts/orderouts.module').then(m => m.OrderoutsModule),
@@ -62,8 +67,17 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard] },
     { path: 'products/provider/:idprovider', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
         canActivateChild: [AuthGuard] },
+        
+
     { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
         canActivateChild: [AuthGuard] },
+
+
+
+    { path: 'projects/:idproject', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
+        canActivateChild: [AuthGuard] },
+
+
     { path: 'projects/companyunits/:idcompanyunits', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
         canActivateChild: [AuthGuard] },
     { path: 'projects/vehicle/:idvehicle', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
@@ -170,6 +184,24 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard] },
     { path: 'warehouses/company/:idcompany', loadChildren: () => import('./warehouses/warehouses.module').then(m => m.WarehousesModule),
         canActivateChild: [AuthGuard] },
+
+
+    { path: 'warehouses/:idwarehouse/inventary', loadChildren: () => import('./warehouses/warehouses.module').then(m => m.WarehousesModule),
+        canActivateChild: [AuthGuard] },
+
+
+    { path: 'service_products', loadChildren: () => import('./service_products/service_products.module').then(m => m.Service_productsModule),
+        canActivateChild: [AuthGuard] },
+    { path: 'service_products/product/:idproduct', loadChildren: () => import('./service_products/service_products.module').then(m => m.Service_productsModule),
+        canActivateChild: [AuthGuard] },
+    { path: 'service_products/service/:idservice', loadChildren: () => import('./service_products/service_products.module').then(m => m.Service_productsModule),
+        canActivateChild: [AuthGuard] },
+
+        
+
+        
+    { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+        canActivateChild: [AuthGuard] }
     ]
 }
 ];

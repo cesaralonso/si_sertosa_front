@@ -26,6 +26,13 @@ export class ServicesService {
             })};
         this.endPoint = `${this._configuration.apiUrl}service`;
        }
+       
+       getAllTemplates = () : Observable<ServicesResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/templates`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       }
        allFromTo = ( fechaDesde: string, fechaHasta: string ) : Observable<ServicesResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/from-to/${fechaDesde}/${fechaHasta}`, this.options)
                .pipe(

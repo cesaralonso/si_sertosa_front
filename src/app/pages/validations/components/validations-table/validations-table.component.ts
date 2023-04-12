@@ -32,13 +32,13 @@ export class ValidationsTableComponent implements OnInit {
       'actions',
       'validated',
       'service_employee_service_employee_idservice_employee',
-      'service_service_idservice',
+      /* 'service_service_idservice', */
     ];
     displayedLabels: string[] = [
       '',
       'Validado',
       'Empleado',
-      'Servicio',
+      /* 'Servicio', */
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

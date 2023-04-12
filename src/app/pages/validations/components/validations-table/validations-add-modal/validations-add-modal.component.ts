@@ -12,7 +12,7 @@ import { Service_employeesService } from './../../../../service_employees/compon
 import { Service_employeesAddModalComponent } from './../../../../service_employees/components/service_employees-table/service_employees-add-modal/service_employees-add-modal.component';
 import { Service_employeesInterface } from './../../../../service_employees/components/service_employees-table/service_employees.interface';
 import { ServicesService } from './../../../../services/components/services-table/services.service';
-import { ServicesAddModalComponent } from './../../../../services/components/services-table/services-add-modal/services-add-modal.component';
+import { ServicesAddModalComponent } from '../../../../services/components/services-table/services-add-modal/services-add-modal.component';
 import { ServicesInterface } from './../../../../services/components/services-table/services.interface';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
@@ -50,7 +50,7 @@ export class ValidationsAddModalComponent implements OnInit {
     this.form = fb.group({
     'validatedAC' : [''],
     'service_employee_idservice_employeeAC' : ['', this.item.service_employee_idservice_employee ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
-    'service_idserviceAC' : ['', this.item.service_idservice ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
+    /* 'service_idserviceAC' : ['', this.item.service_idservice ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null], */
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -176,7 +176,7 @@ export class ValidationsAddModalComponent implements OnInit {
           .insert({
                   validated: this.item.validated || null,
                   service_employee_idservice_employee: this.item.service_employee_idservice_employee || null,
-                  service_idservice: this.item.service_idservice || null,
+                  /* service_idservice: this.item.service_idservice || null, */
           })
           .pipe(take(1))
           .subscribe(
@@ -193,7 +193,7 @@ export class ValidationsAddModalComponent implements OnInit {
                   idvalidation: this.item.idvalidation,
                   validated: this.item.validated,
                   service_employee_idservice_employee: this.item.service_employee_idservice_employee,
-                  service_idservice: this.item.service_idservice,
+                  /* service_idservice: this.item.service_idservice, */
               })
               .pipe(take(1))
               .subscribe(

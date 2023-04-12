@@ -10,14 +10,6 @@ import * as _ from 'lodash';
 import { CommonService } from './../../../../shared/services/common.service';
 import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
-import { OrderinsInterface } from './../../../orderins/components/orderins-table/orderins.interface';
-import { OrderinsAddModalComponent } from './../../../orderins/components/orderins-table/orderins-add-modal/orderins-add-modal.component';
-import { OrderoutsInterface } from './../../../orderouts/components/orderouts-table/orderouts.interface';
-import { OrderoutsAddModalComponent } from './../../../orderouts/components/orderouts-table/orderouts-add-modal/orderouts-add-modal.component';
-import { Solicitudeprovider_productsInterface } from './../../../solicitudeprovider_products/components/solicitudeprovider_products-table/solicitudeprovider_products.interface';
-import { Solicitudeprovider_productsAddModalComponent } from './../../../solicitudeprovider_products/components/solicitudeprovider_products-table/solicitudeprovider_products-add-modal/solicitudeprovider_products-add-modal.component';
-import { Solicitudewarehouse_productsInterface } from './../../../solicitudewarehouse_products/components/solicitudewarehouse_products-table/solicitudewarehouse_products.interface';
-import { Solicitudewarehouse_productsAddModalComponent } from './../../../solicitudewarehouse_products/components/solicitudewarehouse_products-table/solicitudewarehouse_products-add-modal/solicitudewarehouse_products-add-modal.component';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -42,6 +34,17 @@ export class ProductsTableComponent implements OnInit {
       'description',
       'provider_provider_idprovider',
       'family_family_idfamily',
+      'sku',
+      'aka',
+      'type',
+      'cost',
+      'min',
+      'id',
+      'reorderpoint',
+      'max',
+      'caducity',
+      'unitin',
+      'unitout',
     ];
     displayedLabels: string[] = [
       '',
@@ -49,6 +52,17 @@ export class ProductsTableComponent implements OnInit {
       'Descripción',
       'Proveedor',
       'Familia',
+      'SKU',
+      'AKA',
+      'Tipo',
+      'Costo',
+      'Mínimo en inventario',
+      'ID por Proveedor',
+      'Punto de reorden',
+      'Cantidad máxima en inventario',
+      'Fecha caducidad',
+      'Unidad de compra',
+      'Unidad de salida',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -144,122 +158,6 @@ export class ProductsTableComponent implements OnInit {
     }
     backPage() {
         window.history.back();
-    }
-    insertOrderin(products: ProductsInterface) {
-      const orderin: OrderinsInterface = {
-        product_idproduct: products.idproduct
-      }
-      const dialogRef = this.dialog.open(OrderinsAddModalComponent, {
-              width: '550px',
-              data: orderin,
-          });
-          dialogRef.afterClosed()
-              .pipe(take(1))
-              .subscribe(data => {
-                  if (data) {
-                      this.orderinShowToast(data);
-                  }
-              }),
-              error => console.log(error),
-              () => console.log('Action completed');
-    }
-    orderinShowToast(result) {
-        if (result.success) {
-            this.toastrService.success(result.message);
-            this.refill();
-        } else {
-            this.toastrService.error(result.message);
-        }
-    }
-    viewOrderin(products: ProductsInterface) {
-      this.router.navigate([`/pages/orderins/product/${products.idproduct}`]);
-    }
-    insertOrderout(products: ProductsInterface) {
-      const orderout: OrderoutsInterface = {
-        product_idproduct: products.idproduct
-      }
-      const dialogRef = this.dialog.open(OrderoutsAddModalComponent, {
-              width: '550px',
-              data: orderout,
-          });
-          dialogRef.afterClosed()
-              .pipe(take(1))
-              .subscribe(data => {
-                  if (data) {
-                      this.orderoutShowToast(data);
-                  }
-              }),
-              error => console.log(error),
-              () => console.log('Action completed');
-    }
-    orderoutShowToast(result) {
-        if (result.success) {
-            this.toastrService.success(result.message);
-            this.refill();
-        } else {
-            this.toastrService.error(result.message);
-        }
-    }
-    viewOrderout(products: ProductsInterface) {
-      this.router.navigate([`/pages/orderouts/product/${products.idproduct}`]);
-    }
-    insertSolicitudeprovider_product(products: ProductsInterface) {
-      const solicitudeprovider_product: Solicitudeprovider_productsInterface = {
-        product_idproduct: products.idproduct
-      }
-      const dialogRef = this.dialog.open(Solicitudeprovider_productsAddModalComponent, {
-              width: '550px',
-              data: solicitudeprovider_product,
-          });
-          dialogRef.afterClosed()
-              .pipe(take(1))
-              .subscribe(data => {
-                  if (data) {
-                      this.solicitudeprovider_productShowToast(data);
-                  }
-              }),
-              error => console.log(error),
-              () => console.log('Action completed');
-    }
-    solicitudeprovider_productShowToast(result) {
-        if (result.success) {
-            this.toastrService.success(result.message);
-            this.refill();
-        } else {
-            this.toastrService.error(result.message);
-        }
-    }
-    viewSolicitudeprovider_product(products: ProductsInterface) {
-      this.router.navigate([`/pages/solicitudeprovider_products/product/${products.idproduct}`]);
-    }
-    insertSolicitudewarehouse_product(products: ProductsInterface) {
-      const solicitudewarehouse_product: Solicitudewarehouse_productsInterface = {
-        product_idproduct: products.idproduct
-      }
-      const dialogRef = this.dialog.open(Solicitudewarehouse_productsAddModalComponent, {
-              width: '550px',
-              data: solicitudewarehouse_product,
-          });
-          dialogRef.afterClosed()
-              .pipe(take(1))
-              .subscribe(data => {
-                  if (data) {
-                      this.solicitudewarehouse_productShowToast(data);
-                  }
-              }),
-              error => console.log(error),
-              () => console.log('Action completed');
-    }
-    solicitudewarehouse_productShowToast(result) {
-        if (result.success) {
-            this.toastrService.success(result.message);
-            this.refill();
-        } else {
-            this.toastrService.error(result.message);
-        }
-    }
-    viewSolicitudewarehouse_product(products: ProductsInterface) {
-      this.router.navigate([`/pages/solicitudewarehouse_products/product/${products.idproduct}`]);
     }
     filtrarFechas(fechaDesde, fechaHasta) {
       this.service

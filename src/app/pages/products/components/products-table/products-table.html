@@ -100,38 +100,6 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-                                              <button mat-menu-item (click)="insertOrderin(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Orden de entrada</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewOrderin(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Orden de entrada</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertOrderout(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Orden de salida</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewOrderout(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Orden de salida</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertSolicitudeprovider_product(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Solicitud proveedor producto</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewSolicitudeprovider_product(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Solicitud proveedor producto</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertSolicitudewarehouse_product(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Solicitud almacen producto</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewSolicitudewarehouse_product(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Solicitud almacen producto</span>
-                                              </button>
                                             <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
                                                 <mat-icon>edit</mat-icon>
                                                 <span>Editar</span>
@@ -165,6 +133,72 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Familia</th>
                                     <td mat-cell *matCellDef="let element"> 
                                           {{element.family_family_idfamily}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="sku">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SKU</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.sku  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="aka">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>AKA</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.aka  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="type">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.type  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="cost">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.cost  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="min">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mínimo en inventario</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.min  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="id">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>ID por Proveedor</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.id  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="reorderpoint">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Punto de reorden</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.reorderpoint  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="max">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad máxima en inventario</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.max  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="caducity">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha caducidad</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.caducity | date:'dd/MM/y' }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="unitin">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad de compra</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.unitin  }}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="unitout">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad de salida</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.unitout  }}
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>

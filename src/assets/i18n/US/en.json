@@ -64,13 +64,15 @@
         "solicitudewarehouses": "Solicitud de almacen",
         "solicitudewarehouse_products": "Solicitud almacen producto",
         "validations": "Servicio validado",
-        "vehicles": "Vehículo",
+        "vehicles": "Unidades",
         "warehouses": "Almacen",
         "dashboard": "Dashboard",
         "pages": "Pages",
         "login": "Login",
         "register": "Register",
-        "external_link": "External Link"
+        "external_link": "External Link",
+        "service_products": "Refacciones en servicios",
+        "reports": "Reportes"
         },
         "created_with": "Software Insights"
       },

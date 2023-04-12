@@ -1,1 +1,2 @@
-  <projects-table></projects-table>
+  <projects-table *ngIf="!idproject"></projects-table>
+  <projects-view *ngIf="idproject"></projects-view>

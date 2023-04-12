@@ -5,7 +5,7 @@
         <mat-checkbox formControlName="validatedAC" [(ngModel)]="item.validated">Validado</mat-checkbox>
     </div>
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Empleado</mat-label>
+      <mat-label>Orden trabajando</mat-label>
       <mat-select formControlName="service_employee_idservice_employeeAC" [(ngModel)]="item.service_employee_idservice_employee">
         <mat-option *ngFor="let item of _service_employee" [value]="item.idservice_employee">
           {{item.project_service_project_service_idproject_service}}
@@ -13,7 +13,7 @@
       </mat-select>
       <button mat-flat-button *ngIf='service_employeeRewriteable' (click)="service_employeeAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="full-width">
+    <!-- <mat-form-field appearance="fill" class="full-width">
       <mat-label>Servicio</mat-label>
       <mat-select formControlName="service_idserviceAC" [(ngModel)]="item.service_idservice">
         <mat-option *ngFor="let item of _service" [value]="item.idservice">
@@ -21,7 +21,7 @@
         </mat-option>
       </mat-select>
       <button mat-flat-button *ngIf='serviceRewriteable' (click)="serviceAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
-    </mat-form-field>
+    </mat-form-field> -->
   </form>
 </div>
 <div mat-dialog-actions>

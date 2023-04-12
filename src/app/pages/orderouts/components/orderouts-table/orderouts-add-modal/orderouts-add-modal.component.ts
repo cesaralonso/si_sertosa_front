@@ -51,6 +51,7 @@ export class OrderoutsAddModalComponent implements OnInit {
     'warehouse_idwarehouseAC' : ['', this.item.warehouse_idwarehouse ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'product_idproductAC' : ['', this.item.product_idproduct ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'quantityAC' : ['', this.item.quantity ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
+    'motiveAC' : ['', this.item.motive ? Validators.compose([ Validators.required ]) : null],
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -174,6 +175,7 @@ export class OrderoutsAddModalComponent implements OnInit {
                   warehouse_idwarehouse: this.item.warehouse_idwarehouse || null,
                   product_idproduct: this.item.product_idproduct || null,
                   quantity: this.item.quantity || null,
+                  motive: this.item.motive || null
           })
           .pipe(take(1))
           .subscribe(
@@ -191,6 +193,7 @@ export class OrderoutsAddModalComponent implements OnInit {
                   warehouse_idwarehouse: this.item.warehouse_idwarehouse,
                   product_idproduct: this.item.product_idproduct,
                   quantity: this.item.quantity,
+                  motive: this.item.motive
               })
               .pipe(take(1))
               .subscribe(

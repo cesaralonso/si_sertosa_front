@@ -100,14 +100,24 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-                                              <button mat-menu-item (click)="insertProject_service(element)">
+
+                                            <button mat-menu-item (click)="viewProject(element)">
+                                                <mat-icon>view_list</mat-icon>
+                                                <span>Ver Reparación</span>
+                                            </button>
+                                            <!-- <button mat-menu-item (click)="insertService(element)">
+                                                <mat-icon>poll</mat-icon>
+                                                <span style="font-weight: 600;">Agregar Orden servicio</span>
+                                            </button> -->
+
+                                              <!-- <button mat-menu-item (click)="insertProject_service(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Orden servicio</span>
                                               </button>
                                               <button mat-menu-item (click)="viewProject_service(element)">
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Orden servicio</span>
-                                              </button>
+                                              </button> -->
                                             <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
                                                 <mat-icon>edit</mat-icon>
                                                 <span>Editar</span>
@@ -117,6 +127,12 @@
                                                 <span>Eliminar</span>
                                             </button>
                                         </mat-menu>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="created_at">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.created_at | date: 'Y-m-d' }}
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="name">
@@ -135,6 +151,12 @@
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Vehículo</th>
                                     <td mat-cell *matCellDef="let element"> 
                                           {{element.vehicle_vehicle_idvehicle}}
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="status">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{element.status}}
                                     </td>
                                 </ng-container>
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>

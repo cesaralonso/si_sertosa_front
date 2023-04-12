@@ -100,6 +100,10 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
+                                            <button mat-menu-item (click)="viewInventary(element)">
+                                                <mat-icon>view_list</mat-icon>
+                                                <span>Ver Inventario</span>
+                                            </button>
                                               <button mat-menu-item (click)="insertOrderin(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Orden de entrada</span>

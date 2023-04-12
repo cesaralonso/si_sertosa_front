@@ -32,6 +32,17 @@ export class OrderinsService {
                    map((response: any) => response),
                    catchError(this.handleError));
        }
+
+       
+       findInventaryByIdWarehouse = ( id ) : Observable<OrderinsResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/warehouse/${id}/inventary`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       }
+
+
+
        findByIdWarehouse = ( id ) : Observable<OrderinsResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/warehouse/${id}`, this.options)
                .pipe(

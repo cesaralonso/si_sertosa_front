@@ -52,6 +52,17 @@ export class ProductsAddModalComponent implements OnInit {
     'descriptionAC' : ['', this.item.description ? Validators.compose([ Validators.maxLength(345)]) : null],
     'provider_idproviderAC' : ['', this.item.provider_idprovider ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'family_idfamilyAC' : ['', this.item.family_idfamily ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
+    'skuAC' : ['', this.item.sku ? Validators.compose([ Validators.required, Validators.maxLength(16)]) : null],
+    'akaAC' : ['', this.item.aka ? Validators.compose([ Validators.required, Validators.maxLength(100)]) : null],
+    'typeAC' : [''],
+    'costAC' : ['', this.item.cost ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
+    'minAC' : ['', this.item.min ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
+    'idAC' : ['', this.item.id ? Validators.compose([ Validators.required, Validators.maxLength(20)]) : null],
+    'reorderpointAC' : ['', this.item.reorderpoint ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
+    'maxAC' : ['', this.item.max ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
+    'caducityAC' : [''],
+    'unitinAC' : [''],
+    'unitoutAC' : [''],
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -176,6 +187,17 @@ export class ProductsAddModalComponent implements OnInit {
                   description: this.item.description || null,
                   provider_idprovider: this.item.provider_idprovider || null,
                   family_idfamily: this.item.family_idfamily || null,
+                  sku: this.item.sku || null,
+                  aka: this.item.aka || null,
+                  type: this.item.type || null,
+                  cost: this.item.cost || null,
+                  min: this.item.min || null,
+                  id: this.item.id || null,
+                  reorderpoint: this.item.reorderpoint || null,
+                  max: this.item.max || null,
+                  caducity: this.item.caducity || null,
+                  unitin: this.item.unitin || null,
+                  unitout: this.item.unitout || null,
           })
           .pipe(take(1))
           .subscribe(
@@ -194,6 +216,17 @@ export class ProductsAddModalComponent implements OnInit {
                   description: this.item.description,
                   provider_idprovider: this.item.provider_idprovider,
                   family_idfamily: this.item.family_idfamily,
+                  sku: this.item.sku,
+                  aka: this.item.aka,
+                  type: this.item.type,
+                  cost: this.item.cost,
+                  min: this.item.min,
+                  id: this.item.id,
+                  reorderpoint: this.item.reorderpoint,
+                  max: this.item.max,
+                  caducity: this.item.caducity,
+                  unitin: this.item.unitin,
+                  unitout: this.item.unitout,
               })
               .pipe(take(1))
               .subscribe(

@@ -145,6 +145,12 @@ export class WarehousesTableComponent implements OnInit {
             this.toastrService.error(result.message);
         }
     }
+
+    // INVENTARIO
+    viewInventary(warehouses: WarehousesInterface) {
+      this.router.navigate([`/pages/warehouses/${warehouses.idwarehouse}/inventary`]);
+    }
+
     viewOrderin(warehouses: WarehousesInterface) {
       this.router.navigate([`/pages/orderins/warehouse/${warehouses.idwarehouse}`]);
     }

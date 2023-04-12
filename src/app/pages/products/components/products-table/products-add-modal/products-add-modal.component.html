@@ -27,6 +27,89 @@
       </mat-select>
       <button mat-flat-button *ngIf='familyRewriteable' (click)="familyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
     </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>SKU</mat-label>
+        <input matInput [(ngModel)]="item.sku" formControlName="skuAC" placeholder="SKU" type="text" maxlength='16' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>AKA</mat-label>
+        <input matInput [(ngModel)]="item.aka" formControlName="akaAC" placeholder="AKA" type="text" maxlength='100' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Tipo</mat-label>
+      <mat-select formControlName="typeAC" [(ngModel)]="item.type" required>
+        <mat-option value="ORIGINAL">
+          ORIGINAL
+        </mat-option>
+        <mat-option value="GENÉRICA">
+          GENÉRICA
+        </mat-option>
+        <mat-option value="HUESO">
+          HUESO
+        </mat-option>
+        <mat-option value="">
+          
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Costo</mat-label>
+        <input matInput [(ngModel)]="item.cost" formControlName="costAC" placeholder="Costo" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Mínimo en inventario</mat-label>
+        <input matInput [(ngModel)]="item.min" formControlName="minAC" placeholder="Mínimo en inventario" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>ID por Proveedor</mat-label>
+        <input matInput [(ngModel)]="item.id" formControlName="idAC" placeholder="ID por Proveedor" type="text" maxlength='20' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Punto de reorden</mat-label>
+        <input matInput [(ngModel)]="item.reorderpoint" formControlName="reorderpointAC" placeholder="Punto de reorden" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Cantidad máxima en inventario</mat-label>
+        <input matInput [(ngModel)]="item.max" formControlName="maxAC" placeholder="Cantidad máxima en inventario" type="number" maxlength='11' class="" required>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Fecha caducidad</mat-label>
+        <input matInput [(ngModel)]="item.caducity" formControlName="caducityAC" placeholder="Fecha caducidad" type="date"  class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Unidad de compra</mat-label>
+      <mat-select formControlName="unitinAC" [(ngModel)]="item.unitin" required>
+        <mat-option value="PIEZA">
+          PIEZA
+        </mat-option>
+        <mat-option value="GRAMO">
+          GRAMO
+        </mat-option>
+        <mat-option value="UNIDAD">
+          UNIDAD
+        </mat-option>
+        <mat-option value="KIT">
+          KIT
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Unidad de salida</mat-label>
+      <mat-select formControlName="unitoutAC" [(ngModel)]="item.unitout" required>
+        <mat-option value="PIEZA">
+          PIEZA
+        </mat-option>
+        <mat-option value="GRAMO">
+          GRAMO
+        </mat-option>
+        <mat-option value="UNIDAD">
+          UNIDAD
+        </mat-option>
+        <mat-option value="KIT">
+          KIT
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>
