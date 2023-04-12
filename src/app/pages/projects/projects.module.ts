@@ -8,6 +8,7 @@ import { ProjectsComponent } from './projects.component';
 import { ProjectsService } from './components/projects-table/projects.service';
 import { ProjectsTableComponent } from './components/projects-table/projects-table.component';
 import { MaterialModule } from '../../shared/material.module';
+import { ProjectsViewComponent } from './components/projects-view/projects-view.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { MaterialModule } from '../../shared/material.module';
   declarations: [
     ProjectsComponent,
     ProjectsTableComponent,
+    ProjectsViewComponent
   ],
   entryComponents: [
   ],

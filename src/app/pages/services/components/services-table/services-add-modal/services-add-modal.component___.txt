@@ -1,0 +1,211 @@
+<h1 mat-dialog-title>{{accion}} Orden de Servicio</h1>
+<div mat-dialog-content>
+
+  <mat-stepper orientation="vertical" (selectionChange)="selectionChange($event)">
+
+    <mat-step>
+      <ng-template matStepLabel>Información general</ng-template>
+      <ng-template matStepContent>
+
+        <div class="alert alert-success">
+          Plantillas de servicios.
+
+          <mat-select class="mt-3" matInput placeholder="Plantilla" [(ngModel)]="template" [ngModelOptions]="{standalone: true}">
+            <mat-option [value]="service.idservice" *ngFor="let service of _service">
+              {{service.name}}
+            </mat-option>
+          </mat-select>
+          <button mat-button color="warn" (click)="setTemplate(template)" [disabled]="!template"> 
+            Tomar plantilla
+          </button>
+
+        </div>
+        <ba-card cardTitle="Orden de Servicio">
+          <div class="row mb-3">
+            <div class="col">
+              <form [formGroup]="form">
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Nombre</mat-label>
+                    <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='145' class="" required>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Instrucciones</mat-label>
+                  <textarea matInput [(ngModel)]="item.initialMessage" rows="5" formControlName="initialMessageAC" placeholder="Mensaje inicial">
+                  </textarea>
+                </mat-form-field>
+                <mat-form-field appearance="fill" class="full-width">
+                  <mat-label>Tiempo para finalizar (dias)</mat-label>
+                    <input matInput [(ngModel)]="item.time" formControlName="timeAC" placeholder="Tiempo para responder" type="number"  class="" >
+                </mat-form-field>
+                <!-- <div class="full-width">
+                  <mat-label>Mensaje email</mat-label>
+                  <div class="NgxEditor__Wrapper">
+                    <ngx-editor-menu [editor]="editor"> </ngx-editor-menu>
+                    <ngx-editor
+                      [editor]="editor"
+                      [(ngModel)]="item.emailMessage"
+                      [disabled]="false"
+                      [placeholder]="'Escribe aquí...'"
+                      formControlName="emailMessageAC"
+                    ></ngx-editor>
+                  </div>
+                </div> -->
+
+                <div class="full-width mt-3">
+                  <h2 class="mat-h2">
+                    ¿Deseas guardar servicio como plantilla?
+                  </h2>
+                  <div class="mat-form-field mb-4 mt-2 full-width">
+                    <mat-checkbox  [checked]="item.saveAsTemplate" (change)="item.saveAsTemplate = $event.checked">
+                      Guardar como plantilla
+                    </mat-checkbox>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </ba-card>
+        <button mat-button matStepperNext *ngIf="this.accion === 'Agregar'">Siguiente</button>
+      </ng-template>
+    </mat-step>
+
+    <mat-step>
+      <ng-template matStepLabel>Elige servicios</ng-template>
+      <ng-template matStepContent>
+        
+        <ba-card cardTitle="Grupos">
+          <div class="row mb-3">
+            <div class="col">
+
+              <div class="alert alert-info">
+                Elige grupos y servicios
+              </div>
+
+              <div>
+                <div *ngFor="let questiongroup of item.questiongroup">
+                    <div class="mat-form-field mb-4 mt-2 full-width">
+                      <mat-checkbox 
+                        [name]="questiongroup.idquestiongroups" 
+                        [checked]="questiongroup.selected" 
+                        (change)="questiongroup.selected = $event.checked; selectAllQuestionGroup(questiongroup.idquestiongroup, $event.checked)">
+                        {{questiongroup.name}}
+                      </mat-checkbox>
+
+                      <div class="m-3">
+                        <div *ngFor="let question of questiongroup.question">
+                          <div class="mat-form-field mb-4 mt-2 full-width">
+                            <mat-checkbox [name]="question.idquestion" [checked]="question.selected" (change)="question.selected = $event.checked">
+                              {{question.name}}
+                            </mat-checkbox>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </ba-card>
+      
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button matStepperNext>Siguiente</button>
+      </ng-template>
+    </mat-step>
+
+
+    <mat-step *ngIf="accion === 'Agregar'">
+      <ng-template matStepLabel>Elige grupos de empleados para asistir orden</ng-template>
+      <ng-template matStepContent>
+        
+        <ba-card cardTitle="Grupos">
+          <div class="row mb-3">
+            <div class="col">
+
+              <div class="alert alert-info">
+                Elige grupos
+              </div>
+              <div cdkDropListGroup>
+                <div class="example-container">
+                  <h3 class="mat-h3">Grupos</h3>
+              
+                  <div
+                    cdkDropList
+                    [cdkDropListData]="_employeegroups"
+                    class="example-list"
+                    cdkDropListSortingDisabled
+                    (cdkDropListDropped)="dropEmployeegroups($event)">
+
+                      <div class="example-box" cdkDrag *ngFor="let grupo of _employeegroups; let ii = index" [value]="grupo.idusergroup">
+                        {{grupo.name}}
+                      </div>
+                  </div>
+                </div>
+                <div class="example-container">
+                  <h3 class="mat-h3">Seleccionados</h3>
+                  <div
+                    cdkDropList
+                    [cdkDropListData]="employeegroupsSelected"
+                    class="example-list"
+                    (cdkDropListDropped)="dropEmployeegroups($event)">
+                    <div class="example-box" *ngFor="let grupo of employeegroupsSelected" cdkDrag>
+                      {{grupo.name}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </ba-card>
+      
+        <button mat-button matStepperPrevious>Atras</button>
+        <button mat-button matStepperNext>Siguiente</button>
+      </ng-template>
+    </mat-step>
+    
+    <mat-step *ngIf="accion === 'Agregar'">
+      <ng-template matStepLabel>Selecciona empleados para asistir orden</ng-template>
+      <ng-template matStepContent>
+        <ba-card cardTitle="Empleados">
+          <div class="row mb-3">
+            <div class="col">
+              <section>
+                <mat-checkbox
+                    class="example-margin"
+                    [(ngModel)]="checkedAll"
+                    (change)="selectAll()"
+                    [labelPosition]="'before'">
+                    Seleccionar todos
+                </mat-checkbox>
+              </section>
+            </div>
+          </div>
+          <div>
+            <div *ngFor="let item of _employeesFiltered">
+                <div class="mat-form-field mb-4 mt-2 full-width">
+                  <mat-checkbox [name]="item.idemployee" [checked]="item.selected" (change)="item.selected = $event.checked">{{item.name}} </mat-checkbox> <!-- - {{item.companyunits_companyunits_idcompanyunits}} -->
+                </div>
+            </div>
+          </div>
+        </ba-card>
+
+        <button mat-button matStepperPrevious>Atras</button>
+        <!-- <button mat-button matStepperNext>Siguiente</button> -->
+      </ng-template>
+    </mat-step>
+
+  </mat-stepper>
+
+</div>
+<div mat-dialog-actions>
+  <button mat-button color="warn" (click)="dialogRef.close()">Cancelar</button>
+  <button mat-button color="success" cdkFocusInitial [disabled]="!form.valid" (click)="onSubmit()">
+    <span *ngIf="this.accion === 'Agregar'">Crear y Enviar</span>
+    <!-- <span *ngIf="this.accion === 'Agregar'">Solo Crear</span> -->
+    <span *ngIf="this.accion === 'Editar'">Guardar</span>
+    <!-- <span *ngIf="this.accion === 'Editar'">Enviar</span> -->
+  </button>
+</div>

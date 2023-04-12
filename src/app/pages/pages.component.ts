@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Routes } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 import { OnlineOfflineService } from '../shared/services/online-offline.service';
 import { BaMenuService } from '../theme';
 import { PAGES_MENU } from './pages.menu';
@@ -52,6 +53,7 @@ export class Pages implements OnInit {
   constructor(
     private _menuService: BaMenuService,
     private onlineOfflineService: OnlineOfflineService,
+    private authService: AuthService
     /* private indexedDbService: IndexedDbService,
     private appState: AppState,
     private socketIOService: SocketIOService */) {
@@ -69,9 +71,10 @@ export class Pages implements OnInit {
   }
 
   private registerToMenu() {
-      this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU);
+    const userModules = this.authService.getUserModules();
+    const user = this.authService.useJwtHelper();
+    this._menuService.updateMenuByRoutes(<Routes>PAGES_MENU, user, userModules);
   }
-
   private registerToEvents(onlineOfflineService: OnlineOfflineService) {
       onlineOfflineService.connectionChanged.subscribe(online => {
           this.online = online;
@@ -82,83 +85,5 @@ export class Pages implements OnInit {
           }
       });
   }
-
-  /* private async registerToTracking() {
-    if (watchId) {
-      navigator.geolocation.clearWatch(watchId);
-    }
-    const options = {
-      enableHighAccuracy: (!this.online) ? true : false, // SI ES OFFLINE EN TRUE
-      timeout: 0,
-      maximumAge: 0
-    };
-    watchId = navigator.geolocation.watchPosition(async (position) => {
-      console.log('Geolocation Position', position);
-      if (position && position.coords) {
-          const coords: any = position.coords;
-          
-          if (coords.latitude !== this.lastLat || coords.longitude !== this.lastLng) {
-              this.lastLat = coords.latitude;
-              this.lastLng = coords.longitude;
-              this.coords = coords;
-          
-              const _stateCoords = {
-                  accuracy: coords.accuracy,
-                  latitude: coords.latitude,
-                  longitude: coords.longitude
-              };
-              this.appState.set('coords', _stateCoords);
-
-              if (coords.accuracy < 300) {
-
-                  const newCreatedAt = moment(new Date());
-                  const diffSeconds = newCreatedAt.diff(this.lastTrack, 'seconds');
-                  const diffSecondsSocket = newCreatedAt.diff(this.lastTrackSocket, 'seconds');
-              
-                  const posicion: any = {
-                      latitude: coords.latitude,
-                      longitude: coords.longitude,
-                      accuracy: coords.accuracy
-                  };
-
-                  // SOLO CADA 30 SEGS.
-                  if (diffSecondsSocket > 30) {
-                      this.lastTrackSocket = moment(new Date());
-                      const alerta: Message = {
-                          type: Type.TRACKING,
-                          content: {
-                              category: 'TRACKING',
-                              coords: posicion
-                          }
-                      };
-                      this.socketIOService.send(alerta);
-                  }
-
-                  // Si tiene poco rango de error
-                  if (coords.accuracy < 200) {
-                      // SOLO CADA 2 MINUTOS
-                      if (diffSeconds > 120) {
-                          this.lastTrack = moment(new Date());
-
-                          // SI NO ESTÁ EN LINEA
-                          if (!this.onlineOfflineService.isOnline) {
-
-                              // INICIALMENTE GUARDA EN MEMORIA
-                              posicion.created_at = moment(new Date()).tz('America/Mexico_City').format('YYYY-MM-DD HH:mm:ss');
-                              this.indexedDbService.addPosicionToIndexedDb(posicion);
-
-                          } else {
-                              // GUARDA EN LINEA
-
-                          }
-                      }
-                  }
-              }
-          }
-      } 
-    }, (err) => {
-      console.warn('ERROR(' + err.code + '): ' + err.message);
-    }, options);
-  } */
 
 }

@@ -23,6 +23,23 @@
       <mat-label>Cantidad</mat-label>
         <input matInput [(ngModel)]="item.quantity" formControlName="quantityAC" placeholder="Cantidad" type="number" maxlength='11' class="" required>
     </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Motivo</mat-label>
+      <mat-select formControlName="motiveAC" [(ngModel)]="item.motive">
+        <mat-option value="AJUSTE DE INVENTARIO">
+          AJUSTE DE INVENTARIO
+        </mat-option>
+        <mat-option value="ROBO">
+          ROBO
+        </mat-option>
+        <mat-option value="DAÑO">
+          DAÑO
+        </mat-option>
+        <mat-option value="CADUCIDAD">
+          CADUCIDAD
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>

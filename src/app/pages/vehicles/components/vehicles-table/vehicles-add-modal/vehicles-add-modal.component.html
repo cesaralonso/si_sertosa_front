@@ -11,6 +11,10 @@
       <button mat-flat-button *ngIf='companyRewriteable' (click)="companyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Número</mat-label>
+        <input matInput [(ngModel)]="item.number" formControlName="numberAC" placeholder="Número de unidad" type="number" maxlength='4' class="" >
+    </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Modelo</mat-label>
         <input matInput [(ngModel)]="item.model" formControlName="modelAC" placeholder="Modelo" type="text" maxlength='45' class="" required>
     </mat-form-field>

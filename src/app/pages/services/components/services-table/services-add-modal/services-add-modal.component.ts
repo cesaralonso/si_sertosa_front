@@ -1,9 +1,9 @@
-import { AuthService } from './../../../../../shared/services/auth.service';
-import { ServicesService } from './../services.service';
-import { ServicesInterface } from './../services.interface';
+import { AuthService } from '../../../../../shared/services/auth.service';
+import { ServicesService } from '../services.service';
+import { ServicesInterface } from '../services.interface';
 import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ToasterService } from './../../../../../shared/services/toaster.service';
+import { ToasterService } from '../../../../../shared/services/toaster.service';
 import { take } from 'rxjs/operators';
 /* import { HttpEventType, HttpEvent } from '@angular/common/http'; */
 /* import { Message, Type } from './../../../../../shared/models'; */
@@ -44,7 +44,7 @@ export class ServicesAddModalComponent implements OnInit {
     'showEmployeeAC' : [''],
     'targetAC' : [''],
     'timeAC' : ['', this.item.time ? Validators.compose([ Validators.maxLength(11)]) : null],*/
-    'saveAsTemplateAC' : ['']
+    /* 'saveAsTemplateAC' : [''] */
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -91,7 +91,7 @@ export class ServicesAddModalComponent implements OnInit {
                   showEmployee: this.item.showEmployee || null,
                   target: this.item.target || null,
                   time: this.item.time || null, */
-                  saveAsTemplate: this.item.saveAsTemplate || null
+                  /* saveAsTemplate: this.item.saveAsTemplate || null */
           })
           .pipe(take(1))
           .subscribe(
@@ -114,7 +114,7 @@ export class ServicesAddModalComponent implements OnInit {
                   showEmployee: this.item.showEmployee,
                   target: this.item.target,
                   time: this.item.time, */
-                  saveAsTemplate: this.item.saveAsTemplate
+                 /*  saveAsTemplate: this.item.saveAsTemplate */
               })
               .pipe(take(1))
               .subscribe(

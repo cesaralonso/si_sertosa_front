@@ -5,7 +5,7 @@
       <mat-label>Compañia</mat-label>
       <mat-select formControlName="company_idcompanyAC" [(ngModel)]="item.company_idcompany">
         <mat-option *ngFor="let item of _company" [value]="item.idcompany">
-          {{item.idcompany}}
+          {{item.name}}
         </mat-option>
       </mat-select>
       <button mat-flat-button *ngIf='companyRewriteable' (click)="companyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>

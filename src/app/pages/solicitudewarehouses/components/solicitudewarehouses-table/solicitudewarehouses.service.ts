@@ -26,6 +26,12 @@ export class SolicitudewarehousesService {
             })};
         this.endPoint = `${this._configuration.apiUrl}solicitudewarehouse`;
        }
+       findByIdProject = ( id ) : Observable<SolicitudewarehousesResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/project/${id}`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       }
        findByIdProject_service = ( id ) : Observable<SolicitudewarehousesResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/project_service/${id}`, this.options)
                .pipe(

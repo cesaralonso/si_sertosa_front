@@ -11,6 +11,7 @@ export interface SolicitudeprovidersInterface {
    care_email?:string;
    care_phone?:number;
    skus?:string;
+   warehouse_idwarehouse?: number;
    status?: string;
    is_deleted?: boolean;
    created_by?: number;

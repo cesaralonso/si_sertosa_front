@@ -48,6 +48,7 @@ export class VehiclesAddModalComponent implements OnInit {
     'kmAC' : ['', this.item.km ? Validators.compose([ Validators.required, Validators.maxLength(11)]) : null],
     'tradeAC' : ['', this.item.trade ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
     'yearAC' : ['', this.item.year ? Validators.compose([ Validators.maxLength(4)]) : null],
+    'numberAC' : ['', this.item.number ? Validators.compose([ Validators.maxLength(4)]) : null],
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -133,6 +134,7 @@ export class VehiclesAddModalComponent implements OnInit {
                   km: this.item.km || null,
                   trade: this.item.trade || null,
                   year: this.item.year || null,
+                  number: this.item.number || null
           })
           .pipe(take(1))
           .subscribe(
@@ -153,6 +155,7 @@ export class VehiclesAddModalComponent implements OnInit {
                   km: this.item.km,
                   trade: this.item.trade,
                   year: this.item.year,
+                  number: this.item.number
               })
               .pipe(take(1))
               .subscribe(

@@ -100,22 +100,14 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-                                              <button mat-menu-item (click)="insertProject_service(element)">
+                                              <!-- <button mat-menu-item (click)="insertProject_service(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Orden servicio</span>
                                               </button>
                                               <button mat-menu-item (click)="viewProject_service(element)">
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Orden servicio</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertValidation(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Servicio validado</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewValidation(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Servicio validado</span>
-                                              </button>
+                                              </button> -->
                                             <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
                                                 <mat-icon>edit</mat-icon>
                                                 <span>Editar</span>
@@ -134,7 +126,7 @@
                                     </td>
                                 </ng-container>
                                 <ng-container matColumnDef="initialMessage">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Mensaje inicial</th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Descripción</th>
                                     <td mat-cell *matCellDef="let element"> 
                                           {{ element.initialMessage  }}
                                     </td>

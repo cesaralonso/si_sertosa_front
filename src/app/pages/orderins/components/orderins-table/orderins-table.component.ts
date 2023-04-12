@@ -33,12 +33,14 @@ export class OrderinsTableComponent implements OnInit {
       'warehouse_warehouse_idwarehouse',
       'product_product_idproduct',
       'quantity',
+      'motive',
     ];
     displayedLabels: string[] = [
       '',
       '',
       'Producto',
       'Cantidad',
+      'Motivo',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -93,11 +95,39 @@ export class OrderinsTableComponent implements OnInit {
           this.findByIdWarehouse(idwarehouse);
           this.backpage = true;
         }
+
+        if (params['idwarehouseForInventary'] !== undefined) {
+          const idwarehouseForInventary = +params['idwarehouseForInventary'];
+          this.findInventaryByIdWarehouse(idwarehouseForInventary);
+          this.backpage = true;
+        }
+
         if (!this.backpage) {
           this.getAll();
         }
       });
     }
+
+
+    private findInventaryByIdWarehouse(id: number): void {
+      this.service
+        .findInventaryByIdWarehouse(id)
+        .pipe(take(1))
+        .subscribe(
+            (data: OrderinsResponseInterface) => {
+                if (data.success) {
+                  this.data = new MatTableDataSource<OrderinsInterface>(data.result);
+                  this.data.paginator = this.paginator;
+                  this.data.sort = this.sort;
+                } else {
+                  this.toastrService.error(data.message);
+                }
+            },
+            error => console.log(error),
+            () => console.log('Get all Items complete'))
+    }
+
+
     private findByIdProduct(id: number): void {
       this.service
         .findByIdProduct(id)

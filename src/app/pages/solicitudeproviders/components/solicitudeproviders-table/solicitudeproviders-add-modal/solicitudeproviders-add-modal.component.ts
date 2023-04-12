@@ -15,6 +15,8 @@ import { Project_servicesService } from './../../../../project_services/componen
 import { Project_servicesAddModalComponent } from './../../../../project_services/components/project_services-table/project_services-add-modal/project_services-add-modal.component';
 import { Project_servicesInterface } from './../../../../project_services/components/project_services-table/project_services.interface';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { WarehousesInterface } from './../../../../warehouses/components/warehouses-table/warehouses.interface';
+import { WarehousesService } from './../../../../warehouses/components/warehouses-table/warehouses.service';
 
 
 @Component({
@@ -27,6 +29,8 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
   _project_service: Project_servicesInterface[] = [];
   providerRewriteable: boolean = false;
   project_serviceRewriteable: boolean = false;
+  _warehouse: WarehousesInterface[] = [];
+
 
   modalHeader: string;
   data: any;
@@ -41,6 +45,7 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
     /* private socketIOService: SocketIOService, */
     private providersService: ProvidersService,
     private project_servicesService: Project_servicesService,
+    private warehousesService: WarehousesService,
     fb: FormBuilder,
     private toastrService: ToasterService,
     public dialog: MatDialog,
@@ -51,6 +56,7 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
     'provider_idproviderAC' : ['', this.item.provider_idprovider ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'project_service_idproject_serviceAC' : ['', this.item.project_service_idproject_service ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    'warehouse_idwarehouseAC' : ['', this.item.warehouse_idwarehouse ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null]
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -76,6 +82,7 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
   }
   ngOnInit() {
       this.getProvider();
+      this.getWarehouse();
       this.getProject_service();
       // Revisa si es agregar o editar
       if (this.item.idsolicitudeprovider) {
@@ -83,6 +90,19 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
       } else {
           this.accion = "Agregar";
       }
+  }
+  getWarehouse(idwarehouse?: number) {
+      this.warehousesService.all()
+      .pipe(take(1))
+      .subscribe(
+          (data: any) => {
+              this._warehouse = data.result;
+              if (idwarehouse) {
+                  this.form.patchValue({
+                      warehouse_idwarehouseAC: idwarehouse
+                  });
+              }
+          });
   }
   providerAddModalShow() {
       const dialogRef = this.dialog.open(ProvidersAddModalComponent, {
@@ -173,6 +193,7 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
           .insert({
                   provider_idprovider: this.item.provider_idprovider || null,
                   project_service_idproject_service: this.item.project_service_idproject_service || null,
+                  warehouse_idwarehouse: this.item.warehouse_idwarehouse || null,
                   status: this.item.status || null,
           })
           .pipe(take(1))
@@ -190,6 +211,7 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
                   idsolicitudeprovider: this.item.idsolicitudeprovider,
                   provider_idprovider: this.item.provider_idprovider,
                   project_service_idproject_service: this.item.project_service_idproject_service,
+                  warehouse_idwarehouse: this.item.warehouse_idwarehouse,
                   status: this.item.status,
               })
               .pipe(take(1))

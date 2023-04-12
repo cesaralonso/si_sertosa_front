@@ -1,0 +1,358 @@
+import { AuthService } from '../../../../../shared/services/auth.service';
+import { ServicesService } from '../services.service';
+import { ServicesInterface } from '../services.interface';
+import { Component, OnInit, Inject } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ToasterService } from '../../../../../shared/services/toaster.service';
+import { take } from 'rxjs/operators';
+/* import { HttpEventType, HttpEvent } from '@angular/common/http'; */
+/* import { Message, Type } from './../../../../../shared/models'; */
+/* import { SocketIOService } from './../../../../../shared/services/socketio.service'; */
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+/* import { Service_productsInterface } from './../../../../service_products/components/service_products-table/service_products.interface'; */
+import { ProductsInterface } from '../../../../products/components/products-table/products.interface';
+import { ProductsResponseInterface } from '../../../../products/components/products-table/products-response.interface';
+import { ProductsService } from '../../../../products/components/products-table/products.service';
+import { EmployeesInterface } from '../../../../employees/components/employees-table/employees.interface';
+import { EmployeesService } from '../../../../employees/components/employees-table/employees.service';
+import { FamilysService } from '../../../../familys/components/familys-table/familys.service';
+import { FamilysInterface } from '../../../../familys/components/familys-table/familys.interface';
+
+/* import { Editor } from 'ngx-editor'; */
+import * as _ from 'lodash';
+
+
+
+
+
+@Component({
+  selector: 'add-service-modal',
+  styleUrls: [('./services-add-modal.component.scss')],
+  templateUrl: './services-add-modal.component.html'
+})
+export class ServicesAddModalComponent implements OnInit {
+
+  modalHeader: string;
+  data: any;
+  form: FormGroup;
+  submitted: boolean = false;
+  user;
+  accion = 'Agregar';
+
+  preguntasSeleccionadas: any[] = [];
+  familysSelected: any[] = [];
+  employeegroupsSelected: any[] = [];
+  
+  _products: ProductsInterface[] = [];
+  _familys: FamilysInterface[] = [];
+  _employees: EmployeesInterface[] = [];
+
+  _productsFiltered: ProductsInterface[] = [];
+  _employeesFiltered: ProductsInterface[] = [];
+
+  _familysFiltered: FamilysInterface[] = [];
+
+  checkedAll = false;
+
+  /* editor: Editor; */
+  html: '';
+  /* saveAsTemplate = false; */
+  _service: ServicesInterface[] = [];
+  template: any;
+ 
+  constructor(
+    private service: ServicesService,
+    private productsService: ProductsService,
+    private familysService: FamilysService,
+    private employeesService: EmployeesService,
+    private authService: AuthService, 
+    /* private socketIOService: SocketIOService, */
+    fb: FormBuilder,
+    private toastrService: ToasterService,
+    public dialog: MatDialog,
+    public dialogRef: MatDialogRef<ServicesAddModalComponent>,
+    @Inject(MAT_DIALOG_DATA) public item: ServicesInterface
+  ) {
+    this.form = fb.group({
+    'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(145)]) : null],
+    'timeAC' : [''],
+    'initialMessageAC' : ['', this.item.initialMessage ? Validators.compose([ Validators.required]) : null],
+    /* 'finalMessageAC' : ['', this.item.finalMessage ? Validators.compose([ Validators.required]) : null], */
+    /* 'emailMessageAC' : ['', this.item.emailMessage ? Validators.compose([ Validators.required]) : null], */
+    });
+    // Buscar permisos del usuario en el módulo
+    this.user = this.authService.useJwtHelper();
+
+    if (this.user.super) {
+    } else {
+        const userModules = this.authService.getUserModules();
+        if (userModules[0]) {
+            for (const element in userModules) {
+                if (userModules.hasOwnProperty(element)) {
+                } 
+            }
+        }
+    }
+  }
+  ngOnInit() {
+      // Revisa si es agregar o editar
+      if (this.item.idservice) {
+          this.accion = "Editar";
+      } else {
+          this.accion = "Agregar";
+          this.getAllProducts();
+      }
+      /* this.getAllEmployeeGroups();
+      this.getAllClasificatorByIdCampaign(); */
+      this.getAllEmployees();
+
+      // Templates
+      this.getAllService();
+
+    // Wysiwyg 
+    /* this.editor = new Editor(); */
+  }
+
+  getAllService() {
+    this.service
+        .getAllTemplates()
+        .pipe(take(1))
+        .subscribe(
+            (data: ProductsResponseInterface) =>  {
+                if (data.success) {
+                    const __service = data.result;
+
+                    // formatear selected de number a boolean
+                    __service.map(service => {
+
+                        service.downloable = (service.downloable === 1) ? true : false;
+                        service.showEmployee = (service.showEmployee === 1) ? true : false;
+                        service.saveAsTemplate = (service.saveAsTemplate === 1) ? true : false;
+
+                        service.family.map(family => {
+                            family.product.map(product => {
+                                product.selected = (product.selected === 1) ? true : false;
+                            });
+                        });
+                    });
+                    this._service = __service;
+
+                } else {
+                    this.toastrService.error(data.message);
+                }
+            },
+            error => console.log(error),
+            () => console.log('Get all Items complete'))
+  }
+
+  // make sure to destory the editor
+  ngOnDestroy(): void {
+    /* this.editor.destroy(); */
+  }
+
+  getAllEmployees(): void {
+    this.employeesService
+      .all()
+      .pipe(take(1))
+      .subscribe(
+          (data: ProductsResponseInterface) =>  {
+              if (data.success) {
+                this._employees = data.result;
+              } else {
+                this.toastrService.error(data.message);
+              }
+          },
+          error => console.log(error),
+          () => console.log('Get all Items complete'))
+  }
+  getAllProducts(): void {
+    this.familysService
+      .all()
+      .pipe(take(1))
+      .subscribe(
+          (data: ProductsResponseInterface) =>  {
+              if (data.success) {
+                /* this._products = data.result.familys; */
+                this._familys = data.result.familys;
+                this.item.family = data.result.familys;
+              } else {
+                this.toastrService.error(data.message);
+              }
+          },
+          error => console.log(error),
+          () => console.log('Get all Items complete'))
+  }
+
+  confirm() {
+      this.dialogRef.close(this.data);
+  }
+
+    dropEmployeegroups(event: CdkDragDrop<string[]>) {
+        
+        /* this._productsFiltered = []; */
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        } else {
+            transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex,
+            );
+        }
+
+        let employees = [];
+        this.employeegroupsSelected.forEach((employeegroup: any) => {
+            if (employeegroup.employee.length) {
+                employees.push(...employeegroup.employee);
+            }
+        });
+        this._employeesFiltered = _.uniqBy(employees, 'idemployee');
+    }
+
+    dropFamilys(event: CdkDragDrop<string[]>) {
+        
+        /* this._productsFiltered = []; */
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        } else {
+            transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex,
+            );
+        }
+
+        let products = [];
+        this.familysSelected.forEach((family: any) => {
+            if (family.product.length) {
+                console.log('dropFamilys family.product', family.product);
+                products.push(...family.product);
+            }
+        });
+        this._productsFiltered = products;
+    }
+
+    dropProducts(event: CdkDragDrop<string[]>) {
+        /* this._productsFiltered = []; */
+        if (event.previousContainer === event.container) {
+            moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+        } else {
+            transferArrayItem(
+            event.previousContainer.data,
+            event.container.data,
+            event.previousIndex,
+            event.currentIndex,
+            );
+        }
+    }
+
+    selectAllProductGroup(idfamily: number, checked: boolean) {
+        this._familys
+            .filter(o => o.idfamily === idfamily)
+            .map(family => {
+                family.product.map(product => {
+                    product.selected = checked
+                });
+            });
+    }
+
+    selectAll() {
+        this._employeesFiltered.map(employee => employee.selected = this.checkedAll);
+    }
+
+    selectionChange(stepper: any) {
+        console.log('stepper.selectedIndex', stepper.selectedIndex);
+    }
+
+    onSubmit(): void {
+        this.submitted = true;
+        
+        if (this.item.idservice) {
+            this.onUpdate();
+        } else {
+            this.onInsert();
+        }
+    }
+
+    onInsert(): void {
+        if (this.form.valid) {
+        
+        this._employeesFiltered = this._employeesFiltered.filter(o => o.selected);
+
+        let selectedProducts = [];
+        this.item.family.map(family => {
+            selectedProducts = [...selectedProducts, ...family.product.filter(o => o.selected)];
+        });
+        console.log('selectedProducts', selectedProducts);
+
+        //// REVISAR COMO CAMBIAR PAYLOAD POR SOLO ENVIAR this.item QUE YA TRAE TODO....
+        this.service
+        .insert({
+                name: this.item.name || null,
+                initialMessage: this.item.initialMessage || null,
+                finalMessage: '',
+                emailMessage:  this.item.emailMessage || '',
+                downloable: true,
+                showEmployee: true,
+                employees: this._employeesFiltered || null,
+                products: this.preguntasSeleccionadas || null,
+                /* products: selectedProducts || null, */
+                familys: this.familysSelected || null,
+                project_idproject: this.item.project_idproject || null,
+                /* company_logo: this.authService.company_logo || null,
+                company_name: this.authService.company_name || null, */
+                company_logo: null,
+                company_name: null,
+                saveAsTemplate: this.item.saveAsTemplate,
+                time: (+this.item.time * 86400) || null
+        })
+        .pipe(take(1))
+        .subscribe(
+            (data: any) => {
+            this.data = data;
+            this.confirm();
+            });
+        }
+    }
+    
+    //// REVISAR COMO APLICAR TECNICA DE TEMPLATE PARA RECUPERAR TODAS LAS RELACIONES PARA EDITAR...
+    onUpdate(): void {
+        if (this.form.valid) {
+            this.service
+                .update({
+                    idservice: this.item.idservice,
+                    name: this.item.name,
+                    /* responseRules: this.item.responseRules, */
+                    initialMessage: this.item.initialMessage,
+                    /* finalMessage: this.item.finalMessage,
+                    showEmployee: this.item.showEmployee
+                    downloable: this.item.downloable, */
+                    finalMessage: '',
+                    emailMessage: this.item.emailMessage,
+                    downloable: true,
+                    showEmployee: true,
+                    employees: this._employeesFiltered,
+                    products: this.preguntasSeleccionadas,
+                    familys: this.familysSelected,
+                    saveAsTemplate: this.item.saveAsTemplate,
+                    time: (+this.item.time * 86400)
+                })
+                .pipe(take(1))
+                .subscribe(
+                    (data: any) => {
+                        this.data = data;
+                        this.confirm();
+                });
+        }
+    }
+
+    setTemplate(idservice: number) {
+        this.item = this._service.filter(o => o.idservice === idservice)[0];
+        console.log('this.item', this.item);
+    }
+
+}

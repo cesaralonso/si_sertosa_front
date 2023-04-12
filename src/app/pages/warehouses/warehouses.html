@@ -1,1 +1,2 @@
-  <warehouses-table></warehouses-table>
+  <warehouses-table *ngIf="!idwarehouse"></warehouses-table>
+  <warehouse-inventary-table *ngIf="idwarehouse"></warehouse-inventary-table>

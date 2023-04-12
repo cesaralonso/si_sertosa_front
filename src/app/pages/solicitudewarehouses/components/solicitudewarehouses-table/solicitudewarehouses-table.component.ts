@@ -32,15 +32,23 @@ export class SolicitudewarehousesTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'product_product_idproduct',
+      'provider_provider_idprovider',
+      'quantity',
       'project_service_project_service_idproject_service',
       'warehouse_warehouse_idwarehouse',
+      'usuario',
       'status',
     ];
     displayedLabels: string[] = [
       '',
+      'Producto',
+      'Proveedor',
+      'Cantidad',
       'Reparación',
       'Almacen',
-      '',
+      'Usuario',
+      'Status',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

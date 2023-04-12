@@ -47,7 +47,7 @@ export class ServicesTableComponent implements OnInit {
     displayedLabels: string[] = [
       '',
       'Nombre',
-      'Mensaje inicial',
+      'Descripción',
       /* 'Mensaje final',
       'Mensaje email',
       'Descargable',
