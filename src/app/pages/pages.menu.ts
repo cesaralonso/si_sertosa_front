@@ -2,6 +2,19 @@ export const PAGES_MENU = [
 {
     path: 'pages',
     children: [
+      //prueva
+    /*{
+      path: 'reports',
+      data: {
+      menu: {
+          title: 'general.menu.reports',
+          icon: 'ion-social-buffer',
+          selected: false,
+          expanded: false,
+          order: 0
+      }
+      }
+  },*/
         {
             path: 'dashboard',
             data: {
@@ -373,7 +386,7 @@ export const PAGES_MENU = [
             order: 0
         }
         }
-    }
+    },
     ]
 }
 ];

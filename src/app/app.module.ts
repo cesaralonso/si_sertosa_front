@@ -96,6 +96,7 @@ declarations: [
     ProjectsAddModalComponent,
     Project_servicesAddModalComponent,
     ProvidersAddModalComponent,
+  
     ServicesAddModalComponent,
     Service_employeesAddModalComponent,
     Si_alertasAddModalComponent,

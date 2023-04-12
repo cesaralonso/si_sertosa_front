@@ -1,164 +1,278 @@
 <div class="widgets">
-    <div class="row">
-        <div class="col">
-            <div class="row">
-                <div class="col mb-1">
-                    <button style="float:left" 
-                        mat-fab 
-                        class="full-width m-1" 
-                        color="primary" 
-                        *ngIf="!backpage && writeable" 
-                        (click)="addModalShow()" 
-                        matTooltip="Agrega un Nuevo Proveedor">
-                        <mat-icon>add</mat-icon>
-                     </button>
-                        <button style="float:right" class="m-1"
-                        mat-mini-fab 
-                        class="full-width m-1" 
-                        color="link" 
-                        (click)="descargarCSV(data, 'Reporte Proveedor', true)" 
-                        matTooltip="Descargar Reporte">
-                        <mat-icon>download</mat-icon>
-                    </button>
-                    <button 
-                        style="float:right" 
-                        class="m-1" 
-                        mat-mini-fab color="link" 
-                        aria-label="Muestra un botón para recargar datos de la tabla" 
-                        matTooltip="Recargar datos"
-                        (click)="refill()">
-                        <mat-icon>refresh</mat-icon>
-                    </button>
-                    <button
-                        #filter
-                        style="float:right" 
-                        class="m-1" 
-                        mat-mini-fab [color]="filter.value ? 'warn' : 'accent'" 
-                        aria-label="Muestra un botón para filtrar por fechas de creación" 
-                        [matTooltip]="filter.value ? 'Ocultar filtro por fechas de creación' : 'Mostrar filtro por fechas de creación'"
-                        (click)="filter.value = !filter.value">
-                        <mat-icon>filter_list</mat-icon>
-                    </button>
-                </div>
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col mb-1">
+          <button style="float:left" mat-fab class="full-width m-1" color="primary" *ngIf="!backpage && writeable"
+            (click)="addModalShow()" matTooltip="Agrega un Nuevo Proveedor">
+            <mat-icon>add</mat-icon>
+          </button>
+          <button style="float:right" class="m-1" mat-mini-fab class="full-width m-1" color="link"
+            (click)="descargarCSV(data, 'Reporte Proveedor', true)" matTooltip="Descargar Reporte">
+            <mat-icon>download</mat-icon>
+          </button>
+          <button style="float:right" class="m-1" mat-mini-fab color="link"
+            aria-label="Muestra un botón para recargar datos de la tabla" matTooltip="Recargar datos"
+            (click)="refill()">
+            <mat-icon>refresh</mat-icon>
+          </button>
+          <button #filter style="float:right" class="m-1" mat-mini-fab [color]="filter.value ? 'warn' : 'accent'"
+            aria-label="Muestra un botón para filtrar por fechas de creación"
+            [matTooltip]="filter.value ? 'Ocultar filtro por fechas de creación' : 'Mostrar filtro por fechas de creación'"
+            (click)="filter.value = !filter.value">
+            <mat-icon>filter_list</mat-icon>
+          </button>
+        </div>
+      </div>
+
+
+      <mat-card class="dashboard-card animated fadeIn" *ngIf="filter.value">
+        <mat-card-header>
+          <mat-card-title>
+            <h4>Filtrar por fechas de creación</h4>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="row">
+            <div class="col-md-4">
+              <mat-form-field color="accent" class="full-width" appearance="fill">
+                <mat-label>Desde:</mat-label>
+                <input matInput type="date" #fechaDesde />
+              </mat-form-field>
             </div>
-            <mat-card class="dashboard-card animated fadeIn" *ngIf="filter.value">
-                <mat-card-header>
-                    <mat-card-title>
-                        <h4>Filtrar por fechas de creación</h4>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <mat-form-field  color="accent" class="full-width" appearance="fill">
-                                <mat-label>Desde:</mat-label>
-                                <input matInput type="date" #fechaDesde/>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <mat-form-field  color="primary" class="full-width" appearance="fill">
-                                <mat-label>Hasta:</mat-label>
-                                <input matInput type="date" #fechaHasta/>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-md-4">
-                            <button 
-                                mat-raised-button color="accent" class="full-width"
-                                [disabled]="!fechaDesde.value && !fechaHasta.value" 
-                                (click)="filtrarFechas(fechaDesde.value, fechaHasta.value)">
-                                Filtrar
-                            </button>
-                        </div>
+            <div class="col-md-4">
+              <mat-form-field color="primary" class="full-width" appearance="fill">
+                <mat-label>Hasta:</mat-label>
+                <input matInput type="date" #fechaHasta />
+              </mat-form-field>
+            </div>
+            <div class="col-md-4">
+              <button mat-raised-button color="accent" class="full-width"
+                [disabled]="!fechaDesde.value && !fechaHasta.value"
+                (click)="filtrarFechas(fechaDesde.value, fechaHasta.value)">
+                Filtrar
+              </button>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+
+      <!--Inicio de los tabs-->
+      <mat-tab-group>
+        <!--Tab de la tabla de provedores-->
+        <mat-tab label="Tabla de Provedores">
+          <mat-card class="dashboard-card animated fadeIn with-scroll">
+            <mat-card-header>
+              <mat-card-title>
+                <h2>Información de Proveedor</h2>
+              </mat-card-title>
+            </mat-card-header>
+            <mat-card-content class="dashboard-card-content">
+              <div class="row">
+                <div class="col-md-12">
+                  <span style="float:right" class=" m-1">
+                    <mat-form-field appearance="outline">
+                      <mat-icon matPrefix> search</mat-icon>
+                      <mat-label>Búsqueda</mat-label>
+                      <input matInput (keyup)="applyFilter($event)" placeholder="Realiza una búsqueda" #input>
+                    </mat-form-field>
+                  </span>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 card-table">
+                  <table mat-table matSort [dataSource]="data">
+                    <ng-container matColumnDef="actions">
+                      <th mat-header-cell *matHeaderCellDef></th>
+                      <td mat-cell *matCellDef="let element">
+                        <button mat-icon-button [matMenuTriggerFor]="menu">
+                          <mat-icon>more_vert</mat-icon>
+                        </button>
+                        <mat-menu #menu="matMenu">
+                          <button mat-menu-item (click)="insertProduct(element)">
+                            <mat-icon>add</mat-icon>
+                            <span>Agregar Refacción</span>
+                          </button>
+                          <button mat-menu-item (click)="viewProduct(element)">
+                            <mat-icon>view_list</mat-icon>
+                            <span>Ver Refacción</span>
+                          </button>
+                          <button mat-menu-item (click)="insertSolicitudeprovider(element)">
+                            <mat-icon>add</mat-icon>
+                            <span>Agregar Solicitud a proveedor</span>
+                          </button>
+                          <button mat-menu-item (click)="viewSolicitudeprovider(element)">
+                            <mat-icon>view_list</mat-icon>
+                            <span>Ver Solicitud a proveedor</span>
+                          </button>
+                          <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
+                            <mat-icon>edit</mat-icon>
+                            <span>Editar</span>
+                          </button>
+                          <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
+                            <mat-icon>delete_forever</mat-icon>
+                            <span>Eliminar</span>
+                          </button>
+                        </mat-menu>
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="logo">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Logotipo</th>
+                      <td mat-cell *matCellDef="let element">
+                        <img src="{{ element.logo }}" alt="{{ element.name }}" width="150" *ngIf="element.logo">
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.name }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="alias">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Alias</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.alias }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="rfc">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>RFC</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.rfc }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="billing_email">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo de Facturación</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.billing_email }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="office_phone">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telefono de oficina</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.office_phone }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="care_contact">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Contacto de atención</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.care_contact }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="care_email">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Correo de atención</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.care_email }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="care_phone">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Telenfono de atención</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.care_phone }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="skus">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Skus</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.skus }}
+                      </td>
+                    </ng-container>
+                    <ng-container matColumnDef="status">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+                      <td mat-cell *matCellDef="let element">
+                        {{ element.status }}
+                      </td>
+                    </ng-container>
+                    <!---->
+
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col">
+                  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                </div>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </mat-tab>
+
+
+
+
+
+
+        <!--Tab de modulo-->
+        <mat-tab label="Tarjetas provedores">
+
+          <mat-card class="dashboard-card animated fadeIn with-scroll">
+            <mat-card-header>
+              <mat-card-title>
+                <h2>Información de Proveedor</h2>
+              </mat-card-title>
+            </mat-card-header>
+
+              <mat-card style="display: flex; flex-wrap: wrap; box-shadow: none;">
+                <div class="card" *ngFor="let element of _provider">
+                  <div class="img-card"><img src="{{ element.logo }}" width="150" class="img-fluid rounded-start"
+                      alt="{{ element.name }}" *ngIf="element.logo"></div>
+                  <div class="content">
+                    <div class="menu" style="float:right">
+                      <button mat-icon-button [matMenuTriggerFor]="menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="insertProduct(element)">
+                          <mat-icon>add</mat-icon>
+                          <span>Agregar Refacción</span>
+                        </button>
+                        <button mat-menu-item (click)="viewProduct(element)">
+                          <mat-icon>view_list</mat-icon>
+                          <span>Ver Refacción</span>
+                        </button>
+                        <button mat-menu-item (click)="insertSolicitudeprovider(element)">
+                          <mat-icon>add</mat-icon>
+                          <span>Agregar Solicitud a proveedor</span>
+                        </button>
+                        <button mat-menu-item (click)="viewSolicitudeprovider(element)">
+                          <mat-icon>view_list</mat-icon>
+                          <span>Ver Solicitud a proveedor</span>
+                        </button>
+                        <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
+                          <mat-icon>edit</mat-icon>
+                          <span>Editar</span>
+                        </button>
+                        <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
+                          <mat-icon>delete_forever</mat-icon>
+                          <span>Eliminar</span>
+                        </button>
+                      </mat-menu>
                     </div>
-                </mat-card-content>
+                    <div class="title">
+
+                      <li *ngIf="element.status == 'ACTIVO' || element.status == 'Activo'" class="fa fa-circle text-success" > <span style="color:black">{{ element.status}}</span>  </li>
+                      <li *ngIf="element.status == 'En proceso' || element.status == 'En Proceso'|| element.status == 'EN PROCESO'" class="fa fa-circle text-warning"> <span style="color:black">{{ element.status}}</span>  </li>
+                      <li *ngIf="element.status == 'Cerrada'|| element.status == 'CERRADA'" class="fa fa-circle text-danger"> <span style="color:black">{{ element.status}}</span>  </li>
+                      <h3 class="mat-h3">{{element.name}}</h3>
+                    </div>
+                    <div class="text">
+                      <p class="mat-p"><br>
+                        <span>Solicitudes: </span> {{element.solicitudeproviderCount}}
+                      </p>
+                    </div>
+
+                  </div>
+                </div>
+              </mat-card>
+
+              <!--<app-card-container [dataEntrante]="_provider"></app-card-container>-->
             </mat-card>
-            <mat-card class="dashboard-card animated fadeIn with-scroll" >
-                <mat-card-header>
-                    <mat-card-title>
-                        <h2>Información de Proveedor</h2>
-                    </mat-card-title>
-                </mat-card-header>
-                <mat-card-content class="dashboard-card-content">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <span  style="float:right" class=" m-1">
-                                <mat-form-field appearance="outline">
-                                    <mat-icon matPrefix> search</mat-icon>
-                                    <mat-label>Búsqueda</mat-label>
-                                    <input matInput (keyup)="applyFilter($event)" placeholder="Realiza una búsqueda" #input>
-                                </mat-form-field>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-12 card-table">
-                            <table mat-table matSort [dataSource]="data">
-                                <ng-container matColumnDef="actions">
-                                    <th mat-header-cell *matHeaderCellDef></th>
-                                    <td mat-cell *matCellDef="let element"> 
-                                        <button mat-icon-button [matMenuTriggerFor]="menu">
-                                            <mat-icon>more_vert</mat-icon>
-                                        </button>
-                                        <mat-menu #menu="matMenu">
-                                              <button mat-menu-item (click)="insertProduct(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Refacción</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewProduct(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Refacción</span>
-                                              </button>
-                                              <button mat-menu-item (click)="insertSolicitudeprovider(element)">
-                                                  <mat-icon>add</mat-icon>
-                                                  <span>Agregar Solicitud a proveedor</span>
-                                              </button>
-                                              <button mat-menu-item (click)="viewSolicitudeprovider(element)">
-                                                  <mat-icon>view_list</mat-icon>
-                                                  <span>Ver Solicitud a proveedor</span>
-                                              </button>
-                                            <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
-                                                <mat-icon>edit</mat-icon>
-                                                <span>Editar</span>
-                                            </button>
-                                            <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
-                                                <mat-icon>delete_forever</mat-icon>
-                                                <span>Eliminar</span>
-                                            </button>
-                                        </mat-menu>
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="name">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
-                                    <td mat-cell *matCellDef="let element"> 
-                                          {{ element.name  }}
-                                    </td>
-                                </ng-container>
-                                <ng-container matColumnDef="status">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
-                                    <td mat-cell *matCellDef="let element"> 
-                                          {{ element.status  }}
-                                    </td>
-                                </ng-container>
-                                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
-                                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+
+
+        </mat-tab>
+
+      </mat-tab-group>
     </div>
-    <div class="row">
-        <div class="col-sm-2" *ngIf="backpage">
-            <button mat-menu-item (click)="backPage()" color="link">
-              <mat-icon>arrow_back</mat-icon>
-              <span>Regresar</span>
-            </button>
-        </div>
-    </div>
-</div>
+  </div>

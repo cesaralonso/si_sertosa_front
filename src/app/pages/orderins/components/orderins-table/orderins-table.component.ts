@@ -47,17 +47,17 @@ export class OrderinsTableComponent implements OnInit {
 
 
     constructor(
-      private service: OrderinsService, 
-      private toastrService: ToasterService, 
-      private authService: AuthService, 
-      private route: ActivatedRoute, 
+      private service: OrderinsService,
+      private toastrService: ToasterService,
+      private authService: AuthService,
+      private route: ActivatedRoute,
       private commonService: CommonService,
       public dialog: MatDialog,
       private router: Router) {
 
       // Buscar permisos del usuario en el módulo
       this.user = this.authService.useJwtHelper();
-      
+
       if (this.user.super) {
         this.updateable = true;
         this.deleteable = true;
@@ -81,7 +81,7 @@ export class OrderinsTableComponent implements OnInit {
     ngOnDestroy() {
         this.routeParamsSubs.unsubscribe();
     }
-    refill() { 
+    refill() {
       this.routeParamsSubs = this.route.params.subscribe(params => {
         if (params['idproduct'] !== undefined) {
           const idproduct = +params['idproduct'];

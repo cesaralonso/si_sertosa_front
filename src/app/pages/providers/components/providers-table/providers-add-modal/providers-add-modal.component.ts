@@ -9,6 +9,7 @@ import { take } from 'rxjs/operators';
 /* import { Message, Type } from './../../../../../shared/models'; */
 /* import { SocketIOService } from './../../../../../shared/services/socketio.service'; */
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { HttpEventType, HttpEvent } from '@angular/common/http';
 
 
 @Component({
@@ -18,6 +19,8 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 })
 export class ProvidersAddModalComponent implements OnInit {
 
+
+
   modalHeader: string;
   data: any;
   form: FormGroup;
@@ -25,9 +28,14 @@ export class ProvidersAddModalComponent implements OnInit {
   user;
   accion = 'Agregar';
 
+  // IMAGENES
+    preview: string;
+    percentDone: any = 0;
+    isPermited = false;
+
   constructor(
     private service: ProvidersService,
-    private authService: AuthService, 
+    private authService: AuthService,
     /* private socketIOService: SocketIOService, */
     fb: FormBuilder,
     private toastrService: ToasterService,
@@ -37,7 +45,17 @@ export class ProvidersAddModalComponent implements OnInit {
   ) {
     this.form = fb.group({
     'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    'aliasAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'rfcAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'billing_emailAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'office_phoneAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'care_contactAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'care_emailAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'care_phoneAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'skusAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
     'statusAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'logoAC' : ['', this.item.logo ? Validators.compose([ Validators.maxLength(300)]) : null],
+
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -48,7 +66,7 @@ export class ProvidersAddModalComponent implements OnInit {
         if (userModules[0]) {
             for (const element in userModules) {
                 if (userModules.hasOwnProperty(element)) {
-                } 
+                }
             }
         }
     }
@@ -72,35 +90,166 @@ export class ProvidersAddModalComponent implements OnInit {
           this.onInsert();
       }
   }
+
+  // IMÁGENES
   onInsert(): void {
-      if (this.form.valid) {
-          this.service
-          .insert({
-                  name: this.item.name || null,
-                  status: this.item.status || null,
-          })
-          .pipe(take(1))
-          .subscribe(
-              (data: any) => {
-              this.data = data;
-              this.confirm();
-              });
-      }
+
+    // SI HAY FOTO CAPTURADA LA REDIMENSIONA
+    if (this.preview) {
+        this.form.patchValue({
+            logoAC: this.dataURItoBlob(this.resizeImage(this.preview))
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+    }
+
+  if (this.form.valid) {
+      this.service
+      .insertFile({
+        name: this.item.name || null,
+        alias: this.item.alias,
+        rfc: this.item.rfc,
+        billing_email: this.item.billing_email,
+        office_phone: this.item.office_phone,
+        care_contact: this.item.care_contact,
+        care_email: this.item.care_email,
+        care_phone: this.item.care_phone,
+        skus: this.item.skus,
+        status: this.item.status || null,
+      }, this.form.value.logoAC)
+      .subscribe((event: HttpEvent<any>) => {
+          switch (event.type) {
+              case HttpEventType.Sent:
+                  console.log('Request has been made!');
+              break;
+              case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+              break;
+              case HttpEventType.UploadProgress:
+                  this.percentDone = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! %`);
+              break;
+              case HttpEventType.Response:
+                  console.log('Successfully created!', event.body);
+                  this.percentDone = false;
+                  this.data = event.body;
+                  this.confirm();
+          }
+      });
   }
+}
+
+
   onUpdate(): void {
-      if (this.form.valid) {
-          this.service
-              .update({
-                  idprovider: this.item.idprovider,
-                  name: this.item.name,
-                  status: this.item.status,
-              })
-              .pipe(take(1))
-              .subscribe(
-                  (data: any) => {
-                      this.data = data;
+    if (this.form.valid) {
+        this.service
+            .updateFile({
+              idprovider: this.item.idprovider,
+              name: this.item.name,
+              alias: this.item.alias,
+              rfc: this.item.rfc,
+              billing_email: this.item.billing_email,
+              office_phone: this.item.office_phone,
+              care_contact: this.item.care_contact,
+              care_email: this.item.care_email,
+              care_phone: this.item.care_phone,
+              skus: this.item.skus,
+              status: this.item.status,
+            },this.form.value.logoAC)
+            .subscribe((event: HttpEvent<any>) => {
+              switch (event.type) {
+                  case HttpEventType.Sent:
+                      console.log('Request has been made!');
+                  break;
+                  case HttpEventType.ResponseHeader:
+                      console.log('Response header has been received!');
+                  break;
+                  case HttpEventType.UploadProgress:
+                      this.percentDone = Math.round(event.loaded / event.total * 100);
+                      console.log(`Uploaded! %`);
+                  break;
+                  case HttpEventType.Response:
+                      console.log('Successfully created!', event.body);
+                      this.percentDone = false;
+                      this.data = event.body;
+
                       this.confirm();
-              });
-      }
-  }
+              }
+          });
+    }
+}
+  // Image Preview
+  uploadFile(event) {
+    var fileTypes = ['png', 'jpg', 'jpeg'];  //acceptable file types
+    const file = (event.target as HTMLInputElement).files[0];
+    const extension = file.name.split('.').pop().toLowerCase();  //file extension from input file
+    this.isPermited = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+    if (this.isPermited) {
+        this.form.patchValue({
+            logoAC: file
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.preview = reader.result as string;
+        }
+        reader.readAsDataURL(file);
+    } else {
+        this.form.patchValue({
+            logoAC: ''
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+        this.preview = '';
+    }
+}
+resizeImage(dataURI: string): string {
+    var img = document.createElement("img");
+    img.src = dataURI;
+
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d")!;
+    ctx.drawImage(img, 0, 0);
+
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 800;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+        if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+        }
+    } else {
+        if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+        }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var dataurl = canvas.toDataURL(mimeString, 0.7); // COMPRESIÓN
+
+    return dataurl;
+}
+dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: mimeString});
+}
+
 }

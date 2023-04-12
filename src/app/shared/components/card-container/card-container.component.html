@@ -1,0 +1,49 @@
+<mat-card style="display: flex; flex-wrap: wrap; box-shadow: none;">
+  <div class="card" *ngFor="let element of dataEntrante">
+    <div class="img-card"><img src="{{ element.logo }}" width="150" class="img-fluid rounded-start"
+        alt="{{ element.name }}" *ngIf="element.logo"></div>
+    <div class="content">
+      <div class="menu" style="float:right">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item (click)="insertProduct(element)">
+            <mat-icon>add</mat-icon>
+            <span>Agregar Refacción</span>
+          </button>
+          <button mat-menu-item (click)="viewProduct(element)">
+            <mat-icon>view_list</mat-icon>
+            <span>Ver Refacción</span>
+          </button>
+          <button mat-menu-item (click)="insertSolicitudeprovider(element)">
+            <mat-icon>add</mat-icon>
+            <span>Agregar Solicitud a proveedor</span>
+          </button>
+          <button mat-menu-item (click)="viewSolicitudeprovider(element)">
+            <mat-icon>view_list</mat-icon>
+            <span>Ver Solicitud a proveedor</span>
+          </button>
+          <button mat-menu-item *ngIf="updateable" (click)="editModalShow(element)">
+            <mat-icon>edit</mat-icon>
+            <span>Editar</span>
+          </button>
+          <button mat-menu-item *ngIf="deleteable" (click)="onDeleteConfirm($event, element)">
+            <mat-icon>delete_forever</mat-icon>
+            <span>Eliminar</span>
+          </button>
+        </mat-menu>
+      </div>
+      <div class="title">
+        Status: <span>{{ element.status}} </span>
+        <h3>{{element.name}}</h3>
+      </div>
+      <div class="text">
+        <p><br>
+          <span>Solicitudes: </span> {{element.solicitudeproviderCount}}
+        </p>
+      </div>
+
+    </div>
+  </div>
+</mat-card>

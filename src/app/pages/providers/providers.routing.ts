@@ -8,7 +8,8 @@ export const routes: Routes = [
     path: '',
     component: ProvidersComponent,
     children: [
-      { path: 'providers-table', component: ProvidersTableComponent }
+      { path: 'providers-table', component: ProvidersTableComponent
+     }
     ]
     }
   ];

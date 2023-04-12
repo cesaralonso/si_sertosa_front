@@ -106,7 +106,7 @@ export class ProvidersService {
        `;
            return this._http.post(`${this.endPoint}/download-zip/${id}`, { element: innerHTML },
                {
-                   observe: 'response', 
+                   observe: 'response',
                    responseType: 'arraybuffer',
                    headers: new HttpHeaders(
                        { 'Authorization': 'JWT ' + this.authService.token }
@@ -116,26 +116,67 @@ export class ProvidersService {
                    map((response: any) => response),
                    catchError(this.handleError));
        }
-       insertFile = ( provider: ProvidersInterface, documento?: File ) : Observable<any> => {
-           var formData: any = new FormData();
-           if (documento) {
-               formData.append("documento", documento);
-           }
-           formData.append("name", provider.name);
-           formData.append("status", provider.status);
-           return this._http.post<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
-                       reportProgress: true,
-                       observe: 'events',
-                       headers: new HttpHeaders(
-                           { 'Authorization': 'JWT ' + this.authService.token }
-                       )
-                   })
-               .pipe(
-                       map((response: any) => response),
-                           catchError(this.handleError));
-       }
-       private handleError(error: HttpResponse<any>) {
-           console.error(error);
-           return observableThrowError(error || 'Server error');
-       }
+
+       // IMÁGENES
+      updateFile = ( provider: ProvidersInterface, documento?: File ) : Observable<any> => {
+      var formData: any = new FormData();
+      if (documento) {
+          formData.append("documento", documento);
+      }
+      formData.append("idprovider", provider.idprovider);
+      formData.append("name", provider.name);
+      formData.append("alias", provider.alias);
+      formData.append("rfc", provider.rfc);
+      formData.append("billing_email", provider.billing_email);
+      formData.append("office_phone", provider.office_phone);
+      formData.append("care_contact", provider.care_contact);
+      formData.append("care_email", provider.care_email);
+      formData.append("care_phone", provider.care_phone);
+      formData.append("skus", provider.skus);
+      formData.append("status", provider.status);
+      return this._http.patch<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
+                  reportProgress: true,
+                  observe: 'events',
+                  headers: new HttpHeaders(
+                      { 'Authorization': 'JWT ' + this.authService.token }
+                  )
+              })
+          .pipe(
+                  map((response: any) => response),
+                      catchError(this.handleError));
+  }
+
+  insertFile = ( provider: ProvidersInterface, documento?: File ) : Observable<any> => {
+    var formData: any = new FormData();
+    if (documento) {
+        formData.append("documento", documento);
+    }
+
+    formData.append("name", provider.name);
+    formData.append("alias", provider.alias);
+    formData.append("rfc", provider.rfc);
+    formData.append("billing_email", provider.billing_email);
+    formData.append("office_phone", provider.office_phone);
+    formData.append("care_contact", provider.care_contact);
+    formData.append("care_email", provider.care_email);
+    formData.append("care_phone", provider.care_phone);
+    formData.append("skus", provider.skus);
+    formData.append("status", provider.status);
+    return this._http.post<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
+                reportProgress: true,
+                observe: 'events',
+                headers: new HttpHeaders(
+                    { 'Authorization': 'JWT ' + this.authService.token }
+                )
+            })
+        .pipe(
+                map((response: any) => response),
+                    catchError(this.handleError));
+}
+                private handleError(error: HttpResponse<any>) {
+                  console.error(error);
+                  return observableThrowError(error || 'Server error');
+                }
+
+
 }

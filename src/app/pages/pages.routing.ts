@@ -23,6 +23,9 @@ export const routes: Routes = [
     path: 'pages',
     component: Pages,
     children: [
+        //prueba
+    //{ path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
+    //canActivateChild: [AuthGuard] },
     { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule)},
     { path: 'unauthorized', loadChildren: () => import('./unauthorized/unauthorized.module').then(m => m.UnauthorizedModule)},

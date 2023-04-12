@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToasterService } from './../../../../shared/services/toaster.service';
 import { ProvidersInterface } from './providers.interface';
 import { ProvidersResponseInterface } from './providers-response.interface';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Injectable, OnInit, Output, ViewChild } from '@angular/core';
 import { ProvidersService } from './providers.service';
 import { ProvidersAddModalComponent } from './providers-add-modal/providers-add-modal.component';
 import * as _ from 'lodash';
@@ -19,46 +19,83 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 
+
+@Injectable({
+  providedIn: 'root'
+})
 @Component({
 selector: 'providers-table',
 templateUrl: './providers-table.html',
 styleUrls: ['./providers-table.scss'],
+
 })
 export class ProvidersTableComponent implements OnInit {
     data;
+    _provider:ProvidersInterface[];
     backpage: boolean;
+
 
     // Permisos en vista
     updateable: boolean = false;
     deleteable: boolean = false;
     writeable: boolean = false;
+    displayedColumnsInventario: string[] = [
+      'actions',
+      'logo',
+      'name',
+      'skus',
+     // 'Cantidad',
+     // 'Unidad de compra'
+
+
+    ];
     displayedColumns: string[] = [
       'actions',
+      'logo',
       'name',
+      'alias',
+      'rfc',
+      'billing_email',
+      'office_phone',
+      'care_contact',
+      'care_email',
+      'care_phone',
+      'skus',
       'status',
+
+
     ];
     displayedLabels: string[] = [
       '',
+      'Logo',
       'Nombre',
+      'Alias',
+      'RFC',
+      'Correo de facturación',
+      'Telefono de oficina',
+      'Contacto de atención',
+      'Email de atención',
+      'Telefono de atención',
+      'SKUS',
       'Status',
+
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
     user;
-
-
+    routeParamsSubs: Subscription;
     constructor(
-      private service: ProvidersService, 
-      private toastrService: ToasterService, 
-      private authService: AuthService, 
-      private route: ActivatedRoute, 
+      private service: ProvidersService,
+      private toastrService: ToasterService,
+      private authService: AuthService,
+      private route: ActivatedRoute,
       private commonService: CommonService,
       public dialog: MatDialog,
       private router: Router) {
 
       // Buscar permisos del usuario en el módulo
       this.user = this.authService.useJwtHelper();
-      
+
       if (this.user.super) {
         this.updateable = true;
         this.deleteable = true;
@@ -81,7 +118,7 @@ export class ProvidersTableComponent implements OnInit {
     }
     ngOnDestroy() {
     }
-    refill() { 
+    refill() {
       this.getAll();
     }
     insertProduct(providers: ProvidersInterface) {
@@ -97,6 +134,7 @@ export class ProvidersTableComponent implements OnInit {
               .subscribe(data => {
                   if (data) {
                       this.productShowToast(data);
+
                   }
               }),
               error => console.log(error),
@@ -150,6 +188,7 @@ export class ProvidersTableComponent implements OnInit {
             (data: ProvidersResponseInterface) =>  {
                 if (data.success) {
                   this.data = new MatTableDataSource<ProvidersInterface>(data.result);
+                  this._provider = data.result;
                   this.data.paginator = this.paginator;
                   this.data.sort = this.sort;
                 } else {
@@ -170,6 +209,7 @@ export class ProvidersTableComponent implements OnInit {
                   if (data) {
                       this.showToast(data);
                   }
+
               }),
               error => console.log(error),
               () => console.log('Action completed');
@@ -185,6 +225,7 @@ export class ProvidersTableComponent implements OnInit {
                   if (data) {
                       this.showToast(data);
                   }
+
               }),
               error => console.log(error),
               () => console.log('Action completed');
@@ -196,8 +237,10 @@ export class ProvidersTableComponent implements OnInit {
           .subscribe(
               (data) => this.showToast(data),
               error => console.log(error),
-              () => console.log('Delete completed')
+              () => console.log('Delete completed'),
+
           );
+
       } else {
           console.log('item cancelado');
       }
@@ -218,8 +261,10 @@ export class ProvidersTableComponent implements OnInit {
             (data: ProvidersResponseInterface) =>  {
                 if (data.success) {
                   this.data = new MatTableDataSource<ProvidersInterface>(data.result);
+                  this._provider = data.result;
                   this.data.paginator = this.paginator;
                   this.data.sort = this.sort;
+
                 } else {
                   this.toastrService.error(data.message);
                 }
@@ -227,6 +272,8 @@ export class ProvidersTableComponent implements OnInit {
             error => console.log(error),
             () => console.log('Get all Items complete'))
     }
+
+
     descargarCSV(data, reportTitle, showLabel) {
         const arrayReport = [];
         let report = [];
@@ -245,5 +292,8 @@ export class ProvidersTableComponent implements OnInit {
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.data.filter = filterValue.trim().toLowerCase();
+
     }
   }
+
+
