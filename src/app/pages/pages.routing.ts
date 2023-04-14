@@ -70,7 +70,7 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard] },
     { path: 'products/provider/:idprovider', loadChildren: () => import('./products/products.module').then(m => m.ProductsModule),
         canActivateChild: [AuthGuard] },
-        
+
 
     { path: 'projects', loadChildren: () => import('./projects/projects.module').then(m => m.ProjectsModule),
         canActivateChild: [AuthGuard] },
@@ -200,9 +200,6 @@ export const routes: Routes = [
     { path: 'service_products/service/:idservice', loadChildren: () => import('./service_products/service_products.module').then(m => m.Service_productsModule),
         canActivateChild: [AuthGuard] },
 
-        
-
-        
     { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
         canActivateChild: [AuthGuard] }
     ]

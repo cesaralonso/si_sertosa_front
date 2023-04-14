@@ -6,6 +6,8 @@ import { NgaModule } from '../../theme/nga.module';
 import { routing } from './reports.routing';
 import { ReportsComponent } from './reports.component';
 import { MaterialModule } from '../../shared/material.module';
+import { Report1TableComponent } from './components/report1-table/report1-table.component';
+import { Report2TableComponent } from './components/report2-table/report2-table.component';
 
 @NgModule({
   imports: [
@@ -19,6 +21,8 @@ import { MaterialModule } from '../../shared/material.module';
   ],
   declarations: [
     ReportsComponent,
+    Report1TableComponent,
+    Report2TableComponent
   ],
   entryComponents: [
   ],

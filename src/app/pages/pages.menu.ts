@@ -3,12 +3,13 @@ export const PAGES_MENU = [
     path: 'pages',
     children: [
 
+
         {
-            path: 'reports',
+            path: 'dashboard',
             data: {
             menu: {
-                title: 'general.menu.reports',
-                icon: 'ion-star',
+                title: 'general.menu.dashboard',
+                icon: 'ion-android-home',
                 selected: false,
                 expanded: false,
                 order: 0
@@ -16,11 +17,11 @@ export const PAGES_MENU = [
             }
         },
         {
-            path: 'dashboard',
+            path: 'reports',
             data: {
             menu: {
-                title: 'general.menu.dashboard',
-                icon: 'ion-android-home',
+                title: 'Reportes',
+                icon: 'ion-star',
                 selected: false,
                 expanded: false,
                 order: 0

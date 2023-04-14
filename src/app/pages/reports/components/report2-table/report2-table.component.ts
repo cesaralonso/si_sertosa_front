@@ -1,6 +1,5 @@
-
 import { Component, OnInit,ViewChild } from '@angular/core';
-import { Report1Interface } from './report1.interface';
+import { Report2Interface } from './report2.interface';
 import { ReportsService } from '../../reports.service';
 import { CommonService } from 'app/shared/services/common.service';
 import { ReportsResponseInterface } from '../../reports.response.interface';
@@ -12,12 +11,14 @@ import { take } from 'rxjs/operators';
 import { ToasterService } from 'app/shared/services/toaster.service';
 import { AuthService } from 'app/shared/services/auth.service';
 @Component({
-    'selector': 'report1-table',
-    'templateUrl': 'report1-table.component.html',
-    'styleUrls': ['report1-table.component.scss']
+    'selector': 'report2-table',
+    'templateUrl': 'report2-table.component.html',
+    'styleUrls': ['report2-table.component.scss']
 })
-export class Report1TableComponent implements OnInit {
+export class Report2TableComponent implements OnInit {
+
   data;
+  user;
   backpage: boolean;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -30,34 +31,36 @@ export class Report1TableComponent implements OnInit {
 
     displayedColumns: string[] = [
       'actions',
-      'logo',
-      'name',
-      'sku',
-      'quantity',
-      // 'oiquantity',
-      // 'ooquantity',
-      //'productAmount',
-      'unitin',
-
-
+      'idsolicitudewarehouse',
+      'created_at',
+      'user',
+      'type',
+      'repair',
+      'item',
+      'created_by',
+      // : number;
+      // :string;
+      // created_by:number;
+      // usuario:string;
+      // type:string;
+      // repair:string;
+      // item:string;
 
     ];
     displayedLabels: string[] = [
       '',
-      'Logo',
-      'Nombre',
-      'SKUS',
-      'Cantidad',
-      // 'Ordenes de entrada',
-      // 'Ordenes de salida',
+      'Id de la orden',
+      'Fecha',
+      'Usuario',
+      'Tipo',
+      'Reparación',
       //'Cantidad',
-      'Unidad de compra',
+      'Item',
+      'Creado por'
 
 
 
     ];
-  user;
-
 
     constructor(
         private reportsService: ReportsService,
@@ -86,27 +89,17 @@ export class Report1TableComponent implements OnInit {
       }
     }
 
-    /*async ngOnInit() {
-
-        const response = await this.reportsService.allReport1()
-            .toPromise();
-
-
-        this.data = response.result;
-
-
-    }*/
-    ngOnInit() {
-      this.refill();
-    }
+     ngOnInit() {
+       this.refill();
+     }
     private getAll(): void {
       this.reportsService
-        .allReport1()
+        .allReport2()
         .pipe(take(1))
         .subscribe(
             (data: ReportsResponseInterface) =>  {
                 if (data.success) {
-                  this.data = new MatTableDataSource<Report1Interface>(data.result);
+                  this.data = new MatTableDataSource<Report2Interface>(data.result);
                   this.data.paginator = this.paginator;
                   this.data.sort = this.sort;
 
@@ -145,14 +138,14 @@ export class Report1TableComponent implements OnInit {
       });
       this.commonService.JSONToCSVConvertor(arrayReport, reportTitle, showLabel);
   }
-  filtrarFechasreport1(fechaDesde, fechaHasta) {
+  filtrarFechasreport2(fechaDesde, fechaHasta) {
     this.reportsService
       .allFromTo(fechaDesde, fechaHasta)
       .pipe(take(1))
       .subscribe(
           (data: ReportsResponseInterface) =>  {
               if (data.success) {
-                this.data = new MatTableDataSource<Report1Interface>(data.result);
+                this.data = new MatTableDataSource<Report2Interface>(data.result);
                 this.data.paginator = this.paginator;
                 this.data.sort = this.sort;
               } else {
@@ -167,4 +160,5 @@ export class Report1TableComponent implements OnInit {
       this.data.filter = filterValue.trim().toLowerCase();
 
   }
+
 }

@@ -5,7 +5,7 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ToasterService } from './../../../../../shared/services/toaster.service';
 import { take } from 'rxjs/operators';
-/* import { HttpEventType, HttpEvent } from '@angular/common/http'; */
+ import { HttpEventType, HttpEvent } from '@angular/common/http'; 
 /* import { Message, Type } from './../../../../../shared/models'; */
 /* import { SocketIOService } from './../../../../../shared/services/socketio.service'; */
 import { ProvidersService } from './../../../../providers/components/providers-table/providers.service';
@@ -35,6 +35,12 @@ export class ProductsAddModalComponent implements OnInit {
   user;
   accion = 'Agregar';
 
+
+  // IMAGENES
+  preview: string;
+  percentDone: any = 0;
+  isPermited = false;
+
   constructor(
     private service: ProductsService,
     private authService: AuthService, 
@@ -63,6 +69,7 @@ export class ProductsAddModalComponent implements OnInit {
     'caducityAC' : [''],
     'unitinAC' : [''],
     'unitoutAC' : [''],
+    'logoAC' : ['', this.item.logo ? Validators.compose([ Validators.maxLength(300)]) : null],
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -179,61 +186,180 @@ export class ProductsAddModalComponent implements OnInit {
           this.onInsert();
       }
   }
+  
+
+
+  // IMÁGENES
   onInsert(): void {
-      if (this.form.valid) {
-          this.service
-          .insert({
-                  name: this.item.name || null,
-                  description: this.item.description || null,
-                  provider_idprovider: this.item.provider_idprovider || null,
-                  family_idfamily: this.item.family_idfamily || null,
-                  sku: this.item.sku || null,
-                  aka: this.item.aka || null,
-                  type: this.item.type || null,
-                  cost: this.item.cost || null,
-                  min: this.item.min || null,
-                  id: this.item.id || null,
-                  reorderpoint: this.item.reorderpoint || null,
-                  max: this.item.max || null,
-                  caducity: this.item.caducity || null,
-                  unitin: this.item.unitin || null,
-                  unitout: this.item.unitout || null,
-          })
-          .pipe(take(1))
-          .subscribe(
-              (data: any) => {
-              this.data = data;
-              this.confirm();
-              });
-      }
+
+    // SI HAY FOTO CAPTURADA LA REDIMENSIONA
+    if (this.preview) {
+        this.form.patchValue({
+            logoAC: this.dataURItoBlob(this.resizeImage(this.preview))
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+    }
+
+  if (this.form.valid) {
+      this.service
+      .insertFile({
+            //idproduct: this.item.idproduct,
+            name: this.item.name || null,
+            description: this.item.description || null,
+            provider_idprovider: this.item.provider_idprovider || null,
+            family_idfamily: this.item.family_idfamily || null,
+            logo: this.item.logo||null,
+            sku: this.item.sku || null,
+            aka: this.item.aka || null,
+            type: this.item.type || null,
+            cost: this.item.cost || null,
+            min: this.item.min || null,
+            id: this.item.id || null,
+            reorderpoint: this.item.reorderpoint || null,
+            max: this.item.max || null,
+            caducity: this.item.caducity || null,
+            unitin: this.item.unitin || null,
+            unitout: this.item.unitout || null,
+      }, this.form.value.logoAC)
+      .subscribe((event: HttpEvent<any>) => {
+          switch (event.type) {
+              case HttpEventType.Sent:
+                  console.log('Request has been made!');
+              break;
+              case HttpEventType.ResponseHeader:
+                  console.log('Response header has been received!');
+              break;
+              case HttpEventType.UploadProgress:
+                  this.percentDone = Math.round(event.loaded / event.total * 100);
+                  console.log(`Uploaded! %`);
+              break;
+              case HttpEventType.Response:
+                  console.log('Successfully created!', event.body);
+                  this.percentDone = false;
+                  this.data = event.body;
+                  this.confirm();
+          }
+      });
   }
-  onUpdate(): void {
-      if (this.form.valid) {
-          this.service
-              .update({
-                  idproduct: this.item.idproduct,
-                  name: this.item.name,
-                  description: this.item.description,
-                  provider_idprovider: this.item.provider_idprovider,
-                  family_idfamily: this.item.family_idfamily,
-                  sku: this.item.sku,
-                  aka: this.item.aka,
-                  type: this.item.type,
-                  cost: this.item.cost,
-                  min: this.item.min,
-                  id: this.item.id,
-                  reorderpoint: this.item.reorderpoint,
-                  max: this.item.max,
-                  caducity: this.item.caducity,
-                  unitin: this.item.unitin,
-                  unitout: this.item.unitout,
-              })
-              .pipe(take(1))
-              .subscribe(
-                  (data: any) => {
-                      this.data = data;
+}
+
+
+onUpdate(): void {
+    if (this.form.valid) {
+        this.service
+            .updateFile({
+                idproduct: this.item.idproduct,
+                name: this.item.name,
+                description: this.item.description,
+                provider_idprovider: this.item.provider_idprovider,
+                family_idfamily: this.item.family_idfamily,
+                sku: this.item.sku,
+                aka: this.item.aka,
+                type: this.item.type,
+                cost: this.item.cost,
+                min: this.item.min,
+                id: this.item.id,
+                reorderpoint: this.item.reorderpoint,
+                max: this.item.max,
+                caducity: this.item.caducity,
+                unitin: this.item.unitin,
+                unitout: this.item.unitout,
+            },this.form.value.logoAC)
+            .subscribe((event: HttpEvent<any>) => {
+              switch (event.type) {
+                  case HttpEventType.Sent:
+                      console.log('Request has been made!');
+                  break;
+                  case HttpEventType.ResponseHeader:
+                      console.log('Response header has been received!');
+                  break;
+                  case HttpEventType.UploadProgress:
+                      this.percentDone = Math.round(event.loaded / event.total * 100);
+                      console.log(`Uploaded! %`);
+                  break;
+                  case HttpEventType.Response:
+                      console.log('Successfully created!', event.body);
+                      this.percentDone = false;
+                      this.data = event.body;
+
                       this.confirm();
-              });
-      }
-  }
+              }
+          });
+    }
+}
+
+// Image Preview
+uploadFile(event) {
+    var fileTypes = ['png', 'jpg', 'jpeg'];  //acceptable file types
+    const file = (event.target as HTMLInputElement).files[0];
+    const extension = file.name.split('.').pop().toLowerCase();  //file extension from input file
+    this.isPermited = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+    if (this.isPermited) {
+        this.form.patchValue({
+            logoAC: file
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+        // File Preview
+        const reader = new FileReader();
+        reader.onload = () => {
+            this.preview = reader.result as string;
+        }
+        reader.readAsDataURL(file);
+    } else {
+        this.form.patchValue({
+            logoAC: ''
+        });
+        this.form.get('logoAC').updateValueAndValidity();
+        this.preview = '';
+    }
+}
+resizeImage(dataURI: string): string {
+    var img = document.createElement("img");
+    img.src = dataURI;
+
+    var canvas = document.createElement("canvas");
+    var ctx = canvas.getContext("2d")!;
+    ctx.drawImage(img, 0, 0);
+
+    var MAX_WIDTH = 800;
+    var MAX_HEIGHT = 800;
+    var width = img.width;
+    var height = img.height;
+
+    if (width > height) {
+        if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+        }
+    } else {
+        if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+        }
+    }
+    canvas.width = width;
+    canvas.height = height;
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+    var dataurl = canvas.toDataURL(mimeString, 0.7); // COMPRESIÓN
+
+    return dataurl;
+}
+dataURItoBlob(dataURI) {
+    // convert base64 to raw binary data held in a string
+    var byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    var ab = new ArrayBuffer(byteString.length);
+    var ia = new Uint8Array(ab);
+    for (var i = 0; i < byteString.length; i++) {
+        ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], {type: mimeString});
+}
 }
