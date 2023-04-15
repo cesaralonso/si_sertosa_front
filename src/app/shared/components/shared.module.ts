@@ -14,7 +14,8 @@ import { CardContainerComponent } from './card-container/card-container.componen
     declarations: [
         MapVisitasComponent,
         ChartbarrasComponent,
-        
+        //
+
 
 
 
