@@ -45,6 +45,7 @@ export class ProductsTableComponent implements OnInit {
       'caducity',
       'unitin',
       'unitout',
+      'logo',
     ];
     displayedLabels: string[] = [
       '',
@@ -63,6 +64,7 @@ export class ProductsTableComponent implements OnInit {
       'Fecha caducidad',
       'Unidad de compra',
       'Unidad de salida',
+      'Imagen del producto',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

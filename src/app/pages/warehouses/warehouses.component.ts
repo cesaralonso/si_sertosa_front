@@ -11,6 +11,7 @@ import { Subscription } from 'rxjs-compat';
     constructor(
       private route: ActivatedRoute) {
     }
+    
     ngOnInit() {
       this.refill();
     }
@@ -24,4 +25,26 @@ import { Subscription } from 'rxjs-compat';
         }
       });
     }
+    stock = [
+      {numero: "1"}, 
+      
+      {letra: "o"}
+    ];
+
+    repair = [{numero: "1"}];
+    
+    infocards = [{
+      title: "STOCK",
+      messeage: this.stock.length + " solicitudes" 
+  },
+  {
+      title: "REFACCIONES PARA REPARACIÓN",
+      messeage: this.repair.length,
+  },
+  {
+      title: "COMPRAS",
+      messeage: ""
+      }
+  ];
+
   }

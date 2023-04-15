@@ -110,6 +110,21 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+      <!-- IMÁGENES-->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Logotipo | Procura una relación de 4 x 1 (ej. 200px ancho x 50px alto)</mat-label>
+        <input matInput [(ngModel)]="item.logo" type="text" [ngModelOptions]="{standalone: true}" id="logoAC" placeholder="Logotipo" readonly>
+
+        <input type="file" (change)="uploadFile($event)" id="documentoAC">
+    </mat-form-field>
+
+    <div class='form-group row mt-3'>
+      <div class='preview' *ngIf='preview && preview !== null'>
+          <img [src]='preview' alt='preview' class='img-fluid'>
+      </div>
+    </div>
+    
   </form>
 </div>
 <div mat-dialog-actions>

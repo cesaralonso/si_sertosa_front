@@ -42,6 +42,12 @@ export class ReportsService {
                    map((response: any) => response),
                    catchError(this.handleError));
        }
+       allReport4 = () : Observable<any> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/report4`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+    }
        private handleError(error: HttpResponse<any>) {
            console.error(error);
            return observableThrowError(error || 'Server error');

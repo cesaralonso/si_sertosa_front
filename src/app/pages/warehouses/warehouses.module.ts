@@ -8,6 +8,7 @@ import { WarehousesComponent } from './warehouses.component';
 import { WarehousesService } from './components/warehouses-table/warehouses.service';
 import { WarehousesTableComponent } from './components/warehouses-table/warehouses-table.component';
 import { MaterialModule } from '../../shared/material.module';
+import { SharedModule } from 'app/shared/components/shared.module';
 import { WarehouseinventaryTableComponent } from './components/warehouse-inventary/warehouse-inventary.component';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { WarehouseinventaryTableComponent } from './components/warehouse-inventa
     NgaModule,
     routing,
     MaterialModule,
+    SharedModule
   ],
   declarations: [
     WarehousesComponent,

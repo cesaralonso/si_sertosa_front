@@ -3,12 +3,14 @@ import { NgModule, NO_ERRORS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MapVisitasComponent } from './map/map.component';
 import { ChartbarrasComponent } from './chart-barras/chart-barras.component';
+import { InformationCardsComponent } from './information-cards/information-cards.component';
 
 
 @NgModule({
     declarations: [
         MapVisitasComponent,
-        ChartbarrasComponent
+        ChartbarrasComponent,
+        InformationCardsComponent
     ],
     imports: [
         CommonModule,
@@ -16,7 +18,8 @@ import { ChartbarrasComponent } from './chart-barras/chart-barras.component';
     ],
     exports: [
         MapVisitasComponent,
-        ChartbarrasComponent
+        ChartbarrasComponent,
+        InformationCardsComponent
     ],
     schemas: [
         NO_ERRORS_SCHEMA
