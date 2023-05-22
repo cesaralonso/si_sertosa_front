@@ -14,7 +14,8 @@ import { ProvidersInterface } from './../../../../providers/components/providers
 import { FamilysService } from './../../../../familys/components/familys-table/familys.service';
 import { FamilysAddModalComponent } from './../../../../familys/components/familys-table/familys-add-modal/familys-add-modal.component';
 import { FamilysInterface } from './../../../../familys/components/familys-table/familys.interface';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { HttpEventType, HttpEvent } from '@angular/common/http';
 
 
 @Component({
@@ -34,6 +35,11 @@ export class ProductsAddModalComponent implements OnInit {
   submitted: boolean = false;
   user;
   accion = 'Agregar';
+
+  // IMAGENES
+  preview: string;
+  percentDone: any = 0;
+  isPermited = false;
 
   constructor(
     private service: ProductsService,
@@ -63,6 +69,7 @@ export class ProductsAddModalComponent implements OnInit {
     'caducityAC' : [''],
     'unitinAC' : [''],
     'unitoutAC' : [''],
+    'photoAC' : ['', this.item.photo ? Validators.compose([ Validators.maxLength(300)]) : null]
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -182,7 +189,7 @@ export class ProductsAddModalComponent implements OnInit {
   onInsert(): void {
       if (this.form.valid) {
           this.service
-          .insert({
+          .insertFile({
                   name: this.item.name || null,
                   description: this.item.description || null,
                   provider_idprovider: this.item.provider_idprovider || null,
@@ -198,19 +205,32 @@ export class ProductsAddModalComponent implements OnInit {
                   caducity: this.item.caducity || null,
                   unitin: this.item.unitin || null,
                   unitout: this.item.unitout || null,
-          })
-          .pipe(take(1))
-          .subscribe(
-              (data: any) => {
-              this.data = data;
-              this.confirm();
-              });
+          }, this.form.value.photoAC)
+          .subscribe((event: HttpEvent<any>) => {
+              switch (event.type) {
+                  case HttpEventType.Sent:
+                      console.log('Request has been made!');
+                  break;
+                  case HttpEventType.ResponseHeader:
+                      console.log('Response header has been received!');
+                  break;
+                  case HttpEventType.UploadProgress:
+                      this.percentDone = Math.round(event.loaded / event.total * 100);
+                      console.log(`Uploaded! %`);
+                  break;
+                  case HttpEventType.Response:
+                      console.log('Successfully created!', event.body);
+                      this.percentDone = false;
+                      this.data = event.body;
+                      this.confirm();
+              }
+          });
       }
   }
   onUpdate(): void {
       if (this.form.valid) {
           this.service
-              .update({
+              .updateFile({
                   idproduct: this.item.idproduct,
                   name: this.item.name,
                   description: this.item.description,
@@ -227,13 +247,51 @@ export class ProductsAddModalComponent implements OnInit {
                   caducity: this.item.caducity,
                   unitin: this.item.unitin,
                   unitout: this.item.unitout,
-              })
-              .pipe(take(1))
-              .subscribe(
-                  (data: any) => {
-                      this.data = data;
-                      this.confirm();
+              }, this.form.value.photoAC)
+              .subscribe((event: HttpEvent<any>) => {
+                  switch (event.type) {
+                      case HttpEventType.Sent:
+                          console.log('Request has been made!');
+                      break;
+                      case HttpEventType.ResponseHeader:
+                          console.log('Response header has been received!');
+                      break;
+                      case HttpEventType.UploadProgress:
+                          this.percentDone = Math.round(event.loaded / event.total * 100);
+                          console.log(`Uploaded! %`);
+                      break;
+                      case HttpEventType.Response:
+                          console.log('Successfully created!', event.body);
+                          this.percentDone = false;
+                          this.data = event.body;
+                          this.confirm();
+                  }
               });
+      }
+  }
+  // Image Preview
+  uploadFile(event) {
+      var fileTypes = ['png', 'jpg', 'jpeg'];  //acceptable file types
+      const file = (event.target as HTMLInputElement).files[0];
+      const extension = file.name.split('.').pop().toLowerCase();  //file extension from input file
+      this.isPermited = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+      if (this.isPermited) {
+          this.form.patchValue({
+              photoAC: file
+          });
+          this.form.get('photoAC').updateValueAndValidity();
+          // File Preview
+          const reader = new FileReader();
+          reader.onload = () => {
+              this.preview = reader.result as string;
+          }
+          reader.readAsDataURL(file);
+      } else {
+          this.form.patchValue({
+              photoAC: ''
+          });
+          this.form.get('photoAC').updateValueAndValidity();
+          this.preview = '';
       }
   }
 }

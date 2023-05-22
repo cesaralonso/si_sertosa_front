@@ -8,6 +8,7 @@ import { SolicitudewarehousesComponent } from './solicitudewarehouses.component'
 import { SolicitudewarehousesService } from './components/solicitudewarehouses-table/solicitudewarehouses.service';
 import { SolicitudewarehousesTableComponent } from './components/solicitudewarehouses-table/solicitudewarehouses-table.component';
 import { MaterialModule } from '../../shared/material.module';
+import { SharedModule } from '../../shared/components/shared.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { MaterialModule } from '../../shared/material.module';
     NgaModule,
     routing,
     MaterialModule,
+    SharedModule
   ],
   declarations: [
     SolicitudewarehousesComponent,

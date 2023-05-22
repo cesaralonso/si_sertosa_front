@@ -51,7 +51,7 @@ export class ProjectsAddModalComponent implements OnInit {
     'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
     'companyunits_idcompanyunitsAC' : ['', this.item.companyunits_idcompanyunits ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'vehicle_idvehicleAC' : ['', this.item.vehicle_idvehicle ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
-    'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    /* 'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null], */
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -175,7 +175,7 @@ export class ProjectsAddModalComponent implements OnInit {
                   name: this.item.name || null,
                   companyunits_idcompanyunits: this.item.companyunits_idcompanyunits || null,
                   vehicle_idvehicle: this.item.vehicle_idvehicle || null,
-                  status: this.item.status || null,
+                  /* status: this.item.status || null, */
           })
           .pipe(take(1))
           .subscribe(
@@ -193,7 +193,7 @@ export class ProjectsAddModalComponent implements OnInit {
                   name: this.item.name,
                   companyunits_idcompanyunits: this.item.companyunits_idcompanyunits,
                   vehicle_idvehicle: this.item.vehicle_idvehicle,
-                  status: this.item.status,
+                  /* status: this.item.status, */
               })
               .pipe(take(1))
               .subscribe(

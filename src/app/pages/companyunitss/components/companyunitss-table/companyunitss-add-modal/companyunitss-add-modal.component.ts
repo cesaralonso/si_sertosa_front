@@ -43,6 +43,7 @@ export class CompanyunitssAddModalComponent implements OnInit {
   ) {
     this.form = fb.group({
     'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    'company_idcompanyAC': ['', Validators.required]
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -123,6 +124,7 @@ export class CompanyunitssAddModalComponent implements OnInit {
           this.service
           .insert({
                   name: this.item.name || null,
+                  company_idcompany: this.item.company_idcompany || null,
           })
           .pipe(take(1))
           .subscribe(
@@ -138,6 +140,7 @@ export class CompanyunitssAddModalComponent implements OnInit {
               .update({
                   idcompanyunits: this.item.idcompanyunits,
                   name: this.item.name,
+                  company_idcompany: this.item.company_idcompany,
               })
               .pipe(take(1))
               .subscribe(

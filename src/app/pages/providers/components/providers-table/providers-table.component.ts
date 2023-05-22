@@ -32,15 +32,35 @@ export class ProvidersTableComponent implements OnInit {
     updateable: boolean = false;
     deleteable: boolean = false;
     writeable: boolean = false;
+
     displayedColumns: string[] = [
       'actions',
+      /* 'logo', */
       'name',
-      'status',
+      'alias',
+      'rfc',
+      'billing_email',
+      'office_phone',
+      'care_contact',
+      'care_email',
+      'care_phone',
+      /* 'skus', */
+      'status'
     ];
+    
     displayedLabels: string[] = [
       '',
+      /* 'Logo', */
       'Nombre',
-      'Status',
+      'Alias',
+      'RFC',
+      'Correo de facturación',
+      'Telefono de oficina',
+      'Contacto de atención',
+      'Email de atención',
+      'Telefono de atención',
+      /* 'SKUS', */
+      'Status'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

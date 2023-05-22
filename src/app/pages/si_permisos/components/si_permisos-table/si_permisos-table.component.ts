@@ -45,6 +45,7 @@ export class Si_permisosTableComponent implements OnInit {
       'write_own',
       'update_own',
       'delete_own',
+      'validateServiceEmployee'
     ];
     displayedLabels: string[] = [
       '',
@@ -61,6 +62,7 @@ export class Si_permisosTableComponent implements OnInit {
       'Escribir Propios',
       'Editar Propios',
       'Eliminar Propios',
+      'Validad'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

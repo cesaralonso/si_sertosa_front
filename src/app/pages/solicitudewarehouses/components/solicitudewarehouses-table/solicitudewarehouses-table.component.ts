@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthorizeComponent } from 'app/shared/components/authorize/authorize.component';
 
 @Component({
 selector: 'solicitudewarehouses-table',
@@ -32,6 +33,7 @@ export class SolicitudewarehousesTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'idsolicitudewarehouse',
       'product_product_idproduct',
       'provider_provider_idprovider',
       'quantity',
@@ -39,9 +41,12 @@ export class SolicitudewarehousesTableComponent implements OnInit {
       'warehouse_warehouse_idwarehouse',
       'usuario',
       'status',
+      'created_at',
+      'validated',
     ];
     displayedLabels: string[] = [
       '',
+      'ID',
       'Producto',
       'Proveedor',
       'Cantidad',
@@ -49,6 +54,8 @@ export class SolicitudewarehousesTableComponent implements OnInit {
       'Almacen',
       'Usuario',
       'Status',
+      'Fecha',
+      'Validada'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -277,5 +284,55 @@ export class SolicitudewarehousesTableComponent implements OnInit {
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;
         this.data.filter = filterValue.trim().toLowerCase();
+    }
+
+    onUpdate(solicitudewarehouses: SolicitudewarehousesInterface): void {
+      if (SolicitudewarehousesService) {
+          this.service
+              .update({
+                  idsolicitudewarehouse: solicitudewarehouses.idsolicitudewarehouse,
+                  warehouse_idwarehouse: solicitudewarehouses.warehouse_idwarehouse,
+                  status: solicitudewarehouses.status,
+                  validated: solicitudewarehouses.validated
+              })
+              .pipe(take(1))
+              .subscribe(
+                  (data: any) => {
+                    this.showToast(data);
+                    this.getAll();
+              });
+      }
+    }
+
+    validateAndClose(solicitudewarehouses: SolicitudewarehousesInterface) {
+      
+      // Solicitar PIN
+      const dialogRef = this.dialog.open(AuthorizeComponent);
+  
+      dialogRef.afterClosed().subscribe(nip => {
+        if (nip) {
+          
+          const user = {
+            password: nip,
+            module: 'solicitudewarehouse'
+          };
+
+          this.authService.authorize(user)
+          .pipe(take(1)).
+          subscribe((data: any) => {
+            if (data.success) {
+              solicitudewarehouses.validated = true;
+              solicitudewarehouses.status = 'CERRADA';
+              this.onUpdate(solicitudewarehouses);
+            }
+          });
+        }
+      });
+    }
+
+    onlyClose(solicitudewarehouses: SolicitudewarehousesInterface) {
+      solicitudewarehouses.status = 'CERRADA';
+
+      this.onUpdate(solicitudewarehouses);
     }
   }

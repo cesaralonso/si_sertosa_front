@@ -104,7 +104,7 @@
                                                 <mat-icon>view_list</mat-icon>
                                                 <span>Ver Inventario</span>
                                             </button>
-                                              <button mat-menu-item (click)="insertOrderin(element)">
+                                              <!-- <button mat-menu-item (click)="insertOrderin(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Orden de entrada</span>
                                               </button>
@@ -119,7 +119,17 @@
                                               <button mat-menu-item (click)="viewOrderout(element)">
                                                   <mat-icon>view_list</mat-icon>
                                                   <span>Ver Orden de salida</span>
+                                              </button> -->
+                                              <!--
+                                                Revisar si es neecsario desde aquí...
+                                                <button mat-menu-item (click)="insertSolicitudeprovider(element)">
+                                                  <mat-icon>add</mat-icon>
+                                                  <span>Agregar Solicitud de proveedor</span>
                                               </button>
+                                              <button mat-menu-item (click)="viewSolicitudeprovider(element)">
+                                                  <mat-icon>view_list</mat-icon>
+                                                  <span>Ver Solicitud de proveedor</span>
+                                              </button> -->
                                               <button mat-menu-item (click)="insertSolicitudewarehouse(element)">
                                                   <mat-icon>add</mat-icon>
                                                   <span>Agregar Solicitud de almacen</span>
@@ -164,7 +174,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
                 </mat-card-content>

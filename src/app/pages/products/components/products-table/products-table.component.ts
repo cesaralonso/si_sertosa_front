@@ -30,6 +30,7 @@ export class ProductsTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'photo',
       'name',
       'description',
       'provider_provider_idprovider',
@@ -48,6 +49,7 @@ export class ProductsTableComponent implements OnInit {
     ];
     displayedLabels: string[] = [
       '',
+      'Foto',
       'Nombre',
       'Descripción',
       'Proveedor',

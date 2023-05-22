@@ -7,6 +7,9 @@ export interface Service_employeesInterface {
    observations?: string;
    url?: string;
    time?: string;
+   isEmployee?: boolean;
+   dias_transcurridos?: number;
+   validated?: boolean;
    is_deleted?: boolean;
    created_at?: string;
    created_by?: number;

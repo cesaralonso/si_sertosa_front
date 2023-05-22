@@ -6,6 +6,9 @@ export const routes: Routes = [
 {
     path: 'login',
     loadChildren: () => import('app/pages/login/login.module').then(m => m.LoginModule)
+},{
+    path: 'login-employee',
+    loadChildren: () => import('app/pages/login-employee/login-employee.module').then(m => m.LoginEmployeeModule)
 },
 {
     path: 'register',
@@ -152,6 +155,12 @@ export const routes: Routes = [
         canActivateChild: [AuthGuard] },
     { path: 'solicitudeproviders/provider/:idprovider', loadChildren: () => import('./solicitudeproviders/solicitudeproviders.module').then(m => m.SolicitudeprovidersModule),
         canActivateChild: [AuthGuard] },
+    { path: 'solicitudeproviders/warehouse/:idwarehouse', loadChildren: () => import('./solicitudeproviders/solicitudeproviders.module').then(m => m.SolicitudeprovidersModule),
+        canActivateChild: [AuthGuard] },
+
+    { path: 'solicitudeproviders/warehouse/:idwarehouse/provider/:idprovider', loadChildren: () => import('./solicitudeproviders/solicitudeproviders.module').then(m => m.SolicitudeprovidersModule),
+        canActivateChild: [AuthGuard] },
+
     { path: 'solicitudeprovider_products', loadChildren: () => import('./solicitudeprovider_products/solicitudeprovider_products.module').then(m => m.Solicitudeprovider_productsModule),
         canActivateChild: [AuthGuard] },
     { path: 'solicitudeprovider_products/product/:idproduct', loadChildren: () => import('./solicitudeprovider_products/solicitudeprovider_products.module').then(m => m.Solicitudeprovider_productsModule),
@@ -185,6 +194,8 @@ export const routes: Routes = [
     { path: 'warehouses/company/:idcompany', loadChildren: () => import('./warehouses/warehouses.module').then(m => m.WarehousesModule),
         canActivateChild: [AuthGuard] },
 
+    { path: 'service_employeeestados/service_employee/:idservice_employee', loadChildren: () => import('./service_employeeestados/service_employeeestados.module').then(m => m.Service_employeeestadosModule),
+    canActivateChild: [AuthGuard] },
 
     { path: 'warehouses/:idwarehouse/inventary', loadChildren: () => import('./warehouses/warehouses.module').then(m => m.WarehousesModule),
         canActivateChild: [AuthGuard] },
@@ -197,9 +208,6 @@ export const routes: Routes = [
     { path: 'service_products/service/:idservice', loadChildren: () => import('./service_products/service_products.module').then(m => m.Service_productsModule),
         canActivateChild: [AuthGuard] },
 
-        
-
-        
     { path: 'reports', loadChildren: () => import('./reports/reports.module').then(m => m.ReportsModule),
         canActivateChild: [AuthGuard] }
     ]

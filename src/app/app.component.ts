@@ -85,7 +85,7 @@ export class App {
       this.showToast('Bienvenido.');
       // this.router.navigate(['/pages/proyectos']);
     } else {
-      this.router.navigate(['/login'])
+      this.router.navigate(['/login-employee'])
         .then(response => {
               console.log('login response', response);
         })

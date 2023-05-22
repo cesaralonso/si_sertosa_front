@@ -61,6 +61,7 @@ export class Si_permisosAddModalComponent implements OnInit {
     'write_ownAC' : [''],
     'update_ownAC' : [''],
     'delete_ownAC' : [''],
+    'validateServiceEmployeeAC' : ['']
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -194,6 +195,7 @@ export class Si_permisosAddModalComponent implements OnInit {
                   write_own: this.item.write_own || null,
                   update_own: this.item.update_own || null,
                   delete_own: this.item.delete_own || null,
+                  validateServiceEmployee: this.item.validateServiceEmployee || null
           })
           .pipe(take(1))
           .subscribe(

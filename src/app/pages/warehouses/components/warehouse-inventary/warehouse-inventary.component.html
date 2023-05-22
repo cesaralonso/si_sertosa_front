@@ -91,7 +91,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-12 card-table">
+                        <div class="col-12 card-table" *ngIf="_inventary">
                             <table mat-table matSort [dataSource]="data">
                                 <ng-container matColumnDef="actions">
                                     <th mat-header-cell *matHeaderCellDef></th>
@@ -100,7 +100,15 @@
                                             <mat-icon>more_vert</mat-icon>
                                         </button>
                                         <mat-menu #menu="matMenu">
-
+                                            <button mat-menu-item (click)="insertSolicitudeprovider_product(element)">
+                                                <mat-icon>add</mat-icon>
+                                                <span>Agregar Solicitud a proveedor</span>
+                                            </button>
+                                            <button mat-menu-item (click)="viewSolicitudeprovider_product(element)">
+                                                <mat-icon>view_list</mat-icon>
+                                                <span>Ver Solicitud a proveedor</span>
+                                            </button>
+                                            <!-- Revisar si es necesario directamente ingresar ordenes..
                                             <button mat-menu-item (click)="addModalShowOrderin(element)">
                                                 <mat-icon>add</mat-icon>
                                                 <span>Orden de entrada</span>
@@ -108,42 +116,76 @@
                                             <button mat-menu-item (click)="addModalShowOrderout(element)">
                                                 <mat-icon>add</mat-icon>
                                                 <span>Orden de salida</span>
-                                            </button>
+                                            </button> -->
                                         </mat-menu>
                                     </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
                                 </ng-container>
                                 <ng-container matColumnDef="warehouse_warehouse_idwarehouse">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Almacen</th>
                                     <td mat-cell *matCellDef="let element"> 
-                                          {{element.warehouse_warehouse_idwarehouse}}
+                                        
+                                        <span title="Reordenar" class="material-icons" *ngIf="element.quantity <= element.reorderpoint">warning</span>
+
+                                        {{element.warehouse_warehouse_idwarehouse}}
                                     </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
                                 </ng-container>
+
+                                <!-- MOSTRAR ALERTA DE REORDEN -->
+
                                 <ng-container matColumnDef="product_product_idproduct">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Producto</th>
                                     <td mat-cell *matCellDef="let element"> 
                                           {{element.product_product_idproduct}}
-                                    </td>
+                                        </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
                                 </ng-container>
                                 <ng-container matColumnDef="provider_provider_idprovider">
                                     <th mat-header-cell *matHeaderCellDef mat-sort-header>Proveedor</th>
                                     <td mat-cell *matCellDef="let element"> 
                                           {{element.provider_provider_idprovider}}
                                     </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
                                 </ng-container>
                                 <ng-container matColumnDef="quantity">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad Total</th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Cantidad</th>
                                     <td mat-cell *matCellDef="let element"> 
-                                          {{ element.sumquantityin - element.sumquantityout }}
+                                          <strong>{{ element.quantity }}</strong>
                                     </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
                                 </ng-container>
+                                <ng-container matColumnDef="sku">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>SKU</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.sku }}
+                                    </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
+                                </ng-container>
+                                <ng-container matColumnDef="unitin">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Unidad de compra</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.unitin }}
+                                    </td>
+                                    <td mat-footer-cell *matFooterCellDef> </td>
+                                </ng-container>
+                                <ng-container matColumnDef="cost">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Costo</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          <strong>{{ element.cost | currency: 'MXN' }}</strong>
+                                    </td>
+                                    <td mat-footer-cell *matFooterCellDef> <strong>{{getTotalCost() | currency}} </strong></td>
+                                </ng-container>
+
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                                <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: true"></tr>
                             </table>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
                 </mat-card-content>

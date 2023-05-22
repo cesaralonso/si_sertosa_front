@@ -31,7 +31,7 @@
     "ci-deploy-fix": "ng build --configuration production --base-href \"https://sub.dominio.com/\" --output-hashing none && npm run fix-memory-limit && node fix-sw",
     "ci-deploy": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --base-href \"https://sub.dominio.com/\" --output-hashing none && node fix-sw",
     "ci-deploy-prod": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --base-href \"https://sub.dominio.com/\" && node fix-sw",
-    "ci-deploy-local": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration production --base-href \"/\""
+    "ci-deploy-local": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --configuration=production --base-href \"http://localhost/sertosa_web/\""
   },
   "private": true,
   "dependencies": {

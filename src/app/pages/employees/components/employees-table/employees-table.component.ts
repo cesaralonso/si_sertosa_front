@@ -32,16 +32,18 @@ export class EmployeesTableComponent implements OnInit {
     writeable: boolean = false;
     displayedColumns: string[] = [
       'actions',
+      'photo',
       'name',
-      'email',
+      'phone',
       'si_user_si_user_idsi_user',
       'companyunits_companyunits_idcompanyunits',
       'code',
     ];
     displayedLabels: string[] = [
       '',
+      'Foto',
       'Nombre completo',
-      'Email',
+      'Teléfono',
       'Usuario',
       'Unidad de negocio',
       'Código interno opcional',

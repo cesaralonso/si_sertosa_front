@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthorizeComponent } from 'app/shared/components/authorize/authorize.component';
 
 @Component({
 selector: 'solicitudeproviders-table',
@@ -33,16 +34,20 @@ export class SolicitudeprovidersTableComponent implements OnInit {
     displayedColumns: string[] = [
       'actions',
       'provider_provider_idprovider',
-      'project_service_project_service_idproject_service',
+      /* 'project_service_project_service_idproject_service', */
       'warehouse_warehouse_idwarehouse',
       'status',
+      'created_at',
+      'validated'
     ];
     displayedLabels: string[] = [
       '',
       'Proveedor',
-      'Reparación',
+      /* 'Reparación', */
       'Almacen',
       'Status',
+      'Fecha',
+      'Validada',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -97,6 +102,12 @@ export class SolicitudeprovidersTableComponent implements OnInit {
           this.findByIdProvider(idprovider);
           this.backpage = true;
         }
+        if (params['idwarehouse'] !== undefined && params['idprovider'] !== undefined) {
+          const idwarehouse = +params['idwarehouse'];
+          const idprovider = +params['idprovider'];
+          this.findByIdWarehouseIdProvider(idwarehouse, idprovider);
+          this.backpage = true;
+        }
         if (!this.backpage) {
           this.getAll();
         }
@@ -105,6 +116,23 @@ export class SolicitudeprovidersTableComponent implements OnInit {
     private findByIdProject_service(id: number): void {
       this.service
         .findByIdProject_service(id)
+        .pipe(take(1))
+        .subscribe(
+            (data: SolicitudeprovidersResponseInterface) => {
+                if (data.success) {
+                  this.data = new MatTableDataSource<SolicitudeprovidersInterface>(data.result);
+                  this.data.paginator = this.paginator;
+                  this.data.sort = this.sort;
+                } else {
+                  this.toastrService.error(data.message);
+                }
+            },
+            error => console.log(error),
+            () => console.log('Get all Items complete'))
+    }
+    private findByIdWarehouseIdProvider(idwarehouse:number, idprovider: number): void {
+      this.service
+        .findByIdWarehouseIdProvider(idwarehouse, idprovider)
         .pipe(take(1))
         .subscribe(
             (data: SolicitudeprovidersResponseInterface) => {
@@ -267,6 +295,49 @@ export class SolicitudeprovidersTableComponent implements OnInit {
         arrayReport.push(report);
         });
         this.commonService.JSONToCSVConvertor(arrayReport, reportTitle, showLabel);
+    }
+    onUpdate(solicitudeproviders: SolicitudeprovidersInterface): void {
+      if (SolicitudeprovidersService) {
+          this.service
+              .update({
+                  idsolicitudeprovider: solicitudeproviders.idsolicitudeprovider,
+                  provider_idprovider: solicitudeproviders.provider_idprovider,
+                  warehouse_idwarehouse: solicitudeproviders.warehouse_idwarehouse,
+                  status: solicitudeproviders.status,
+                  validated: solicitudeproviders.validated
+              })
+              .pipe(take(1))
+              .subscribe(
+                  (data: any) => {
+                    this.showToast(data);
+                    this.getAll();
+              });
+      }
+    }
+    validateAndClose(solicitudeproviders: SolicitudeprovidersInterface) {
+      // Solicitar PIN
+      const dialogRef = this.dialog.open(AuthorizeComponent);
+      dialogRef.afterClosed().subscribe(nip => {
+        if (nip) {
+          const user = {
+            password: nip,
+            module: 'solicitudeprovider'
+          };
+          this.authService.authorize(user)
+          .pipe(take(1)).
+          subscribe((data: any) => {
+            if (data.success) {
+              solicitudeproviders.validated = true;
+              solicitudeproviders.status = 'CERRADA';
+              this.onUpdate(solicitudeproviders);
+            }
+          });
+        }
+      });
+    }
+    onlyClose(solicitudeproviders: SolicitudeprovidersInterface) {
+      solicitudeproviders.status = 'CERRADA';
+      this.onUpdate(solicitudeproviders);
     }
     applyFilter(event: Event) {
         const filterValue = (event.target as HTMLInputElement).value;

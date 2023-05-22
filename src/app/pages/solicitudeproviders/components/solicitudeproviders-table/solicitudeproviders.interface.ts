@@ -4,6 +4,7 @@ export interface SolicitudeprovidersInterface {
    project_service_idproject_service?: number;
    warehouse_idwarehouse?: number;
    status?: string;
+   validated?: boolean;
    is_deleted?: boolean;
    created_by?: number;
    created_at?: string;

@@ -3,19 +3,7 @@ export const PAGES_MENU = [
     path: 'pages',
     children: [    
         
-        {
-            path: 'reports',
-            data: {
-            menu: {
-                title: 'general.menu.reports',
-                icon: 'ion-star',
-                selected: false,
-                expanded: false,
-                order: 0
-            }
-            }
-        },
-        {
+        /* {
             path: 'dashboard',
             data: {
             menu: {
@@ -26,23 +14,20 @@ export const PAGES_MENU = [
                 order: 0
             }
             }
-        },
+        }, */
         {
             path: 'projects',
             data: {
             menu: {
                 title: 'general.menu.projects',
-                icon: 'ion-star',
+                /* icon: 'ion-star', */
                 selected: false,
                 expanded: false,
                 order: 0
             }
             }
         },
-
-
-
-    {
+    /* {
         path: '',
         data: {
           menu: {
@@ -53,7 +38,7 @@ export const PAGES_MENU = [
             order: 0
           }
         },
-        children: [
+        children: [ */
             {
                 path: 'services',
                 data: {
@@ -65,8 +50,7 @@ export const PAGES_MENU = [
                 }
                 }
             },
-
-            {
+           /*  {
                 path: 'project_services',
                 data: {
                 menu: {
@@ -76,7 +60,7 @@ export const PAGES_MENU = [
                     order: 0
                 }
                 }
-            },
+            }, */
             {
                 path: 'service_employees',
                 data: {
@@ -87,7 +71,7 @@ export const PAGES_MENU = [
                     order: 0
                 }
                 }
-            },
+            },/* 
             {
                 path: 'validations',
                 data: {
@@ -98,8 +82,8 @@ export const PAGES_MENU = [
                     order: 0
                 }
                 }
-            }
-        ]
+            } */
+        /* ]
     },
     {
         path: '',
@@ -112,7 +96,7 @@ export const PAGES_MENU = [
             order: 0
           }
         },
-        children: [    
+        children: [   */  
             {
                 path: 'warehouses',
                 data: {
@@ -169,7 +153,7 @@ export const PAGES_MENU = [
                 }
             } */
 
-        ]
+       /*  ]
     },
     {
         path: '',
@@ -182,7 +166,7 @@ export const PAGES_MENU = [
             order: 0
           }
         },
-        children: [
+        children: [ */
             {
                 path: 'providers',
                 data: {
@@ -195,10 +179,10 @@ export const PAGES_MENU = [
                 }
             },
             {
-                path: 'products',
+                path: 'familys',
                 data: {
                 menu: {
-                    title: 'general.menu.products',
+                    title: 'general.menu.familys',
                     selected: false,
                     expanded: false,
                     order: 0
@@ -206,10 +190,10 @@ export const PAGES_MENU = [
                 }
             },
             {
-                path: 'familys',
+                path: 'products',
                 data: {
                 menu: {
-                    title: 'general.menu.familys',
+                    title: 'general.menu.products',
                     selected: false,
                     expanded: false,
                     order: 0
@@ -238,6 +222,8 @@ export const PAGES_MENU = [
                 }
                 }
             }, */
+            /* 
+            este módulo no debe aparecer en menú..
             {
                 path: 'service_products',
                 data: {
@@ -248,22 +234,22 @@ export const PAGES_MENU = [
                     order: 0
                 }
                 }
-            }
-        ]
-    },
+            } */
+        /* ]
+    }, */
     {
         path: 'vehicles',
         data: {
         menu: {
             title: 'general.menu.vehicles',
-            icon: 'ion-star',
+            /* icon: 'ion-star', */
             selected: false,
             expanded: false,
             order: 0
         }
         }
     },
-    {
+    /* {
         path: '',
         data: {
           menu: {
@@ -274,7 +260,7 @@ export const PAGES_MENU = [
             order: 0
           }
         },
-        children: [
+        children: [ */
 
             {
                 path: 'companygroups',
@@ -320,13 +306,22 @@ export const PAGES_MENU = [
                     order: 0
                 }
                 }
-            }
+            },
 
-        ]
+        /* ]
     },
-
-
-    
+    {
+        path: 'reports',
+        data: {
+        menu: {
+            title: 'general.menu.reports',
+            icon: 'ion-star',
+            selected: false,
+            expanded: false,
+            order: 0
+        }
+        }
+    },
     {
         path: '',
         data: {
@@ -338,7 +333,7 @@ export const PAGES_MENU = [
             order: 0
           }
         },
-        children: [
+        children: [ */
             /* {
                 path: 'si_alertas',
                 data: {
@@ -417,17 +412,6 @@ export const PAGES_MENU = [
                 }
             },
             /* {
-                path: 'si_rol_permisos',
-                data: {
-                menu: {
-                    title: 'general.menu.si_rol_permisos',
-                    selected: false,
-                    expanded: false,
-                    order: 0
-                }
-                }
-            }, */
-            /* {
                 path: 'si_sesions',
                 data: {
                 menu: {
@@ -449,11 +433,8 @@ export const PAGES_MENU = [
                 }
                 }
             } */
-
-
-
-        ]
-    }
+        /* ]
+    } */
 
 
    

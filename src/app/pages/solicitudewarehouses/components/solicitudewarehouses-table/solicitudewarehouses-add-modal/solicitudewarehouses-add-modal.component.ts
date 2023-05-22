@@ -51,6 +51,7 @@ export class SolicitudewarehousesAddModalComponent implements OnInit {
     'project_service_idproject_serviceAC' : ['', this.item.project_service_idproject_service ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'warehouse_idwarehouseAC' : ['', this.item.warehouse_idwarehouse ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    'validatedAC' : ['']
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -171,9 +172,10 @@ export class SolicitudewarehousesAddModalComponent implements OnInit {
       if (this.form.valid) {
           this.service
           .insert({
-                  project_service_idproject_service: this.item.project_service_idproject_service || null,
-                  warehouse_idwarehouse: this.item.warehouse_idwarehouse || null,
-                  status: this.item.status || null,
+                  project_service_idproject_service: this.item.project_service_idproject_service,
+                  warehouse_idwarehouse: this.item.warehouse_idwarehouse,
+                  status: this.item.status,
+                  validated: this.item.validated
           })
           .pipe(take(1))
           .subscribe(
@@ -191,6 +193,7 @@ export class SolicitudewarehousesAddModalComponent implements OnInit {
                   project_service_idproject_service: this.item.project_service_idproject_service,
                   warehouse_idwarehouse: this.item.warehouse_idwarehouse,
                   status: this.item.status,
+                  validated: this.item.validated
               })
               .pipe(take(1))
               .subscribe(

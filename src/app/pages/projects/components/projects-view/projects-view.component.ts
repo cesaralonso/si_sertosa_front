@@ -18,7 +18,6 @@ import { Solicitudewarehouse_productsInterface } from 'app/pages/solicitudewareh
 import { Solicitudewarehouse_productsService } from 'app/pages/solicitudewarehouse_products/components/solicitudewarehouse_products-table/solicitudewarehouse_products.service';
 import { ProductsInterface } from 'app/pages/products/components/products-table/products.interface';
 import { ProductsService } from 'app/pages/products/components/products-table/products.service';
-import { Solicitudeprovider_productsInterface } from 'app/pages/solicitudeprovider_products/components/solicitudeprovider_products-table/solicitudeprovider_products.interface';
 import { Solicitudewarehouse_productsAddModalComponent } from 'app/pages/solicitudewarehouse_products/components/solicitudewarehouse_products-table/solicitudewarehouse_products-add-modal/solicitudewarehouse_products-add-modal.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Project_servicesInterface } from 'app/pages/project_services/components/project_services-table/project_services.interface';
@@ -27,6 +26,10 @@ import { ServicesService } from 'app/pages/services/components/services-table/se
 import { ServicesInterface } from 'app/pages/services/components/services-table/services.interface';
 import { WarehousesInterface } from 'app/pages/warehouses/components/warehouses-table/warehouses.interface';
 import { WarehousesService } from 'app/pages/warehouses/components/warehouses-table/warehouses.service';
+import { EmployeesInterface } from 'app/pages/employees/components/employees-table/employees.interface';
+import { EmployeesService } from 'app/pages/employees/components/employees-table/employees.service';
+import { Service_employeesService } from 'app/pages/service_employees/components/service_employees-table/service_employees.service';
+import { OrderoutsService } from 'app/pages/orderouts/components/orderouts-table/orderouts.service';
 
 @Component({
   selector: 'projects-view',
@@ -59,6 +62,10 @@ export class ProjectsViewComponent implements OnInit {
     idservice: null
   };
   _warehouses: WarehousesInterface[] = [];
+  _employees: EmployeesInterface[] = [];
+  _employee: EmployeesInterface = {
+    idemployees: null
+  };
 
   solicitudewarehouse_product: Solicitudewarehouse_productsInterface = {};
 
@@ -94,12 +101,14 @@ export class ProjectsViewComponent implements OnInit {
     'Status',
   ];
 
-
   data: any;
   dataProjectHistorial: any;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
+
+  isNewSolicitudewarehouse = false;
+  isNewServiceemployee = false;
 
   constructor(
     fb: FormBuilder,
@@ -107,8 +116,11 @@ export class ProjectsViewComponent implements OnInit {
     private projectsService: ProjectsService,
     private productsService: ProductsService,
     private servicesService: ServicesService,
+    private orderoutsService: OrderoutsService,
     private warehousesService: WarehousesService,
     private project_servicesService: Project_servicesService,
+    private employeesService: EmployeesService,
+    private service_employesService: Service_employeesService,
     private authService: AuthService,
     public dialog: MatDialog,
     private solicitudewarehousesService: SolicitudewarehousesService,
@@ -131,7 +143,6 @@ export class ProjectsViewComponent implements OnInit {
         'solicitudewarehouse_idsolicitudewarehouseAC' : [''],
         'product_idproductAC' : [''],
         'quantityAC': ['']
-
       });
 
       // Buscar permisos del usuario en el módulo
@@ -155,26 +166,24 @@ export class ProjectsViewComponent implements OnInit {
   ngOnDestroy() {
       this.routeParamsSubs.unsubscribe();
   }
-
   ngOnInit() {
-
     this.routeParamsSubs = this.route.params.subscribe(params => {
       if (params['idproject'] !== undefined) {
         this.idproject = +params['idproject'];
-        this.getProject(this.idproject);
-        this.getVehicle(this.idproject);
-        // traer solicitudes de almacen ligados a la reparación
-        /* this.getSolicitudewarehouse(this.idproject); */
-        this.getProject_service(this.idproject);
-        this.getProduct();
-
-
-        // trae los servicios disponible
-        this.getService();
-        // trae almacenes
-        this.getWarehouse();
+        this.refill();
       }
     });
+  }
+  refill() {
+    this.getProject(this.idproject);
+    this.getVehicle(this.idproject);
+    // traer solicitudes de almacen ligados a la reparación
+    this.getProject_service(this.idproject);
+    this.getProduct();
+    // traer los servicios disponible
+    this.getService();
+    // traer almacenes
+    this.getWarehouse();
   }
   getWarehouse() {
     this.warehousesService.all()
@@ -212,7 +221,6 @@ export class ProjectsViewComponent implements OnInit {
           }
         });
   }
-
   getSolicitudewarehouse(idproject_service: number) {
     this.solicitudewarehousesService.findByIdProject_service(idproject_service)
     .pipe(take(1))
@@ -237,13 +245,11 @@ export class ProjectsViewComponent implements OnInit {
           }
         });
   }
-
   getSolicitudewarehouse_product(idsolicitudewarehouse: number) {
     this.solicitudewarehouse_productsService.findByIdSolicitudewarehouse(idsolicitudewarehouse)
     .pipe(take(1))
     .subscribe(
         (data: any) => {
-
           if (data.success) {
             this.data = new MatTableDataSource<Solicitudewarehouse_productsInterface>(data.result);
             this.data.paginator = this.paginator;
@@ -258,7 +264,6 @@ export class ProjectsViewComponent implements OnInit {
     .pipe(take(1))
     .subscribe(
         (data: any) => {
-
           if (data.success) {
             this._solicitudewarehouses = data.result;
           } else {
@@ -272,7 +277,17 @@ export class ProjectsViewComponent implements OnInit {
       .subscribe(
           (data: any) => {
               this._project = data.result[0];
+              // empleados de la misma unidad de negocio del proyecto
+              this.getEmployeeByIdCompanyunits(this._project.companyunits_idcompanyunits);
           });
+  }
+  getEmployeeByIdCompanyunits(idcompanyunits: number) {
+    this.employeesService.findByIdCompanyunits(idcompanyunits)
+    .pipe(take(1))
+    .subscribe(
+        (data: any) => {
+            this._employees = data.result;
+        });
   }
   getVehicle(idproject: number) {
       this.vehiclesService.findByIdProject(idproject)
@@ -280,13 +295,10 @@ export class ProjectsViewComponent implements OnInit {
       .subscribe(
           (data: any) => {
               this._vehicle = data.result[0];
-
               // historial
               this.getProjectByIdVehicle(this._vehicle.idvehicle);
           });
   }
-
-  
   getProjectByIdVehicle(idvehicle: number) {
     this.projectsService.findByIdVehicle(idvehicle)
     .pipe(take(1))
@@ -295,36 +307,8 @@ export class ProjectsViewComponent implements OnInit {
           this.dataProjectHistorial = new MatTableDataSource<Solicitudewarehouse_productsInterface>(data.result);
           this.dataProjectHistorial.paginator = this.paginator;
           this.dataProjectHistorial.sort = this.sort;
-            /* this._projectHistorial = data.result; */
         });
-}
-  onInsertSolicitudewarehouse_product(): void {
-    // Si solicitud warehouse está vacio se creará una nueva solicitud, de lo contrario
-    // se agregará la refacción a la solicitud seleccionada
-    /* if (!this.solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse) {
-      
-
-    } else { */
-
-      if (this.formSolicitudewarehouse_product.valid) {
-        this.solicitudewarehouse_productsService
-        .insert({
-                solicitudewarehouse_idsolicitudewarehouse: this.solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse,
-                product_idproduct: this.solicitudewarehouse_product.product_idproduct,
-                quantity: this.solicitudewarehouse_product.quantity
-        })
-        .pipe(take(1))
-        .subscribe(
-            (data: any) => {
-              // Recarga refacciones
-              this.getSolicitudewarehouse_product(this.solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse);
-            });
-      }
-
-    /* } */
-
   }
-
   editModalShowSolicitudewarehouse_product(solicitudewarehouse_product: Solicitudewarehouse_productsInterface) {
     const dialogRef = this.dialog.open(Solicitudewarehouse_productsAddModalComponent, {
             width: '550px',
@@ -349,7 +333,6 @@ export class ProjectsViewComponent implements OnInit {
         .subscribe(
             (data) => {
               this.showToast(data);
-              
               // Recarga refacciones
               this.getSolicitudewarehouse_product(item.solicitudewarehouse_idsolicitudewarehouse);
             },
@@ -360,27 +343,43 @@ export class ProjectsViewComponent implements OnInit {
         console.log('item cancelado');
     }
   }
-  showToast(result) {
-    if (result.success) {
-      this.toastrService.success(result.message);
-    } else {
-      this.toastrService.error(result.message);
+  onInsertSolicitudewarehouse_product(): void {
+    // validar si el producto estpa en existencia en ese almacen
+    if (this.formSolicitudewarehouse_product.valid) {
+      this.solicitudewarehouse_productsService
+      .insert({
+              solicitudewarehouse_idsolicitudewarehouse: this.solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse,
+              product_idproduct: this.solicitudewarehouse_product.product_idproduct,
+              quantity: this.solicitudewarehouse_product.quantity
+      })
+      .pipe(take(1))
+      .subscribe(
+          (data: any) => {
+            this.showToast(data);
+            if (data.success) {
+              // Recarga refacciones
+              // temporalemente... descontar refacción de almacen, se supone se deben validar 
+              // pero a su vez hay que resolver como descontar mientras no se validan...
+              this.orderoutsService
+              .insert({
+                      warehouse_idwarehouse: data.result.idwarehouse, // el id del almacen obtenerlo de respuesta anterior
+                      product_idproduct: this.solicitudewarehouse_product.product_idproduct,
+                      quantity: this.solicitudewarehouse_product.quantity
+              })
+              .pipe(take(1))
+              .subscribe(
+                  (data: any) => {
+                    if (data.success) {
+                      // Recarga refacciones
+                      this.getSolicitudewarehouse_product(this.solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse);
+                    } 
+                  });
+            } 
+          });
     }
   }
-
-  applyFilter(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.data.filter = filterValue.trim().toLowerCase();
-  }
-
-  applyFilterProjectHistorial(event: Event) {
-      const filterValue = (event.target as HTMLInputElement).value;
-      this.dataProjectHistorial.filter = filterValue.trim().toLowerCase();
-  }
-
   onInsertProjectservice(): void {
-
-      if (this._project.idproject && this._service.idservice) {
+      if (this._project.idproject && this._service.idservice && this._employee.idemployees) {
           this.project_servicesService
           .insert({
                   project_idproject: this._project.idproject,
@@ -390,25 +389,56 @@ export class ProjectsViewComponent implements OnInit {
           .subscribe(
               (data: any) => {
                 this.showToast(data);
-                this.getProject_service(this._project.idproject);
+                if (data.success) {
+                  // obtener id id recien creado idproject_service
+                  const idproject_service = data.result.insertId;
+                  // por cada empleado crear un service_employee
+                  this._employee.idemployees.forEach(idemployee => {
+                    // filtrar el emploeado para sacar el iduser que le corresponde
+                    const iduseremployee = this._employees.filter(o => o.idemployee === idemployee)[0].si_user_idsi_user;
+                    this.service_employesService
+                    .insert({
+                            employee_idemployee: idemployee,
+                            project_service_idproject_service: idproject_service,
+                            created_by: iduseremployee // enviar created_by para que el empleado pueda leer sus propios registros usando lso permisos
+                    })
+                    .pipe(take(1))
+                    .subscribe(
+                        (data: any) => {
+                          console.log('service_employesService data', data);
+                        });
+                  });
+                  this.getProject_service(this._project.idproject);
+                }
               });
       }
   }
-
   onInsertSolicitudewarehouse(): void {
-    /* if (this.form.valid) { */
-        this.solicitudewarehousesService
-        .insert({
-                project_service_idproject_service: this._project_service.idproject_service,
-                warehouse_idwarehouse: this._solicitudewarehouse.warehouse_idwarehouse
-        })
-        .pipe(take(1))
-        .subscribe(
-            (data: any) => {
-              this.showToast(data);
-              this.getSolicitudewarehouse(this._project_service.idproject_service);
-            });
-    /* } */
+    this.solicitudewarehousesService
+    .insert({
+            project_service_idproject_service: this._project_service.idproject_service,
+            warehouse_idwarehouse: this._solicitudewarehouse.warehouse_idwarehouse
+    })
+    .pipe(take(1))
+    .subscribe(
+        (data: any) => {
+          this.showToast(data);
+          this.getSolicitudewarehouse(this._project_service.idproject_service);
+        });
   }
-  
+  showToast(result) {
+    if (result.success) {
+      this.toastrService.success(result.message);
+    } else {
+      this.toastrService.error(result.message);
+    }
+  }
+  applyFilter(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.data.filter = filterValue.trim().toLowerCase();
+  }
+  applyFilterProjectHistorial(event: Event) {
+      const filterValue = (event.target as HTMLInputElement).value;
+      this.dataProjectHistorial.filter = filterValue.trim().toLowerCase();
+  }
 }

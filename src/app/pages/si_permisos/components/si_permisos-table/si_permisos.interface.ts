@@ -14,6 +14,7 @@ export interface Si_permisosInterface {
    write_own?: boolean;
    update_own?: boolean;
    delete_own?: boolean;
+   validateServiceEmployee?: boolean;
    is_deleted?: boolean;
    created_by?: number;
    created_at?: string;

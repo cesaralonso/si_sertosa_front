@@ -24,7 +24,7 @@ var watchId = 0; */
       </div>
     </div>
     <footer class="al-footer clearfix">
-      <div class='al-footer-right'>si_sertosa2_6411ce4229fd4 v0.0.1</div>
+      <div class='al-footer-right'>si_sertosa2_6411ce4229fd4 v0.0.2</div>
       <div class="al-footer-main clearfix">
         <ul class="al-share clearfix">
           <li></li>
@@ -66,8 +66,6 @@ export class Pages implements OnInit {
     // Reistro a evento online/offline 
     this.registerToEvents(this.onlineOfflineService);
 
-    // Registro a evento tracking 
-    /* this.registerToTracking(); */
   }
 
   private registerToMenu() {

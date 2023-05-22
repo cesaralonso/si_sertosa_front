@@ -15,10 +15,9 @@ export interface ProductsInterface {
    caducity?: string;
    unitin?: string;
    unitout?: string;
-
    selected?: boolean;
    employees?: any;
-
+   photo?: string;
    is_deleted?: boolean;
    created_by?: number;
    created_at?: string;

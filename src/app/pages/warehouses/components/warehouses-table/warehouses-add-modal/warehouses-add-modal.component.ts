@@ -44,7 +44,7 @@ export class WarehousesAddModalComponent implements OnInit {
     this.form = fb.group({
     'company_idcompanyAC' : ['', this.item.company_idcompany ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
-    'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+    /* 'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null], */
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -126,7 +126,7 @@ export class WarehousesAddModalComponent implements OnInit {
           .insert({
                   company_idcompany: this.item.company_idcompany || null,
                   name: this.item.name || null,
-                  status: this.item.status || null,
+                  /* status: this.item.status || null, */
           })
           .pipe(take(1))
           .subscribe(
@@ -143,7 +143,7 @@ export class WarehousesAddModalComponent implements OnInit {
                   idwarehouse: this.item.idwarehouse,
                   company_idcompany: this.item.company_idcompany,
                   name: this.item.name,
-                  status: this.item.status,
+                  /* status: this.item.status, */
               })
               .pipe(take(1))
               .subscribe(

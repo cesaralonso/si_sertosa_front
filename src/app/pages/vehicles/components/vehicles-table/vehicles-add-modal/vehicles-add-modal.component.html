@@ -8,7 +8,7 @@
           {{item.name}}
         </mat-option>
       </mat-select>
-      <button mat-flat-button *ngIf='companyRewriteable' (click)="companyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+      <!-- <button mat-flat-button *ngIf='companyRewriteable' (click)="companyAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button> -->
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Número</mat-label>
@@ -20,7 +20,21 @@
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Tipo</mat-label>
-        <input matInput [(ngModel)]="item.type" formControlName="typeAC" placeholder="Tipo" type="text" maxlength='45' class="" required>
+      <mat-select formControlName="typeAC" [(ngModel)]="item.type" required>
+        <mat-option value="TRACTOCAMIÓN">
+          TRACTOCAMIÓN
+        </mat-option>
+        <mat-option value="CAJA">
+          CAJA
+        </mat-option>
+        <mat-option value="DOLLY">
+          DOLLY
+        </mat-option>
+        <mat-option value="THERMOKING">
+          THERMOKING
+        </mat-option>
+      </mat-select>
+        <!-- <input matInput [(ngModel)]="item.type" formControlName="typeAC" placeholder="Tipo" type="text" maxlength='45' class="" required> -->
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Kilometraje</mat-label>

@@ -16,6 +16,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthorizeComponent } from 'app/shared/components/authorize/authorize.component';
 
 @Component({
 selector: 'service_employees-table',
@@ -30,6 +31,7 @@ export class Service_employeesTableComponent implements OnInit {
     updateable: boolean = false;
     deleteable: boolean = false;
     writeable: boolean = false;
+    validateServiceEmployee: boolean = false;
     displayedColumns: string[] = [
       'actions',
       'status',
@@ -38,7 +40,8 @@ export class Service_employeesTableComponent implements OnInit {
       'ponderationFinal',
       'observations',
       /* 'url', */
-      'time',
+      'dias_transcurridos',
+      'validated',
     ];
     displayedLabels: string[] = [
       '',
@@ -48,7 +51,8 @@ export class Service_employeesTableComponent implements OnInit {
       'Resultado final',
       'Observaciones',
       /* 'Url Pdf', */
-      'Tiempo total',
+      'Días transcurridos',
+      'Validada',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -72,6 +76,7 @@ export class Service_employeesTableComponent implements OnInit {
         this.updateable = true;
         this.deleteable = true;
         this.writeable = true;
+        this.validateServiceEmployee = true;
       } else {
         const userModules = this.authService.getUserModules();
         if (userModules[0]) {
@@ -80,6 +85,7 @@ export class Service_employeesTableComponent implements OnInit {
               this.updateable = userModules[element].updateable;
               this.deleteable = userModules[element].deleteable;
               this.writeable = userModules[element].writeable;
+              this.validateServiceEmployee = userModules[element].validateServiceEmployee
             }
           }
         }
@@ -145,35 +151,50 @@ export class Service_employeesTableComponent implements OnInit {
     backPage() {
         window.history.back();
     }
-    insertValidation(service_employees: Service_employeesInterface) {
-      const validation: ValidationsInterface = {
-        service_employee_idservice_employee: service_employees.idservice_employee
-      }
-      const dialogRef = this.dialog.open(ValidationsAddModalComponent, {
-              width: '550px',
-              data: validation,
-          });
-          dialogRef.afterClosed()
+  
+    onUpdate(service_employees: Service_employeesInterface): void {
+          this.service
+              .update({
+                  idservice_employee: service_employees.idservice_employee,
+                  status:  service_employees.status,
+                  validated:  service_employees.validated
+              })
               .pipe(take(1))
-              .subscribe(data => {
-                  if (data) {
-                      this.validationShowToast(data);
-                  }
-              }),
-              error => console.log(error),
-              () => console.log('Action completed');
+              .subscribe(
+                  (data: any) => {
+                    this.showToast(data);
+                    this.getAll();
+              });
     }
-    validationShowToast(result) {
-        if (result.success) {
-            this.toastrService.success(result.message);
-            this.refill();
-        } else {
-            this.toastrService.error(result.message);
+      
+    insertValidation(service_employees: Service_employeesInterface) {
+      // Solicitar PIN
+      const dialogRef = this.dialog.open(AuthorizeComponent);
+
+      dialogRef.afterClosed().subscribe(nip => {
+        if (nip) {
+          const user = {
+            password: nip,
+            module: 'service_employee'
+          };
+
+          this.authService.authorize(user)
+          .pipe(take(1)).
+          subscribe((data: any) => {
+            if (data.success) {
+              service_employees.validated = true;
+              service_employees.status = 'COMPLETADA';
+              this.onUpdate(service_employees);
+            }
+          });
         }
+      });
     }
-    viewValidation(service_employees: Service_employeesInterface) {
-      this.router.navigate([`/pages/validations/service_employee/${service_employees.idservice_employee}`]);
+
+    viewServiceEmployeeEstados(service_employees: Service_employeesInterface) {
+      this.router.navigate([`/pages/service_employeeestados/service_employee/${service_employees.idservice_employee}`]);
     }
+
     filtrarFechas(fechaDesde, fechaHasta) {
       this.service
         .allFromTo(fechaDesde, fechaHasta)
@@ -221,6 +242,29 @@ export class Service_employeesTableComponent implements OnInit {
               error => console.log(error),
               () => console.log('Action completed');
     }
+
+
+    closeTaskModalShow(service_employees: Service_employeesInterface) {
+
+      // agregar bandera para solo editar campo de estatus y observaciones dentro de modal de edición
+      service_employees.isEmployee = true;
+
+      const dialogRef = this.dialog.open(Service_employeesAddModalComponent, {
+              width: '550px',
+              data: service_employees
+          });
+          dialogRef.afterClosed()
+              .pipe(take(1))
+              .subscribe(data => {
+                  if (data) {
+                      this.showToast(data);
+                  }
+              }),
+              error => console.log(error),
+              () => console.log('Action completed');
+    }
+
+
     onDeleteConfirm(event, item): void {
       if (window.confirm('¿Estas seguro de querer eliminar este registro?')) {
           this.service.remove(item.idservice_employee)

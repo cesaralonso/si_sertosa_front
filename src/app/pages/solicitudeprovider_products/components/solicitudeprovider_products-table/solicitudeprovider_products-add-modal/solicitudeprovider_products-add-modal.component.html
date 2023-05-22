@@ -5,10 +5,10 @@
       <mat-label>Solicitud</mat-label>
       <mat-select formControlName="solicitudeprovider_idsolicitudeproviderAC" [(ngModel)]="item.solicitudeprovider_idsolicitudeprovider">
         <mat-option *ngFor="let item of _solicitudeprovider" [value]="item.idsolicitudeprovider">
-          {{item.idsolicitudeprovider}}
+          {{item.idsolicitudeprovider}} | {{item.provider_provider_idprovider}} | {{item.warehouse_warehouse_idwarehouse}} | {{item.status}}
         </mat-option>
       </mat-select>
-      <button mat-flat-button *ngIf='solicitudeproviderRewriteable' (click)="solicitudeproviderAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+      <!-- <button mat-flat-button *ngIf='solicitudeproviderRewriteable' (click)="solicitudeproviderAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button> -->
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Producto</mat-label>

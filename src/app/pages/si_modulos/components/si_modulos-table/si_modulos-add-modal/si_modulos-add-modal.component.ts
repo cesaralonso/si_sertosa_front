@@ -36,7 +36,7 @@ export class Si_modulosAddModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public item: Si_modulosInterface
   ) {
     this.form = fb.group({
-    'codigoAC' : ['', this.item.codigo ? Validators.compose([ Validators.required, Validators.maxLength(15)]) : null],
+    'codigoAC' : ['', this.item.codigo ? Validators.compose([ Validators.required, Validators.maxLength(55)]) : null],
     'nombreAC' : ['', this.item.nombre ? Validators.compose([ Validators.required, Validators.maxLength(25)]) : null],
     });
     // Buscar permisos del usuario en el módulo

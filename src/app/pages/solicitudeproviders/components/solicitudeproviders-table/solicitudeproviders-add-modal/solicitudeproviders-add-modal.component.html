@@ -10,7 +10,7 @@
       </mat-select>
       <button mat-flat-button *ngIf='providerRewriteable' (click)="providerAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
     </mat-form-field>
-    <mat-form-field appearance="fill" class="full-width">
+    <!-- <mat-form-field appearance="fill" class="full-width">
       <mat-label>Reparación</mat-label>
       <mat-select formControlName="project_service_idproject_serviceAC" [(ngModel)]="item.project_service_idproject_service">
         <mat-option *ngFor="let item of _project_service" [value]="item.idproject_service">
@@ -18,7 +18,7 @@
         </mat-option>
       </mat-select>
       <button mat-flat-button *ngIf='project_serviceRewriteable' (click)="project_serviceAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
-    </mat-form-field>
+    </mat-form-field> -->
 
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Almacen</mat-label>
@@ -27,10 +27,9 @@
           {{item.name}}
         </mat-option>
       </mat-select>
-      
     </mat-form-field>
 
-    <mat-form-field appearance="fill" class="full-width">
+    <!-- <mat-form-field appearance="fill" class="full-width">
       <mat-label>Status</mat-label>
       <mat-select formControlName="statusAC" [(ngModel)]="item.status" required>
         <mat-option value="ABIERTA">
@@ -49,7 +48,10 @@
           EN REVISIÓN
         </mat-option>
       </mat-select>
-    </mat-form-field>
+    </mat-form-field> -->
+    <!-- <div class="mat-form-field mb-4 mt-2 full-width">
+      <mat-checkbox formControlName="validatedAC" [(ngModel)]="item.validated">Validar Solicitud</mat-checkbox>
+    </div> -->
   </form>
 </div>
 <div mat-dialog-actions>

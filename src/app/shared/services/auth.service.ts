@@ -62,6 +62,67 @@ export class AuthService {
         return (object.toString() === 'true') ? true : false;
     }
 
+    authorize(values: LoginInterface): Observable<boolean> {
+        this.actionUrl = `${this._configuration.apiUrl}si_user/authorize`;
+        return this._http.post(this.actionUrl, values, { headers: this.headers }).pipe(
+            map((response: HttpResponse<any>) => <any>response),
+            catchError(this.handleError),
+            tap(response => {
+                if (response.success) {
+                    this.toastrService.success(response.message);
+                    return true;
+                } else {
+                    this.toastrService.error(response.message);
+                    return false;
+                }
+            }));
+    }
+    
+    loginNip(values: LoginInterface): Observable<any> {
+        this.actionUrl = `${this._configuration.apiUrl}si_user/login-nip`;
+        // const toAdd = JSON.stringify(values);
+        return this._http.post(this.actionUrl, values, { headers: this.headers }).pipe(
+            map((response: HttpResponse<any>) => <any>response),
+            catchError(this.handleError),
+            tap(response => {
+
+                if (response.success) {
+
+                    this.isLoggedIn = true;
+                    this.updateAuthStatus(true);
+
+                    this.token = response.token;
+                    
+                    // Módulos permitidos a usuario
+                    response.modules.forEach(element => {
+                        const _path = '/pages/' + element.nombre.toLowerCase() + 's';
+                        element.path = _path;
+                    });
+                    this.user_modules = response.modules;
+                    
+                    // IMPLEMENTADO PARA CHANGE-PASSWORD
+                    localStorage.setItem('iduser', response.iduser);
+                    localStorage.setItem('email', response.email);
+                    localStorage.setItem('idrol', response.idrol);
+                    localStorage.setItem('token', response.token);
+
+                    if (values.recordarSesion) {
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('user_modules', JSON.stringify(this.user_modules));
+                    }
+                    this.toastrService.success(response.message);
+                    // Regresa a página anterior si viene de otra página o a dashboard
+                    if (this.redirectUrl !== undefined) {
+                        this.router.navigateByUrl(this.redirectUrl);
+                    } else {
+                        this.navigateToFirstModule();
+                    }
+                } else {
+                    this.toastrService.error(response.message);
+                }
+            }));
+    }
+
     login(values: LoginInterface): Observable<any> {
         this.actionUrl = `${this._configuration.apiUrl}si_user/login`;
         // const toAdd = JSON.stringify(values);
@@ -111,7 +172,15 @@ export class AuthService {
 
     navigateToFirstModule() {
 
+        // obtener de token el idrol
+        const user = this.useJwtHelper();
+        // si es rol mecánico 6
+        if (user.idrol === 6) {
+            // envía a órdnees trabajando
+            this.router.navigate(['pages/service_employees']);
+        } else {
             this.router.navigate(['pages/projects']);
+        }
 
     }
 
@@ -141,7 +210,7 @@ export class AuthService {
                     localStorage.removeItem('email');
                     localStorage.removeItem('iduser');
                     localStorage.removeItem('idrol');
-                    this.router.navigate(['/login']);
+                    this.router.navigate(['/login-employee']);
                 } else {
                     this.toastrService.error('La sesión no se cerró correctamente.');
                 }

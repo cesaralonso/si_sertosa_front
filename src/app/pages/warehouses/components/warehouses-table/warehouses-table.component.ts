@@ -20,6 +20,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
+import { SolicitudeprovidersAddModalComponent } from 'app/pages/solicitudeproviders/components/solicitudeproviders-table/solicitudeproviders-add-modal/solicitudeproviders-add-modal.component';
+import { SolicitudeprovidersInterface } from 'app/pages/solicitudeproviders/components/solicitudeproviders-table/solicitudeproviders.interface';
 
 @Component({
 selector: 'warehouses-table',
@@ -183,6 +185,35 @@ export class WarehousesTableComponent implements OnInit {
     viewOrderout(warehouses: WarehousesInterface) {
       this.router.navigate([`/pages/orderouts/warehouse/${warehouses.idwarehouse}`]);
     }
+    /* insertSolicitudeprovider(warehouses: WarehousesInterface) {
+      const solicitudeprovider: SolicitudeprovidersInterface = {
+        warehouse_idwarehouse: warehouses.idwarehouse
+      }
+      const dialogRef = this.dialog.open(SolicitudeprovidersAddModalComponent, {
+              width: '550px',
+              data: solicitudeprovider,
+          });
+          dialogRef.afterClosed()
+              .pipe(take(1))
+              .subscribe(data => {
+                  if (data) {
+                      this.solicitudeproviderShowToast(data);
+                  }
+              }),
+              error => console.log(error),
+              () => console.log('Action completed');
+    }
+    solicitudeproviderShowToast(result) {
+        if (result.success) {
+            this.toastrService.success(result.message);
+            this.refill();
+        } else {
+            this.toastrService.error(result.message);
+        }
+    }
+    viewSolicitudeprovider(warehouses: WarehousesInterface) {
+      this.router.navigate([`/pages/solicitudeproviders/warehouse/${warehouses.idwarehouse}`]);
+    } */
     insertSolicitudewarehouse(warehouses: WarehousesInterface) {
       const solicitudewarehouse: SolicitudewarehousesInterface = {
         warehouse_idwarehouse: warehouses.idwarehouse

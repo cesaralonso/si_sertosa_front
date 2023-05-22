@@ -5,6 +5,14 @@
       <mat-label>Nombre</mat-label>
         <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='45' class="" required>
     </mat-form-field>
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Empresa</mat-label>
+      <mat-select formControlName="company_idcompanyAC" [(ngModel)]="item.company_idcompany">
+        <mat-option *ngFor="let item of _company" [value]="item.idcompany">
+          {{item.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
   </form>
 </div>
 <div mat-dialog-actions>

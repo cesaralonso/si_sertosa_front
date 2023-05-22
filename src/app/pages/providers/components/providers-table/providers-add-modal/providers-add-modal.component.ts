@@ -36,8 +36,17 @@ export class ProvidersAddModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public item: ProvidersInterface
   ) {
     this.form = fb.group({
-    'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
-    'statusAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+        'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
+        'aliasAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+        'rfcAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(13)]) : null],
+        'billing_emailAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(100)]) : null],
+        'office_phoneAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(30)]) : null],
+        'care_contactAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+        'care_emailAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(100)]) : null],
+        'care_phoneAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(30)]) : null],
+        /* 'skusAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null], */
+        'statusAC' : ['', this.item.status ? Validators.compose([ Validators.maxLength(45)]) : null],
+        'logoAC' : ['', this.item.logo ? Validators.compose([ Validators.maxLength(300)]) : null]
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -76,8 +85,16 @@ export class ProvidersAddModalComponent implements OnInit {
       if (this.form.valid) {
           this.service
           .insert({
-                  name: this.item.name || null,
-                  status: this.item.status || null,
+            name: this.item.name,
+            alias: this.item.alias,
+            rfc: this.item.rfc,
+            billing_email: this.item.billing_email,
+            office_phone: this.item.office_phone,
+            care_contact: this.item.care_contact,
+            care_email: this.item.care_email,
+            care_phone: this.item.care_phone,
+            /* skus: this.item.skus, */
+            status: this.item.status
           })
           .pipe(take(1))
           .subscribe(
@@ -92,7 +109,15 @@ export class ProvidersAddModalComponent implements OnInit {
           this.service
               .update({
                   idprovider: this.item.idprovider,
-                  name: this.item.name,
+                  name: this.item.name || null,
+                  alias: this.item.alias,
+                  rfc: this.item.rfc,
+                  billing_email: this.item.billing_email,
+                  office_phone: this.item.office_phone,
+                  care_contact: this.item.care_contact,
+                  care_email: this.item.care_email,
+                  care_phone: this.item.care_phone,
+                  /* skus: this.item.skus, */
                   status: this.item.status,
               })
               .pipe(take(1))

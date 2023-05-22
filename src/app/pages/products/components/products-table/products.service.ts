@@ -137,6 +137,20 @@ export class ProductsService {
            formData.append("description", product.description);
            formData.append("provider_idprovider", product.provider_idprovider);
            formData.append("family_idfamily", product.family_idfamily);
+           
+           formData.append("sku", product.sku);
+           formData.append("aka", product.aka);
+           formData.append("type", product.type);
+           formData.append("cost", product.cost);
+           formData.append("min", product.min);
+           formData.append("id", product.id);
+           formData.append("reorderpoint", product.reorderpoint);
+           formData.append("max", product.max);
+           formData.append("caducity", product.caducity);
+           formData.append("unitin", product.unitin);
+           formData.append("unitout", product.unitout);
+           formData.append("photo", product.photo);
+
            return this._http.post<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
                        reportProgress: true,
                        observe: 'events',
@@ -148,6 +162,41 @@ export class ProductsService {
                        map((response: any) => response),
                            catchError(this.handleError));
        }
+       updateFile = ( product: ProductsInterface, documento?: File ) : Observable<any> => {
+        var formData: any = new FormData();
+        if (documento) {
+            formData.append("documento", documento);
+        }
+        formData.append("idproduct", product.idproduct);
+        formData.append("name", product.name);
+        formData.append("description", product.description);
+        formData.append("provider_idprovider", product.provider_idprovider);
+        formData.append("family_idfamily", product.family_idfamily);
+
+        formData.append("sku", product.sku);
+        formData.append("aka", product.aka);
+        formData.append("type", product.type);
+        formData.append("cost", product.cost);
+        formData.append("min", product.min);
+        formData.append("id", product.id);
+        formData.append("reorderpoint", product.reorderpoint);
+        formData.append("max", product.max);
+        formData.append("caducity", product.caducity);
+        formData.append("unitin", product.unitin);
+        formData.append("unitout", product.unitout);
+        formData.append("photo", product.photo);
+
+        return this._http.patch<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
+                    reportProgress: true,
+                    observe: 'events',
+                    headers: new HttpHeaders(
+                        { 'Authorization': 'JWT ' + this.authService.token }
+                    )
+                })
+            .pipe(
+                    map((response: any) => response),
+                        catchError(this.handleError));
+    }
        private handleError(error: HttpResponse<any>) {
            console.error(error);
            return observableThrowError(error || 'Server error');

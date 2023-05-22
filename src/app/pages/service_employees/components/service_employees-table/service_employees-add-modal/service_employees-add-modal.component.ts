@@ -51,7 +51,7 @@ export class Service_employeesAddModalComponent implements OnInit {
     'statusAC' : [''],
     'employee_idemployeeAC' : ['', this.item.employee_idemployee ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'project_service_idproject_serviceAC' : ['', this.item.project_service_idproject_service ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
-    /* 'ponderationFinalAC' : [''], */
+    'ponderationFinalAC' : [''],
     'observationsAC' : ['', this.item.observations ? Validators.compose([ Validators.maxLength(145)]) : null],
     /* 'urlAC' : ['', this.item.url ? Validators.compose([ Validators.maxLength(300)]) : null],
     'timeAC' : [''], */
@@ -82,8 +82,14 @@ export class Service_employeesAddModalComponent implements OnInit {
       this.getEmployee();
       this.getProject_service();
       // Revisa si es agregar o editar
-      if (this.item.idservice_employee) {
+      console.log('this.item', this.item);
+      if (this.item.idservice_employee && !this.item.isEmployee) {
           this.accion = "Editar";
+      } else if (this.item.idservice_employee && this.item.isEmployee) {
+        
+        // establecer estatus a finalizado por que acción fué finalizar
+        this.item.status = 'COMPLETADA';
+        this.accion = "Finalizar";
       } else {
           this.accion = "Agregar";
       }
@@ -199,10 +205,11 @@ export class Service_employeesAddModalComponent implements OnInit {
                   status: this.item.status,
                   employee_idemployee: this.item.employee_idemployee,
                   project_service_idproject_service: this.item.project_service_idproject_service,
-                  /* ponderationFinal: this.item.ponderationFinal, */
+                  ponderationFinal: this.item.ponderationFinal,
                   observations: this.item.observations,
                   /* url: this.item.url,
                   time: this.item.time, */
+                  created_by: this.item.created_by // enviar para establecer fecha con cambio de estatus a mismo usuario en back
               })
               .pipe(take(1))
               .subscribe(

@@ -31,7 +31,6 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
   project_serviceRewriteable: boolean = false;
   _warehouse: WarehousesInterface[] = [];
 
-
   modalHeader: string;
   data: any;
   form: FormGroup;
@@ -54,9 +53,10 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
   ) {
     this.form = fb.group({
     'provider_idproviderAC' : ['', this.item.provider_idprovider ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
-    'project_service_idproject_serviceAC' : ['', this.item.project_service_idproject_service ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
-    'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null],
-    'warehouse_idwarehouseAC' : ['', this.item.warehouse_idwarehouse ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null]
+    'warehouse_idwarehouseAC' : ['', this.item.warehouse_idwarehouse ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
+    /* 'project_service_idproject_serviceAC' : ['', this.item.project_service_idproject_service ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null], */
+    /* 'statusAC' : ['', this.item.status ? Validators.compose([ Validators.required, Validators.maxLength(45)]) : null], */
+    /* 'validatedAC' : [''] */
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -191,10 +191,11 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
       if (this.form.valid) {
           this.service
           .insert({
-                  provider_idprovider: this.item.provider_idprovider || null,
-                  project_service_idproject_service: this.item.project_service_idproject_service || null,
-                  warehouse_idwarehouse: this.item.warehouse_idwarehouse || null,
-                  status: this.item.status || null,
+                  provider_idprovider: this.item.provider_idprovider,
+                 /*  project_service_idproject_service: this.item.project_service_idproject_service, */
+                  warehouse_idwarehouse: this.item.warehouse_idwarehouse,
+                  /* status: this.item.status,
+                  validated: this.item.validated */
           })
           .pipe(take(1))
           .subscribe(
@@ -210,9 +211,10 @@ export class SolicitudeprovidersAddModalComponent implements OnInit {
               .update({
                   idsolicitudeprovider: this.item.idsolicitudeprovider,
                   provider_idprovider: this.item.provider_idprovider,
-                  project_service_idproject_service: this.item.project_service_idproject_service,
+                 /*  project_service_idproject_service: this.item.project_service_idproject_service, */
                   warehouse_idwarehouse: this.item.warehouse_idwarehouse,
-                  status: this.item.status,
+                  /* status: this.item.status,
+                  validated: this.item.validated */
               })
               .pipe(take(1))
               .subscribe(

@@ -16,6 +16,9 @@ import { CompanyunitssAddModalComponent } from './../../../../companyunitss/comp
 import { CompanyunitssInterface } from './../../../../companyunitss/components/companyunitss-table/companyunitss.interface';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 
+// IMAGENES
+import { HttpEventType, HttpEvent } from '@angular/common/http';
+
 
 @Component({
   selector: 'add-service-modal',
@@ -35,6 +38,11 @@ export class EmployeesAddModalComponent implements OnInit {
   user;
   accion = 'Agregar';
 
+  // IMAGENES
+  preview: string;
+  percentDone: any = 0;
+  isPermited = false;
+
   constructor(
     private service: EmployeesService,
     private authService: AuthService, 
@@ -49,10 +57,11 @@ export class EmployeesAddModalComponent implements OnInit {
   ) {
     this.form = fb.group({
     'nameAC' : ['', this.item.name ? Validators.compose([ Validators.required, Validators.maxLength(145)]) : null],
-    'emailAC' : ['', this.item.email ? Validators.compose([ Validators.required, Validators.maxLength(85)]) : null],
+    'phoneAC' : ['', this.item.phone ? Validators.compose([ Validators.required, Validators.maxLength(85)]) : null],
     'si_user_idsi_userAC' : ['', this.item.si_user_idsi_user ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'companyunits_idcompanyunitsAC' : ['', this.item.companyunits_idcompanyunits ? Validators.compose([ Validators.required, Validators.maxLength(10)]) : null],
     'codeAC' : ['', this.item.code ? Validators.compose([ Validators.maxLength(45)]) : null],
+    'photoAC' : ['', this.item.photo ? Validators.compose([ Validators.maxLength(300)]) : null],
     });
     // Buscar permisos del usuario en el módulo
     this.user = this.authService.useJwtHelper();
@@ -169,41 +178,102 @@ export class EmployeesAddModalComponent implements OnInit {
           this.onInsert();
       }
   }
-  onInsert(): void {
+  onInsert(): void {            
       if (this.form.valid) {
           this.service
-          .insert({
+          .insertFile({
                   name: this.item.name || null,
-                  email: this.item.email || null,
+                  phone: this.item.phone || null,
                   si_user_idsi_user: this.item.si_user_idsi_user || null,
                   companyunits_idcompanyunits: this.item.companyunits_idcompanyunits || null,
                   code: this.item.code || null,
-          })
-          .pipe(take(1))
-          .subscribe(
-              (data: any) => {
-              this.data = data;
-              this.confirm();
-              });
-      }
+          }, this.form.value.photoAC)
+          .subscribe((event: HttpEvent<any>) => {
+            switch (event.type) {
+                case HttpEventType.Sent:
+                    console.log('Request has been made!');
+                break;
+                case HttpEventType.ResponseHeader:
+                    console.log('Response header has been received!');
+                break;
+                case HttpEventType.UploadProgress:
+                    this.percentDone = Math.round(event.loaded / event.total * 100);
+                    console.log(`Uploaded! %`);
+                break;
+                case HttpEventType.Response:
+                    console.log('Successfully created!', event.body);
+                    this.percentDone = false;
+                    this.data = event.body;
+                    
+                    this.confirm();
+            }
+        });
+         
+      } 
   }
-  onUpdate(): void {
+  filterUser() {
+    // filtra usuario seleccionado para asignar nombre completo y unidad de negocio
+    const userSelected = this._si_user.filter(o => o.idsi_user === this.item.si_user_idsi_user)[0];
+    this.item.name = userSelected.nombre + ' ' + userSelected.apmat + ' ' + userSelected.apmat; 
+    this.item.companyunits_idcompanyunits = userSelected.companyunits_idcompanyunits; 
+  }
+  onUpdate(): void {            
       if (this.form.valid) {
           this.service
-              .update({
+              .updateFile({
                   idemployee: this.item.idemployee,
                   name: this.item.name,
-                  email: this.item.email,
+                  phone: this.item.phone,
                   si_user_idsi_user: this.item.si_user_idsi_user,
                   companyunits_idcompanyunits: this.item.companyunits_idcompanyunits,
                   code: this.item.code,
-              })
-              .pipe(take(1))
-              .subscribe(
-                  (data: any) => {
-                      this.data = data;
-                      this.confirm();
-              });
+              }, this.form.value.photoAC)
+              .subscribe((event: HttpEvent<any>) => {
+                    switch (event.type) {
+                        case HttpEventType.Sent:
+                            console.log('Request has been made!');
+                        break;
+                        case HttpEventType.ResponseHeader:
+                            console.log('Response header has been received!');
+                        break;
+                        case HttpEventType.UploadProgress:
+                            this.percentDone = Math.round(event.loaded / event.total * 100);
+                            console.log(`Uploaded! %`);
+                        break;
+                        case HttpEventType.Response:
+                            console.log('Successfully created!', event.body);
+                            this.percentDone = false;
+                            this.data = event.body;
+                            
+                            this.confirm();
+                    }
+                });
+
       }
-  }
+    }
+    // Image Preview
+    uploadFile(event) {
+        var fileTypes = ['png', 'jpg', 'jpeg'];  //acceptable file types
+        const file = (event.target as HTMLInputElement).files[0];
+        const extension = file.name.split('.').pop().toLowerCase();  //file extension from input file
+        this.isPermited = fileTypes.indexOf(extension) > -1;  //is extension in acceptable types
+        if (this.isPermited) {
+            this.form.patchValue({
+                photoAC: file
+            });
+            this.form.get('photoAC').updateValueAndValidity();
+            // File Preview
+            const reader = new FileReader();
+            reader.onload = () => {
+                this.preview = reader.result as string;
+            }
+            reader.readAsDataURL(file);
+        } else {
+            this.form.patchValue({
+                photoAC: ''
+            });
+            this.form.get('photoAC').updateValueAndValidity();
+            this.preview = '';
+        }
+    }
 }

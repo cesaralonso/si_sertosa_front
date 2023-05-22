@@ -5,10 +5,66 @@
       <mat-label>Nombre</mat-label>
         <input matInput [(ngModel)]="item.name" formControlName="nameAC" placeholder="Nombre" type="text" maxlength='45' class="" required>
     </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Alias</mat-label>
+        <input matInput [(ngModel)]="item.alias" formControlName="aliasAC" placeholder="Alias" type="text" maxlength='45' class="">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>RFC</mat-label>
+        <input matInput [(ngModel)]="item.rfc" formControlName="rfcAC" placeholder="RFC" type="text" maxlength='13' class="" required>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Correo de facturación</mat-label>
+        <input matInput [(ngModel)]="item.billing_email" formControlName="billing_emailAC" placeholder="Correo" type="email" maxlength='100' class="">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Teléfono de oficina</mat-label>
+        <input matInput [(ngModel)]="item.office_phone" formControlName="office_phoneAC" placeholder="Telefono" type="tel" maxlength='30' class="">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Contacto de atención</mat-label>
+        <input matInput [(ngModel)]="item.care_contact" formControlName="care_contactAC" placeholder="Nombre" type="text" maxlength='45' class="">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Correo de atención</mat-label>
+        <input matInput [(ngModel)]="item.care_email" formControlName="care_emailAC" placeholder="Correo" type="email" maxlength='100' class="">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Teléfono de atención</mat-label>
+        <input matInput [(ngModel)]="item.care_phone" formControlName="care_phoneAC" placeholder="Telefono" type="tel" maxlength='30' class="">
+    </mat-form-field>
+
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Status</mat-label>
-        <input matInput [(ngModel)]="item.status" formControlName="statusAC" placeholder="Status" type="text" maxlength='45' class="" >
+      <mat-select formControlName="statusAC" [(ngModel)]="item.status">
+        <mat-option value="ACTIVO">
+          ACTIVO
+        </mat-option>
+        <mat-option value="INACTIVO">
+          INACTIVO
+        </mat-option>
+      </mat-select>
     </mat-form-field>
+
+    <!-- IMÁGENES-->
+    <!-- <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Foto</mat-label>
+        <input matInput [(ngModel)]="item.logo" type="text" [ngModelOptions]="{standalone: true}" id="logoAC" placeholder="Logotipo" readonly>
+        <input type="file" (change)="uploadFile($event)" id="documentoAC">
+    </mat-form-field>
+
+    <div class='form-group row mt-3'>
+      <div class='preview' *ngIf='preview && preview !== null'>
+          <img [src]='preview' alt='preview' class='img-fluid'>
+      </div>
+    </div> -->
   </form>
 </div>
 <div mat-dialog-actions>

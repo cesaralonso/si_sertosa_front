@@ -134,7 +134,7 @@ export class EmployeesService {
                formData.append("documento", documento);
            }
            formData.append("name", employee.name);
-           formData.append("email", employee.email);
+           formData.append("phone", employee.phone);
            formData.append("si_user_idsi_user", employee.si_user_idsi_user);
            formData.append("companyunits_idcompanyunits", employee.companyunits_idcompanyunits);
            formData.append("code", employee.code);
@@ -149,6 +149,31 @@ export class EmployeesService {
                        map((response: any) => response),
                            catchError(this.handleError));
        }
+       
+        // Imagen
+        updateFile = ( employee: EmployeesInterface, documento?: File ) : Observable<any> => {
+            var formData: any = new FormData();
+            if (documento) {
+                formData.append("documento", documento);
+            }
+            formData.append("idemployee", employee.idemployee);
+            formData.append("name", employee.name);
+            formData.append("phone", employee.phone);
+            formData.append("si_user_idsi_user", employee.si_user_idsi_user);
+            formData.append("companyunits_idcompanyunits", employee.companyunits_idcompanyunits);
+            formData.append("code", employee.code);
+            return this._http.patch<HttpResponse<any>>(`${this.endPoint}/file`, formData, {
+                        reportProgress: true,
+                        observe: 'events',
+                        headers: new HttpHeaders(
+                            { 'Authorization': 'JWT ' + this.authService.token }
+                        )
+                    })
+                .pipe(
+                        map((response: any) => response),
+                            catchError(this.handleError));
+        }
+
        private handleError(error: HttpResponse<any>) {
            console.error(error);
            return observableThrowError(error || 'Server error');

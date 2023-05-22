@@ -213,4 +213,55 @@ export class CommonService {
         return meses[month - 1];
     }
 
+    resizeImage(dataURI: string): string {
+        var img = document.createElement("img");
+        img.src = dataURI;
+  
+        var canvas = document.createElement("canvas");
+        var ctx = canvas.getContext("2d")!;
+        ctx.drawImage(img, 0, 0);
+  
+        var MAX_WIDTH = 800;
+        var MAX_HEIGHT = 800;
+        var width = img.width;
+        var height = img.height;
+  
+        if (width > height) {
+            if (width > MAX_WIDTH) {
+                height *= MAX_WIDTH / width;
+                width = MAX_WIDTH;
+            }
+        } else {
+            if (height > MAX_HEIGHT) {
+                width *= MAX_HEIGHT / height;
+                height = MAX_HEIGHT;
+            }
+        }
+        canvas.width = width;
+        canvas.height = height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, width, height);
+  
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+        var dataurl = canvas.toDataURL(mimeString, 0.7); // COMPRESIÓN
+  
+        return dataurl;
+    }
+
+    dataURItoBlob(dataURI) {
+        // convert base64 to raw binary data held in a string
+        var byteString = atob(dataURI.split(',')[1]);
+  
+        // separate out the mime component
+        var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+  
+        // write the bytes of the string to an ArrayBuffer
+        var ab = new ArrayBuffer(byteString.length);
+        var ia = new Uint8Array(ab);
+        for (var i = 0; i < byteString.length; i++) {
+            ia[i] = byteString.charCodeAt(i);
+        }
+        return new Blob([ab], {type: mimeString});
+    }
+
 }

@@ -37,10 +37,12 @@ export class CompanyunitssTableComponent implements OnInit {
     displayedColumns: string[] = [
       'actions',
       'name',
+      'company_company_idcompany',
     ];
     displayedLabels: string[] = [
       '',
       'Nombre',
+      'Empresa',
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;

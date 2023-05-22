@@ -39,6 +39,11 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    
+    <div class="mat-form-field mb-4 mt-2 full-width">
+      <mat-checkbox formControlName="validatedAC" [(ngModel)]="item.validated">Validar Solicitud</mat-checkbox>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions>

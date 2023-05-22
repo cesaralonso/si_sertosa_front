@@ -47,9 +47,6 @@
         <mat-option value="HUESO">
           HUESO
         </mat-option>
-        <mat-option value="">
-          
-        </mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
@@ -110,6 +107,18 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <!-- IMÁGENES -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Foto</mat-label>
+      <input matInput [(ngModel)]="item.photo" type="text" [ngModelOptions]="{standalone: true}" placeholder="Logotipo" readonly>
+      <input type="file" (change)="uploadFile($event)">
+    </mat-form-field>
+    <div class='form-group row mt-3'>
+      <div class='preview' *ngIf='preview && preview !== null'>
+        <img [src]='preview' alt='preview' class='img-fluid'>
+      </div>
+    </div>
   </form>
 </div>
 <div mat-dialog-actions>

@@ -26,6 +26,12 @@ export class SolicitudeprovidersService {
             })};
         this.endPoint = `${this._configuration.apiUrl}solicitudeprovider`;
        }
+       findByIdWarehouseIdProvider = (idwarehouse: number, idprovider: number) : Observable<SolicitudeprovidersResponseInterface> => {
+        return this._http.get<HttpResponse<any>>(`${this.endPoint}/warehouse/${idwarehouse}/provider/${idprovider}`, this.options)
+            .pipe(
+                map((response: any) => response),
+                catchError(this.handleError));
+       }
        findByIdProject_service = ( id ) : Observable<SolicitudeprovidersResponseInterface> => {
            return this._http.get<HttpResponse<any>>(`${this.endPoint}/project_service/${id}`, this.options)
                .pipe(

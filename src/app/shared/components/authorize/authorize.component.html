@@ -1,0 +1,12 @@
+<h1 mat-dialog-title>AUTORIZACIÓN</h1>
+<div mat-dialog-content>
+  <p>INGRESA TU PIN</p>
+  <mat-form-field appearance="fill">
+    <mat-label>PIN</mat-label>
+    <input autofocus autocomplete="false" matInput #nip>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancelar</button>
+  <button mat-button [mat-dialog-close]="nip.value" cdkFocusInitial>OK</button>
+</div>

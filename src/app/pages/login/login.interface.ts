@@ -1,6 +1,7 @@
 export interface LoginInterface {
   idsi_user?: number;
-  email: string;
+  email?: string;
   password: string;
   recordarSesion?: boolean;
+  module?: string;
 }

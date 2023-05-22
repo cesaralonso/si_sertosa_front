@@ -1,7 +1,6 @@
 <div class="widgets">
     <div class="row">
         <div class="col">
-            
             <h1 class="mat-h1">Orden de Reparación: {{idproject}}</h1>
             <div class="row">
                 <div class="col mb-1">
@@ -14,7 +13,15 @@
                         matTooltip="Agrega un Nueva Reparación">
                         <mat-icon>add</mat-icon>
                      </button> -->
-                    
+                    <button 
+                        style="float:right" 
+                        class="m-1" 
+                        mat-mini-fab color="link" 
+                        aria-label="Muestra un botón para recargar datos de la tabla" 
+                        matTooltip="Recargar datos"
+                        (click)="refill()">
+                        <mat-icon>refresh</mat-icon>
+                    </button>
                 </div>
             </div>
             <!-- VEHÍCULO -->
@@ -25,7 +32,6 @@
                     </mat-card-title>
                 </mat-card-header>
                 <mat-card-content class="dashboard-card-content">
-
                     <form [formGroup]="formVehicle" *ngIf="_vehicle">
                         <div class="row">
                             <div class="col-md-3">
@@ -53,8 +59,7 @@
                                 <mat-label>Modelo</mat-label>
                                     <input matInput [(ngModel)]="_vehicle.model" formControlName="modelAC" placeholder="Modelo" type="text" maxlength='45' class="" readonly>
                                 </mat-form-field>
-                                
-                                </div>
+                            </div>
                             <div class="col-md-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                 <mat-label>Año</mat-label>
@@ -68,12 +73,9 @@
                                 </mat-form-field>
                             </div>
                         </div>
-                        
                     </form>
-
                 </mat-card-content>
             </mat-card>
-
 
             <!-- REPARACIÓN -->
             <mat-card class="dashboard-card animated fadeIn with-scroll" >
@@ -83,7 +85,6 @@
                     </mat-card-title>
                 </mat-card-header>
                 <mat-card-content class="dashboard-card-content">
-
                     <form *ngIf="_project">
                         <div class="row">
                             <div class="col-md-8">
@@ -96,8 +97,9 @@
 
                         <!-- Nueva orden servicio -->
                         <hr>
-                        <div class="row">
-                            <div class="col-md-8">
+                        <mat-slide-toggle [(ngModel)]="isNewServiceemployee" [ngModelOptions]="{standalone: true}">Agregar nueva orden de trabajo</mat-slide-toggle>
+                        <div class="row mt-2" *ngIf="isNewServiceemployee">
+                            <div class="col-md-4">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Servicio</mat-label>
                                     <mat-select [ngModelOptions]="{standalone: true}" [(ngModel)]="_service.idservice">
@@ -108,12 +110,20 @@
                                     </mat-form-field>
                             </div>
                             <div class="col-md-4">
-
-                                <button [disabled]="!_service.idservice" (click)="onInsertProjectservice()" mat-button color="accent">
+                                <mat-form-field appearance="fill" class="full-width">
+                                    <mat-label>Empleado</mat-label>
+                                    <mat-select multiple [ngModelOptions]="{standalone: true}" [(ngModel)]="_employee.idemployees">
+                                        <mat-option *ngFor="let item of _employees" [value]="item.idemployee">
+                                          {{item.idemployee}} - {{item.name}}
+                                        </mat-option>
+                                      </mat-select>
+                                    </mat-form-field>
+                            </div>
+                            <div class="col-md-4">
+                                <button [disabled]="!_service.idservice || !_employee.idemployees" (click)="onInsertProjectservice()" mat-button color="accent">
                                     <mat-icon>add</mat-icon>
                                     <span>Asignar nuevo servicio</span>
                                 </button>
-
                             </div>
                         </div>
                         <hr>
@@ -135,9 +145,10 @@
 
                     <form [formGroup]="formSolicitudewarehouse_product" *ngIf="_solicitudewarehouse">
 
-                        <!-- Nueva solicituda -->
+                        <!-- Nueva solicitud -->
                         <hr>
-                        <div class="row">
+                        <mat-slide-toggle [(ngModel)]="isNewSolicitudewarehouse" [ngModelOptions]="{standalone: true}">Agregar nueva solicitud a almacen</mat-slide-toggle>
+                        <div class="row mt-2" *ngIf="isNewSolicitudewarehouse">
                             <div class="col-md-8">
                                 <mat-form-field appearance="fill" class="full-width">
                                     <mat-label>Almacen</mat-label>
@@ -158,8 +169,7 @@
                             </div>
                         </div>
                         <hr>
-                        <!-- /Nueva solicituda -->
-
+                        <!-- /Nueva solicitud -->
 
                         <div class="row">
                             <div class="col-md-5">
@@ -175,29 +185,26 @@
                             <div class="col-md-3">
                                 <mat-form-field appearance="fill" class="full-width">
                                 <mat-label>Refacción</mat-label>
-
                                 <mat-select formControlName="product_idproductAC" [(ngModel)]="solicitudewarehouse_product.product_idproduct">
                                     <mat-option *ngFor="let item of _product" [value]="item.idproduct">
                                       {{item.idproduct}} - {{item.name}}
                                     </mat-option>
                                   </mat-select>
                                 </mat-form-field>
-                                
                             </div>
                             <div class="col-md-2">
                                 <mat-form-field appearance="fill" class="full-width">
                                 <mat-label>Cantidad</mat-label>
-                                    <input matInput [(ngModel)]="solicitudewarehouse_product.quantity" formControlName="quantityAC" placeholder="Año" type="number" maxlength='4' class="">
+                                    <input matInput [(ngModel)]="solicitudewarehouse_product.quantity" formControlName="quantityAC" placeholder="Cantidad" type="number" maxlength='4' class="">
                                 </mat-form-field>
                             </div>
                             <div class="col-md-2">
-                                <button mat-button (click)="onInsertSolicitudewarehouse_product()" color="link">
+                                <button [disabled]="!solicitudewarehouse_product.quantity || !solicitudewarehouse_product.product_idproduct || !solicitudewarehouse_product.solicitudewarehouse_idsolicitudewarehouse" mat-button (click)="onInsertSolicitudewarehouse_product()" color="link">
                                     <mat-icon>add</mat-icon>
                                     <span>Agregar</span>
                                 </button>
                             </div>
                         </div>
-                        
                     </form>
 
                     <hr>
@@ -259,12 +266,11 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
                 </mat-card-content>
             </mat-card>
-
 
             <!-- HISTORIAL -->
             <mat-card class="dashboard-card animated fadeIn with-scroll" >
@@ -274,8 +280,6 @@
                     </mat-card-title>
                 </mat-card-header>
                 <mat-card-content class="dashboard-card-content">
-
-
 
                     <!-- SOLICITUDES A ALMACEN REFACCIONES -->
                     <div class="row">
@@ -347,16 +351,11 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
                 </mat-card-content>
             </mat-card>
-
-
-
-
-
         </div>
     </div>
 </div>

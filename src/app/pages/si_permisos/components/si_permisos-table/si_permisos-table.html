@@ -197,6 +197,13 @@
                                           {{ element.delete_own ? 'Si' : 'No' }}
                                     </td>
                                 </ng-container>
+                                <ng-container matColumnDef="validateServiceEmployee">
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Validar</th>
+                                    <td mat-cell *matCellDef="let element"> 
+                                          {{ element.validateServiceEmployee ? 'Si' : 'No' }}
+                                    </td>
+                                </ng-container>
+                                
                                 <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" sticky></tr>
                                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                             </table>
@@ -204,7 +211,7 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+                            <mat-paginator [pageSizeOptions]="[20, 50, 100]" showFirstLastButtons></mat-paginator>
                         </div>
                     </div>
                 </mat-card-content>

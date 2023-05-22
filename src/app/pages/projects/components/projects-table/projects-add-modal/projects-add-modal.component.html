@@ -12,7 +12,7 @@
           {{item.name}}
         </mat-option>
       </mat-select>
-      <button mat-flat-button *ngIf='companyunitsRewriteable' (click)="companyunitsAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
+      <!-- <button mat-flat-button *ngIf='companyunitsRewriteable' (click)="companyunitsAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button> -->
     </mat-form-field>
     <mat-form-field appearance="fill" class="full-width">
       <mat-label>Vehículo</mat-label>
@@ -23,22 +23,20 @@
       </mat-select>
       <button mat-flat-button *ngIf='vehicleRewriteable' (click)="vehicleAddModalShow()" color="primary" class="full-width mt-3"><i class="fa fa-plus"></i></button>
     </mat-form-field>
-
-    <mat-form-field appearance="fill" class="full-width">
+    <!-- <mat-form-field appearance="fill" class="full-width">
       <mat-label>Status</mat-label>
-      <mat-select formControlName="statusAC" [(ngModel)]="item.status">
+      <mat-select readonly formControlName="statusAC" [(ngModel)]="item.status">
+        <mat-option selected value="VACIO">
+          VACIO
+        </mat-option>
         <mat-option value="COMPLETADO">
           COMPLETADO
-        </mat-option>
-        <mat-option value="VACIO">
-          VACIO
         </mat-option>
         <mat-option value="EN PROCESO">
           EN PROCESO
         </mat-option>
       </mat-select>
-    </mat-form-field>
-
+    </mat-form-field> -->
   </form>
 </div>
 <div mat-dialog-actions>

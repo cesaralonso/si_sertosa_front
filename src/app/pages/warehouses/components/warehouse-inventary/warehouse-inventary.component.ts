@@ -15,6 +15,8 @@ import { OrderinsService } from './../../../../pages/orderins/components/orderin
 import { OrderinsInterface } from './../../../../pages/orderins/components/orderins-table/orderins.interface';
 import { OrderinsResponseInterface } from './../../../../pages/orderins/components/orderins-table/orderins-response.interface';
 import { OrderoutsAddModalComponent } from 'app/pages/orderouts/components/orderouts-table/orderouts-add-modal/orderouts-add-modal.component';
+import { Solicitudeprovider_productsInterface } from 'app/pages/solicitudeprovider_products/components/solicitudeprovider_products-table/solicitudeprovider_products.interface';
+import { Solicitudeprovider_productsAddModalComponent } from 'app/pages/solicitudeprovider_products/components/solicitudeprovider_products-table/solicitudeprovider_products-add-modal/solicitudeprovider_products-add-modal.component';
 
 @Component({
 selector: 'warehouse-inventary-table',
@@ -23,6 +25,8 @@ styleUrls: ['./warehouse-inventary.component.scss'],
 })
 export class WarehouseinventaryTableComponent implements OnInit {
     data;
+    _inventary: any;
+
     backpage: boolean;
     idwarehouse: number;
 
@@ -35,14 +39,20 @@ export class WarehouseinventaryTableComponent implements OnInit {
       'warehouse_warehouse_idwarehouse',
       'product_product_idproduct',
       'provider_provider_idprovider',
-      'quantity'
+      'quantity',
+      'sku',
+      'unitin',
+      'cost'
     ];
     displayedLabels: string[] = [
       '',
       'Almacen',
       'Producto',
       'Proveedor',
-      'Cantidad'
+      'Cantidad',
+      'SKU',
+      'Unidad de compra',
+      'Costo'
     ];
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild(MatSort) sort: MatSort;
@@ -94,7 +104,6 @@ export class WarehouseinventaryTableComponent implements OnInit {
         }
       });
     }
-
     addModalShowOrderin(orderin: OrderinsInterface) {
         const dialogRef = this.dialog.open(OrderinsAddModalComponent, {
                 width: '550px',
@@ -113,7 +122,6 @@ export class WarehouseinventaryTableComponent implements OnInit {
                 error => console.log(error),
                 () => console.log('Action completed');
     }
-    
     addModalShowOrderout(orderin: OrderinsInterface) {
         const dialogRef = this.dialog.open(OrderoutsAddModalComponent, {
                 width: '550px',
@@ -133,6 +141,42 @@ export class WarehouseinventaryTableComponent implements OnInit {
                 () => console.log('Action completed');
     }
 
+
+
+
+    insertSolicitudeprovider_product(inventary: any) {
+      const solicitudeprovider: Solicitudeprovider_productsInterface = {
+        product_idproduct: inventary.product_idproduct
+      }
+      const dialogRef = this.dialog.open(Solicitudeprovider_productsAddModalComponent, {
+              width: '550px',
+              data: solicitudeprovider,
+          });
+          dialogRef.afterClosed()
+              .pipe(take(1))
+              .subscribe(data => {
+                  if (data) {
+                      this.solicitudeproviderShowToast(data);
+                  }
+              }),
+              error => console.log(error),
+              () => console.log('Action completed');
+    }
+    solicitudeproviderShowToast(result) {
+        if (result.success) {
+            this.toastrService.success(result.message);
+            this.refill();
+        } else {
+            this.toastrService.error(result.message);
+        }
+    }
+    viewSolicitudeprovider_product(inventary: any) {
+      this.router.navigate([`/pages/solicitudeproviders/warehouse/${inventary.warehouse_idwarehouse}/provider/${inventary.provider_idprovider}`]);
+    }
+
+
+
+
     private findInventaryByIdWarehouse(id: number): void {
       this.service
         .findInventaryByIdWarehouse(id)
@@ -143,6 +187,8 @@ export class WarehouseinventaryTableComponent implements OnInit {
                   this.data = new MatTableDataSource<OrderinsInterface>(data.result);
                   this.data.paginator = this.paginator;
                   this.data.sort = this.sort;
+
+                  this._inventary = data.result;
                 } else {
                   this.toastrService.error(data.message);
                 }
@@ -150,7 +196,9 @@ export class WarehouseinventaryTableComponent implements OnInit {
             error => console.log(error),
             () => console.log('Get all Items complete'))
     }
-
+    getTotalCost() {
+      return this._inventary.map(t => t.cost * t.quantity).reduce((acc, value) => acc + value, 0);
+    }
     backPage() {
         window.history.back();
     }
